@@ -3,22 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Network Topology Diagram - Polymer Manufacturing Facility</title>
+    <title>Network Attack Surface Map - Security Analysis</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         .device-card {
             transition: all 0.3s ease;
         }
         .device-card:hover {
             transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
         }
         .device-card.selected {
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.5);
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -40,585 +48,358 @@
         const { useState } = React;
 
         // Icon Components
-        const IconWrapper = ({ children, className = "w-6 h-6" }) => (
-            <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className={className}
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-            >
-                {children}
+        const Shield = ({ className = "w-6 h-6" }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
         );
 
-        const GlobeIcon = ({ className }) => (
-            <IconWrapper className={className}>
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="2" y1="12" x2="22" y2="12"/>
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-            </IconWrapper>
+        const Server = ({ className = "w-6 h-6" }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+            </svg>
         );
 
-        const RouterIcon = ({ className }) => (
-            <IconWrapper className={className}>
-                <rect x="2" y="7" width="20" height="14" rx="2"/>
-                <path d="M7 12h.01"/>
-                <path d="M12 12h.01"/>
-                <path d="M17 12h.01"/>
-            </IconWrapper>
+        const HardDrive = ({ className = "w-6 h-6" }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+            </svg>
         );
 
-        const ServerIcon = ({ className }) => (
-            <IconWrapper className={className}>
-                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
-                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
-                <line x1="6" y1="6" x2="6.01" y2="6"/>
-                <line x1="6" y1="18" x2="6.01" y2="18"/>
-            </IconWrapper>
+        const Cpu = ({ className = "w-6 h-6" }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+            </svg>
         );
 
-        const HardDriveIcon = ({ className }) => (
-            <IconWrapper className={className}>
-                <line x1="22" y1="12" x2="2" y2="12"/>
-                <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
-                <line x1="6" y1="16" x2="6.01" y2="16"/>
-                <line x1="10" y1="16" x2="10.01" y2="16"/>
-            </IconWrapper>
+        const Router = ({ className = "w-6 h-6" }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+            </svg>
         );
 
-        const CpuIcon = ({ className }) => (
-            <IconWrapper className={className}>
-                <rect x="4" y="4" width="16" height="16" rx="2" ry="2"/>
-                <rect x="9" y="9" width="6" height="6"/>
-                <line x1="9" y1="1" x2="9" y2="4"/>
-                <line x1="15" y1="1" x2="15" y2="4"/>
-                <line x1="9" y1="20" x2="9" y2="23"/>
-                <line x1="15" y1="20" x2="15" y2="23"/>
-                <line x1="20" y1="9" x2="23" y2="9"/>
-                <line x1="20" y1="14" x2="23" y2="14"/>
-                <line x1="1" y1="9" x2="4" y2="9"/>
-                <line x1="1" y1="14" x2="4" y2="14"/>
-            </IconWrapper>
+        const AlertTriangle = ({ className = "w-6 h-6" }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
         );
 
-        const MonitorIcon = ({ className }) => (
-            <IconWrapper className={className}>
-                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-                <line x1="8" y1="21" x2="16" y2="21"/>
-                <line x1="12" y1="17" x2="12" y2="21"/>
-            </IconWrapper>
+        const Zap = ({ className = "w-6 h-6" }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
         );
 
-        const SettingsIcon = ({ className }) => (
-            <IconWrapper className={className}>
-                <circle cx="12" cy="12" r="3"/>
-                <path d="M12 1v6m0 6v6m5.2-13.2l-4.2 4.2m-1.8 1.8l-4.2 4.2M1 12h6m6 0h6M4.8 4.8l4.2 4.2m1.8 1.8l4.2 4.2"/>
-            </IconWrapper>
+        const Unlock = ({ className = "w-6 h-6" }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+            </svg>
         );
 
-        const DatabaseIcon = ({ className }) => (
-            <IconWrapper className={className}>
-                <ellipse cx="12" cy="5" rx="9" ry="3"/>
-                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
-                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
-            </IconWrapper>
-        );
+        const NetworkAttackSurface = () => {
+            const [selectedHost, setSelectedHost] = useState(null);
 
-        const NetworkIcon = ({ className }) => (
-            <IconWrapper className={className}>
-                <rect x="16" y="16" width="6" height="6" rx="1"/>
-                <rect x="2" y="16" width="6" height="6" rx="1"/>
-                <rect x="9" y="2" width="6" height="6" rx="1"/>
-                <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3m-7-5v-3"/>
-            </IconWrapper>
-        );
-
-        const LockIcon = ({ className }) => (
-            <IconWrapper className={className}>
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-            </IconWrapper>
-        );
-
-        // Main Component
-        const NetworkTopologyDiagram = () => {
-            const [selectedDevice, setSelectedDevice] = useState(null);
-
-            const devices = {
-                gateway: {
+            const hosts = [
+                {
+                    id: '192.168.0.3',
+                    name: 'MWA-151',
+                    type: 'server',
+                    os: 'Windows Server 2008 R2',
+                    criticality: 'critical',
+                    services: ['SQL Server 2008 R2', 'RDP (3390)', 'WinRM (5985)', 'SMB', '.NET Remoting'],
+                    vulnerabilities: ['Unsupported SQL', 'WinRM exposed', 'Old OS'],
+                    exploits: ['Blank sa password', 'xp_cmdshell RCE', 'WinRM shell'],
+                    Icon: Server,
+                    color: 'bg-red-500'
+                },
+                {
                     id: '192.168.0.66',
                     name: 'MikroTik Router',
-                    type: 'Gateway',
-                    Icon: GlobeIcon,
-                    color: 'bg-blue-600',
-                    borderColor: 'border-blue-600',
-                    details: {
-                        model: 'RouterBoard',
-                        mac: '48:8F:5A:88:D8:31',
-                        services: ['SSH', 'Winbox', 'HTTP Management'],
-                        role: 'Network Gateway & Router'
-                    }
+                    type: 'router',
+                    os: 'RouterOS',
+                    criticality: 'critical',
+                    services: ['SSH (22)', 'Winbox (8291)', 'HTTP (8064)'],
+                    vulnerabilities: ['CVE-2018-14847', 'Default creds?'],
+                    exploits: ['Blank SSH', 'File read exploit', 'User.dat extraction'],
+                    Icon: Router,
+                    color: 'bg-red-500'
                 },
-                switch: {
-                    id: '192.168.0.115',
-                    name: 'HP Instant On',
-                    type: 'Network Switch',
-                    Icon: RouterIcon,
-                    color: 'bg-purple-600',
-                    borderColor: 'border-purple-600',
-                    details: {
-                        model: 'HP Enterprise',
-                        mac: 'A0:25:D7:CE:53:72',
-                        services: ['HTTP', 'HTTPS', 'RTSP'],
-                        role: 'Network Switch/Distribution'
-                    }
+                {
+                    id: '192.168.0.104',
+                    name: 'MWA-98',
+                    type: 'workstation',
+                    os: 'Windows XP',
+                    criticality: 'critical',
+                    services: ['SMB (445)', 'RPC', 'Port 7070'],
+                    vulnerabilities: ['Unsupported OS', 'MS08-067', 'No patches since 2014'],
+                    exploits: ['MS08-067 RCE', 'SMB null session'],
+                    Icon: Cpu,
+                    color: 'bg-red-500'
                 },
-                servers: [
-                    {
-                        id: '192.168.0.3',
-                        name: 'MWA-151',
-                        type: 'Production Server',
-                        Icon: ServerIcon,
-                        color: 'bg-green-600',
-                        borderColor: 'border-green-600',
-                        details: {
-                            os: 'Windows Server 2008 R2/2012',
-                            vendor: 'Dell Inc.',
-                            mac: '34:17:EB:ED:A1:DD',
-                            services: ['SQL Server 2008 R2', 'RDP', 'WinRM', 'SMB', '.NET Remoting'],
-                            role: 'Database & Application Server'
-                        }
-                    },
-                    {
-                        id: '192.168.0.5',
-                        name: 'SIIM-NAS',
-                        type: 'Network Storage',
-                        Icon: HardDriveIcon,
-                        color: 'bg-indigo-600',
-                        borderColor: 'border-indigo-600',
-                        details: {
-                            os: 'Synology DSM',
-                            vendor: 'Synology',
-                            mac: '90:09:D0:56:41:8B',
-                            services: ['File Sharing', 'FTP', 'iSCSI', 'HTTP/HTTPS'],
-                            role: 'Centralized Storage & Backup'
-                        }
-                    },
-                    {
-                        id: '192.168.0.120',
-                        name: 'idrac-22MCWC2',
-                        type: 'Server Management',
-                        Icon: SettingsIcon,
-                        color: 'bg-cyan-600',
-                        borderColor: 'border-cyan-600',
-                        details: {
-                            os: 'Dell iDRAC 8',
-                            vendor: 'Dell Inc.',
-                            mac: '34:17:EB:ED:A1:DF',
-                            services: ['HTTPS', 'SSH', 'VNC', 'IPMI'],
-                            role: 'Out-of-Band Server Management'
-                        }
-                    }
-                ],
-                workstations: [
-                    {
-                        id: '192.168.0.104',
-                        name: 'MWA-98',
-                        type: 'Legacy Workstation',
-                        Icon: MonitorIcon,
-                        color: 'bg-red-600',
-                        borderColor: 'border-red-600',
-                        details: {
-                            os: 'Windows XP',
-                            vendor: 'Hon Hai (Foxconn)',
-                            mac: '90:4C:E5:2E:A9:9B',
-                            services: ['SMB', 'Radmin'],
-                            role: 'Manufacturing Control Station'
-                        }
-                    },
-                    {
-                        id: '192.168.0.178',
-                        name: 'MWA-107',
-                        type: 'Legacy Workstation',
-                        Icon: MonitorIcon,
-                        color: 'bg-red-600',
-                        borderColor: 'border-red-600',
-                        details: {
-                            os: 'Windows XP',
-                            vendor: 'Hon Hai (Foxconn)',
-                            mac: '90:FB:A6:2A:69:FC',
-                            services: ['SMB', 'Radmin'],
-                            role: 'Manufacturing Control Station'
-                        }
-                    },
-                    {
-                        id: '192.168.0.106',
-                        name: 'DESKTOP-385516H',
-                        type: 'Web Server / Workstation',
-                        Icon: CpuIcon,
-                        color: 'bg-yellow-600',
-                        borderColor: 'border-yellow-600',
-                        details: {
-                            os: 'Windows 10/11',
-                            vendor: 'Hon Hai',
-                            mac: '1C:A0:B8:76:D8:48',
-                            services: ['IIS 10.0', 'SMB', '.NET', 'Radmin'],
-                            role: 'Web Services & Workstation'
-                        }
-                    },
-                    {
-                        id: '192.168.0.114',
-                        name: 'MWA-133',
-                        type: 'Workstation',
-                        Icon: CpuIcon,
-                        color: 'bg-yellow-600',
-                        borderColor: 'border-yellow-600',
-                        details: {
-                            os: 'Windows 10/11',
-                            vendor: 'Dell Inc.',
-                            mac: '98:90:96:B8:87:9C',
-                            services: ['IIS 10.0', 'RTSP', 'SMB', 'Radmin'],
-                            role: 'Manufacturing Workstation'
-                        }
-                    },
-                    {
-                        id: '192.168.0.6',
-                        name: 'MWA-165-M',
-                        type: 'Workstation',
-                        Icon: CpuIcon,
-                        color: 'bg-gray-600',
-                        borderColor: 'border-gray-600',
-                        details: {
-                            os: 'Windows 10/11',
-                            mac: '34:5A:60:0C:E6:9B',
-                            services: ['SMB', 'Radmin'],
-                            role: 'Manufacturing Workstation'
-                        }
-                    },
-                    {
-                        id: '192.168.0.7',
-                        name: 'MWA-166-S',
-                        type: 'Workstation',
-                        Icon: CpuIcon,
-                        color: 'bg-gray-600',
-                        borderColor: 'border-gray-600',
-                        details: {
-                            os: 'Windows 10/11',
-                            mac: '34:5A:60:0C:E6:96',
-                            services: ['SMB', 'Radmin'],
-                            role: 'Manufacturing Workstation'
-                        }
-                    },
-                    {
-                        id: '192.168.0.117',
-                        name: 'DESKTOP-5CIHN1V',
-                        type: 'Workstation',
-                        Icon: CpuIcon,
-                        color: 'bg-gray-600',
-                        borderColor: 'border-gray-600',
-                        details: {
-                            os: 'Windows 10/11',
-                            mac: '34:5A:60:1F:53:FF',
-                            services: ['SMB', 'Radmin'],
-                            role: 'User Workstation'
-                        }
-                    },
-                    {
-                        id: '192.168.0.121',
-                        name: 'DESKTOP-UUOHUHO',
-                        type: 'Workstation',
-                        Icon: CpuIcon,
-                        color: 'bg-gray-600',
-                        borderColor: 'border-gray-600',
-                        details: {
-                            os: 'Windows 10/11',
-                            vendor: 'Dell Inc.',
-                            mac: '98:90:96:BB:5D:69',
-                            services: ['SMB', 'Radmin', 'Jetty 9.2'],
-                            role: 'Development Workstation'
-                        }
-                    },
-                    {
-                        id: '192.168.0.107',
-                        name: 'Shuki',
-                        type: 'Workstation',
-                        Icon: CpuIcon,
-                        color: 'bg-gray-600',
-                        borderColor: 'border-gray-600',
-                        details: {
-                            os: 'Windows 10/11',
-                            vendor: 'Intel Corporate',
-                            mac: '5C:E4:2A:F6:7E:5D',
-                            services: ['SMB', 'Radmin'],
-                            role: 'User Workstation'
-                        }
-                    },
-                    {
-                        id: '192.168.0.197',
-                        name: 'Taller-new',
-                        type: 'Workstation',
-                        Icon: CpuIcon,
-                        color: 'bg-gray-600',
-                        borderColor: 'border-gray-600',
-                        details: {
-                            os: 'Windows',
-                            vendor: 'Universal Global Scientific',
-                            mac: 'E0:4F:43:29:2B:FF',
-                            services: ['SMB', 'Radmin'],
-                            role: 'Workshop/Production Station'
-                        }
-                    }
-                ],
-                otDevices: [
-                    {
-                        id: '192.168.0.102',
-                        name: 'Unknown OT Device',
-                        type: 'Industrial Control',
-                        Icon: DatabaseIcon,
-                        color: 'bg-orange-600',
-                        borderColor: 'border-orange-600',
-                        details: {
-                            os: 'Unknown',
-                            services: ['Port 6668 (Custom Protocol)'],
-                            role: 'SCADA/PLC/HMI - Manufacturing Control'
-                        }
-                    },
-                    {
-                        id: '192.168.0.103',
-                        name: 'Device 103',
-                        type: 'Unknown Device',
-                        Icon: MonitorIcon,
-                        color: 'bg-orange-600',
-                        borderColor: 'border-orange-600',
-                        details: {
-                            vendor: 'Hon Hai',
-                            mac: '90:FB:A6:2A:54:A3',
-                            services: ['Radmin'],
-                            role: 'Unknown Function'
-                        }
-                    },
-                    {
-                        id: '192.168.0.119',
-                        name: 'Device 119',
-                        type: 'Unknown Device',
-                        Icon: MonitorIcon,
-                        color: 'bg-orange-600',
-                        borderColor: 'border-orange-600',
-                        details: {
-                            mac: '26:CB:E3:7F:93:F1',
-                            services: ['Port 43045'],
-                            role: 'Unknown Function'
-                        }
-                    }
-                ]
-            };
+                {
+                    id: '192.168.0.178',
+                    name: 'MWA-107',
+                    type: 'workstation',
+                    os: 'Windows XP',
+                    criticality: 'critical',
+                    services: ['SMB (445)', 'RPC'],
+                    vulnerabilities: ['Unsupported OS', 'MS08-067'],
+                    exploits: ['MS08-067 RCE'],
+                    Icon: Cpu,
+                    color: 'bg-red-500'
+                },
+                {
+                    id: '192.168.0.120',
+                    name: 'iDRAC',
+                    type: 'management',
+                    os: 'Dell iDRAC 8',
+                    criticality: 'critical',
+                    services: ['HTTPS', 'SSH', 'VNC'],
+                    vulnerabilities: ['Default creds', 'Out-of-band mgmt'],
+                    exploits: ['root:calvin', 'Full server control'],
+                    Icon: Shield,
+                    color: 'bg-red-500'
+                },
+                {
+                    id: '192.168.0.5',
+                    name: 'SIIM-NAS',
+                    type: 'nas',
+                    os: 'Synology DSM',
+                    criticality: 'high',
+                    services: ['HTTP', 'FTP (28500)', 'iSCSI'],
+                    vulnerabilities: ['Anonymous FTP?', 'iSCSI exposed'],
+                    exploits: ['Anonymous FTP', 'DSM exploits'],
+                    Icon: HardDrive,
+                    color: 'bg-orange-500'
+                },
+                {
+                    id: '192.168.0.106',
+                    name: 'DESKTOP-385516H',
+                    type: 'workstation',
+                    os: 'Windows 10/11',
+                    criticality: 'medium',
+                    services: ['IIS 10.0', 'SMB', 'Port 7070'],
+                    vulnerabilities: ['Port 7070 unknown', 'IIS exposed'],
+                    exploits: ['IIS exploits', 'SMB relay'],
+                    Icon: Cpu,
+                    color: 'bg-orange-500'
+                },
+                {
+                    id: '192.168.0.102',
+                    name: 'Unknown-OT',
+                    type: 'ot',
+                    os: 'Unknown',
+                    criticality: 'high',
+                    services: ['Port 6668'],
+                    vulnerabilities: ['Unknown protocol'],
+                    exploits: ['Modbus?', 'PLC?', 'SCADA?'],
+                    Icon: AlertTriangle,
+                    color: 'bg-yellow-500'
+                }
+            ];
 
-            const SingleDevice = ({ device, size = "normal" }) => {
-                const Icon = device.Icon;
-                const isSelected = selectedDevice === device.id;
-                const sizeClasses = size === "large" ? "p-6" : "p-4";
-                
-                return (
-                    <div
-                        onClick={() => setSelectedDevice(isSelected ? null : device.id)}
-                        className={`device-card ${device.color} bg-opacity-20 border-2 ${device.borderColor} rounded-lg ${sizeClasses} cursor-pointer hover:bg-opacity-30 transition-all ${
-                            isSelected ? 'selected' : ''
-                        }`}
-                    >
-                        <div className="flex items-center gap-3 mb-2">
-                            <div className={`${device.color} p-3 rounded-lg`}>
-                                <Icon className="w-6 h-6" />
+            const suspiciousPatterns = [
+                {
+                    name: 'Port 7070 Mystery',
+                    hosts: 6,
+                    description: 'Unknown SSL service on 6 hosts',
+                    severity: 'critical'
+                },
+                {
+                    name: 'Windows XP Cluster',
+                    hosts: 2,
+                    description: 'Unsupported OS (EOL 2014)',
+                    severity: 'critical'
+                },
+                {
+                    name: 'OT Device Anomaly',
+                    hosts: 1,
+                    description: 'Manufacturing device not responding',
+                    severity: 'high'
+                }
+            ];
+
+            const attackPriority = [
+                { target: '192.168.0.120 (iDRAC)', action: 'root:calvin → Full control', time: '30 sec' },
+                { target: '192.168.0.3 (SQL)', action: 'Blank sa + WinRM → Shell', time: '2 min' },
+                { target: '192.168.0.104/178 (XP)', action: 'MS08-067 → RCE', time: '5 min' },
+                { target: '192.168.0.66 (Router)', action: 'File read → Credentials', time: '5 min' },
+                { target: 'Port 7070', action: 'Investigate unknown service', time: '10 min' }
+            ];
+
+            return (
+                <div className="w-full min-h-screen bg-gray-900 text-white p-6 overflow-auto">
+                    <div className="max-w-7xl mx-auto">
+                        {/* Header */}
+                        <h1 className="text-3xl font-bold mb-2 text-center">Network Attack Surface Map</h1>
+                        <p className="text-gray-400 text-center mb-6">Polymer Manufacturing Facility - 192.168.0.0/24</p>
+                        
+                        {/* Legend */}
+                        <div className="bg-gray-800 rounded-lg p-4 mb-6 flex justify-around items-center flex-wrap gap-4">
+                            <div className="flex items-center gap-2">
+                                <div className="w-4 h-4 bg-red-500 rounded pulse"></div>
+                                <span className="text-sm">Critical</span>
                             </div>
-                            <div className="flex-1">
-                                <div className="font-bold text-white">{device.name}</div>
-                                <div className="text-sm text-gray-300">{device.id}</div>
+                            <div className="flex items-center gap-2">
+                                <div className="w-4 h-4 bg-orange-500 rounded"></div>
+                                <span className="text-sm">High</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <div className="w-4 h-4 bg-yellow-500 rounded"></div>
+                                <span className="text-sm">Medium</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Unlock className="w-4 h-4" />
+                                <span className="text-sm">Exploitable</span>
                             </div>
                         </div>
-                        
-                        <div className="text-sm text-gray-400 mb-2">{device.type}</div>
-                        
-                        {isSelected && device.details && (
-                            <div className="mt-3 pt-3 border-t border-gray-600 space-y-2 text-sm fade-in">
-                                {device.details.os && (
-                                    <div><span className="text-gray-400">OS:</span> <span className="text-white">{device.details.os}</span></div>
-                                )}
-                                {device.details.model && (
-                                    <div><span className="text-gray-400">Model:</span> <span className="text-white">{device.details.model}</span></div>
-                                )}
-                                {device.details.vendor && (
-                                    <div><span className="text-gray-400">Vendor:</span> <span className="text-white">{device.details.vendor}</span></div>
-                                )}
-                                {device.details.mac && (
-                                    <div><span className="text-gray-400">MAC:</span> <span className="text-white font-mono text-xs">{device.details.mac}</span></div>
-                                )}
-                                <div className="text-gray-400">Services:</div>
-                                <ul className="list-disc list-inside text-gray-300 ml-2 text-xs">
-                                    {device.details.services?.map((service, idx) => (
-                                        <li key={idx}>{service}</li>
-                                    ))}
-                                </ul>
-                                <div className="mt-2 pt-2 border-t border-gray-600">
-                                    <span className="text-gray-400">Role:</span> <span className="text-white text-xs">{device.details.role}</span>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                );
-            };
 
-            const NetworkSegment = ({ title, devices: segmentDevices, gridCols = "md:grid-cols-2" }) => (
-                <div className="mb-8">
-                    <h3 className="text-lg font-bold mb-4 text-gray-300 border-b border-gray-700 pb-2">{title}</h3>
-                    <div className={`grid grid-cols-1 ${gridCols} lg:grid-cols-4 gap-4`}>
-                        {segmentDevices.map((device) => (
-                            <SingleDevice key={device.id} device={device} />
-                        ))}
+                        {/* Suspicious Patterns */}
+                        <div className="mb-6">
+                            <h2 className="text-xl font-bold mb-3 flex items-center gap-2">
+                                <AlertTriangle className="w-6 h-6 text-red-500" />
+                                Suspicious Patterns
+                            </h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                {suspiciousPatterns.map((pattern, idx) => (
+                                    <div key={idx} className={`bg-gray-800 rounded-lg p-4 border-l-4 ${
+                                        pattern.severity === 'critical' ? 'border-red-500' : 'border-orange-500'
+                                    }`}>
+                                        <h3 className="font-bold mb-2">{pattern.name}</h3>
+                                        <p className="text-sm text-gray-400 mb-2">{pattern.description}</p>
+                                        <div className="text-xs text-gray-500">
+                                            Affected: {pattern.hosts} host{pattern.hosts > 1 ? 's' : ''}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Attack Surface */}
+                        <div className="mb-6">
+                            <h2 className="text-xl font-bold mb-3 flex items-center gap-2">
+                                <Zap className="w-6 h-6 text-yellow-500" />
+                                High-Value Targets
+                            </h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                {hosts.map((host) => {
+                                    const Icon = host.Icon;
+                                    const isSelected = selectedHost === host.id;
+                                    return (
+                                        <div
+                                            key={host.id}
+                                            onClick={() => setSelectedHost(isSelected ? null : host.id)}
+                                            className={`device-card bg-gray-800 rounded-lg p-4 cursor-pointer border-2 ${
+                                                isSelected ? 'border-cyan-500 selected' : 'border-gray-700'
+                                            }`}
+                                        >
+                                            <div className="flex items-start justify-between mb-3">
+                                                <div className="flex items-center gap-2">
+                                                    <div className={`${host.color} p-2 rounded-lg`}>
+                                                        <Icon className="w-5 h-5 text-white" />
+                                                    </div>
+                                                    <div>
+                                                        <h3 className="font-bold text-sm">{host.name}</h3>
+                                                        <p className="text-xs text-gray-400">{host.id}</p>
+                                                    </div>
+                                                </div>
+                                                <span className={`text-xs px-2 py-1 rounded border ${
+                                                    host.criticality === 'critical' ? 'text-red-500 border-red-500' :
+                                                    host.criticality === 'high' ? 'text-orange-500 border-orange-500' :
+                                                    'text-yellow-500 border-yellow-500'
+                                                }`}>
+                                                    {host.criticality.toUpperCase()}
+                                                </span>
+                                            </div>
+
+                                            <div className="space-y-2 text-sm">
+                                                <div className="flex items-center gap-2 text-gray-400">
+                                                    <Server className="w-4 h-4" />
+                                                    <span className="text-xs">{host.os}</span>
+                                                </div>
+                                                
+                                                <div className="text-xs text-gray-500">
+                                                    <div className="font-semibold text-gray-400 mb-1">Services:</div>
+                                                    <div className="flex flex-wrap gap-1">
+                                                        {host.services.slice(0, 3).map((service, idx) => (
+                                                            <span key={idx} className="bg-gray-700 px-2 py-0.5 rounded">
+                                                                {service}
+                                                            </span>
+                                                        ))}
+                                                        {host.services.length > 3 && (
+                                                            <span className="text-gray-500">+{host.services.length - 3}</span>
+                                                        )}
+                                                    </div>
+                                                </div>
+
+                                                {isSelected && (
+                                                    <div className="mt-3 pt-3 border-t border-gray-700 space-y-2 fade-in">
+                                                        <div className="text-xs">
+                                                            <div className="font-semibold text-red-400 mb-1">Vulnerabilities:</div>
+                                                            <ul className="list-disc list-inside space-y-1 text-gray-400">
+                                                                {host.vulnerabilities.map((vuln, idx) => (
+                                                                    <li key={idx}>{vuln}</li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+                                                        
+                                                        <div className="text-xs">
+                                                            <div className="font-semibold text-green-400 mb-1 flex items-center gap-1">
+                                                                <Unlock className="w-3 h-3" />
+                                                                Exploits:
+                                                            </div>
+                                                            <ul className="list-disc list-inside space-y-1 text-gray-400">
+                                                                {host.exploits.map((exploit, idx) => (
+                                                                    <li key={idx}>{exploit}</li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {/* Attack Priority */}
+                        <div className="bg-gray-800 rounded-lg p-6">
+                            <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                                <Zap className="w-6 h-6 text-yellow-500" />
+                                Recommended Attack Order
+                            </h2>
+                            <div className="space-y-3">
+                                {attackPriority.map((item, idx) => (
+                                    <div key={idx} className={`flex items-center gap-3 p-3 rounded border-l-4 ${
+                                        idx < 3 ? 'bg-red-900/20 border-red-500' :
+                                        idx < 4 ? 'bg-orange-900/20 border-orange-500' :
+                                        'bg-yellow-900/20 border-yellow-500'
+                                    }`}>
+                                        <span className={`font-bold text-2xl ${
+                                            idx < 3 ? 'text-red-500' :
+                                            idx < 4 ? 'text-orange-500' :
+                                            'text-yellow-500'
+                                        }`}>{idx + 1}</span>
+                                        <div className="flex-1">
+                                            <div className="font-semibold">{item.target}</div>
+                                            <div className="text-sm text-gray-400">{item.action}</div>
+                                        </div>
+                                        <div className="text-sm text-gray-500">{item.time}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="mt-6 text-center text-sm text-gray-500">
+                            Click on any target for detailed vulnerability information
+                        </div>
                     </div>
                 </div>
             );
+        };
 
-            return (
-                <div className="w-full min-h-screen bg-gray-900 text-white p-6">
-                    <div className="max-w-7xl mx-auto">
-                        {/* Header */}
-                        <div className="text-center mb-8">
-                            <h1 className="text-3xl font-bold mb-2 flex items-center justify-center gap-3">
-                                <NetworkIcon className="w-8 h-8" />
-                                Network Topology
-                            </h1>
-                            <p className="text-gray-400">Polymer Manufacturing Facility - 192.168.0.0/24</p>
-                            <p className="text-sm text-gray-500 mt-2">Click on any device for detailed information</p>
-                        </div>
-
-                        {/* Network Statistics */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                            <div className="bg-gray-800 rounded-lg p-4 text-center">
-                                <div className="text-3xl font-bold text-blue-500">19</div>
-                                <div className="text-sm text-gray-400">Total Devices</div>
-                            </div>
-                            <div className="bg-gray-800 rounded-lg p-4 text-center">
-                                <div className="text-3xl font-bold text-green-500">3</div>
-                                <div className="text-sm text-gray-400">Servers</div>
-                            </div>
-                            <div className="bg-gray-800 rounded-lg p-4 text-center">
-                                <div className="text-3xl font-bold text-yellow-500">11</div>
-                                <div className="text-sm text-gray-400">Workstations</div>
-                            </div>
-                            <div className="bg-gray-800 rounded-lg p-4 text-center">
-                                <div className="text-3xl font-bold text-orange-500">3</div>
-                                <div className="text-sm text-gray-400">OT/Unknown</div>
-                            </div>
-                        </div>
-
-                        {/* Network Diagram */}
-                        <div className="bg-gray-800 rounded-lg p-6 mb-6">
-                            {/* Internet Gateway */}
-                            <div className="mb-8">
-                                <div className="flex items-center justify-center mb-4">
-                                    <div className="text-sm text-gray-400 bg-gray-700 px-4 py-2 rounded-full">
-                                        ↓ Internet / WAN
-                                    </div>
-                                </div>
-                                <div className="max-w-xs mx-auto">
-                                    <SingleDevice device={devices.gateway} size="large" />
-                                </div>
-                            </div>
-
-                            {/* Network Switch */}
-                            <div className="mb-8">
-                                <div className="flex items-center justify-center mb-4">
-                                    <div className="h-16 w-0.5 bg-gray-600"></div>
-                                </div>
-                                <div className="max-w-xs mx-auto">
-                                    <SingleDevice device={devices.switch} size="large" />
-                                </div>
-                            </div>
-
-                            {/* Distribution */}
-                            <div className="flex items-center justify-center mb-4">
-                                <div className="h-16 w-0.5 bg-gray-600"></div>
-                            </div>
-                            <div className="flex items-center justify-center mb-8">
-                                <div className="flex gap-4">
-                                    <div className="h-0.5 w-32 bg-gray-600"></div>
-                                    <div className="h-0.5 w-32 bg-gray-600"></div>
-                                    <div className="h-0.5 w-32 bg-gray-600"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Servers & Infrastructure */}
-                        <NetworkSegment 
-                            title="🖥️ Servers & Infrastructure" 
-                            devices={devices.servers}
-                            gridCols="md:grid-cols-3"
-                        />
-
-                        {/* Production Workstations */}
-                        <NetworkSegment 
-                            title="🏭 Production Workstations" 
-                            devices={devices.workstations}
-                        />
-
-                        {/* OT/Industrial Devices */}
-                        <NetworkSegment 
-                            title="⚙️ OT/Industrial & Unknown Devices" 
-                            devices={devices.otDevices}
-                            gridCols="md:grid-cols-3"
-                        />
-
-                        {/* Network Notes */}
-                        <div className="bg-gray-800 rounded-lg p-6 mt-8">
-                            <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                                <LockIcon className="w-5 h-5" />
-                                Network Observations
-                            </h3>
-                            <div className="grid md:grid-cols-2 gap-4 text-sm">
-                                <div className="space-y-2">
-                                    <div className="flex items-start gap-2">
-                                        <span className="text-blue-500">•</span>
-                                        <span className="text-gray-300">Flat network topology - no VLANs detected</span>
-                                    </div>
-                                    <div className="flex items-start gap-2">
-                                        <span className="text-blue-500">•</span>
-                                        <span className="text-gray-300">All devices on same subnet (192.168.0.0/24)</span>
-                                    </div>
-                                    <div className="flex items-start gap-2">
-                                        <span className="text-yellow-500">•</span>
-                                        <span className="text-gray-300">Legacy Windows XP systems still in production</span>
-                                    </div>
-                                    <div className="flex items-start gap-2">
-                                        <span className="text-yellow-500">•</span>
-                                        <span className="text-gray-300">Radmin remote access on all Windows hosts</span>
-                                    </div>
-                                </div>
-                                <div className="space-y-2">
-                                    <div className="flex items-start gap-2">
-                                        <span className="text-orange-500">•</span>
-                                        <span className="text-gray-300">OT devices mixed with IT infrastructure</span>
-                                    </div>
-                                    <div className="flex items-start gap-2">
-                                        <span className="text-orange-500">•</span>
-                                        <span className="text-gray-300">Unknown industrial protocol on device .102</span>
-                                    </div>
-                                    <div className="flex items-start gap-2">
-                                        <span className="text-red-500">•</span>
-                                        <span className="text-gray-300">No network segmentation between OT and IT</span>
-                                    </div>
-                                    <div className="flex items-start gap-2">
-                                        <span className="text-red-500">•</span>
-                                        <span className="text-gray-300">Direct internet access via single gateway</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Device Legend */}
-                        <div className="bg-gray-800 rounded-lg p-6 mt-6">
-                            <h3 className="text-lg font-bold mb-4">Device Legend</h3>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                                <div className="flex items
+        ReactDOM.render(<NetworkAttackSurface />, document.getElementById('root'));
+    </script>
+</body>
+</html>
