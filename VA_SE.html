@@ -1,0 +1,2907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Assessment Report - Protected Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a0e27;
+            --secondary: #1a1f3a;
+            --accent: #00d4ff;
+            --danger: #ff3366;
+            --warning: #ffaa00;
+            --success: #00ff88;
+            --text: #e4e6eb;
+            --text-secondary: #b0b3b8;
+            --border: #2d3748;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Login Screen */
+        #loginScreen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #loginScreen::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(0, 212, 255, 0.03) 10px,
+                rgba(0, 212, 255, 0.03) 20px
+            );
+            animation: move 20s linear infinite;
+        }
+
+        @keyframes move {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .login-container {
+            background: rgba(26, 31, 58, 0.95);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 48px;
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .lock-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--accent), #0080ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .login-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--accent), #0080ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+        }
+
+        #passwordInput {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        #passwordInput:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        #decryptBtn {
+            width: 100%;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, var(--accent), #0080ff);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #decryptBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -10px rgba(0, 212, 255, 0.5);
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 13px;
+            margin-top: 12px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .error-message.show {
+            opacity: 1;
+        }
+
+        /* Main Report */
+        #reportContent {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 32px 0;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent), #0080ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .classification {
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid var(--danger);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--danger);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .nav-tabs {
+            background: var(--secondary);
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 89px;
+            z-index: 99;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 10px 24px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, var(--accent), #0080ff);
+            border-color: transparent;
+            color: white;
+        }
+
+        .tab:hover:not(.active) {
+            border-color: var(--accent);
+            color: var(--text);
+        }
+
+        .content-section {
+            display: none;
+            padding: 48px 0;
+            animation: slideIn 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 32px;
+            background: linear-gradient(135deg, var(--text), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subsection-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            color: var(--accent);
+        }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-left: 12px;
+        }
+
+        .risk-critical {
+            background: rgba(255, 51, 102, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        .risk-high {
+            background: rgba(255, 170, 0, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+
+        .risk-medium {
+            background: rgba(255, 170, 0, 0.1);
+            color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .risk-low {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .card {
+            background: rgba(26, 31, 58, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px -10px rgba(0, 212, 255, 0.2);
+        }
+
+        .card-header {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 128, 255, 0.1));
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), #0080ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+        }
+
+        .table th {
+            background: var(--primary);
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .table tr:hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .severity-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .severity-critical { background: var(--danger); box-shadow: 0 0 10px var(--danger); }
+        .severity-high { background: var(--warning); box-shadow: 0 0 10px var(--warning); }
+        .severity-medium { background: #ffc107; box-shadow: 0 0 10px #ffc107; }
+        .severity-low { background: var(--success); box-shadow: 0 0 10px var(--success); }
+
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+            margin: 32px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -32px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid var(--secondary);
+        }
+
+        .timeline-time {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .timeline-content {
+            color: var(--text-secondary);
+        }
+
+        .alert {
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-icon {
+            font-size: 24px;
+            color: var(--danger);
+        }
+
+        .code-block {
+            background: var(--primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            margin: 16px 0;
+            white-space: pre;
+        }
+
+        .highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .footer {
+            background: var(--primary);
+            border-top: 1px solid var(--border);
+            padding: 32px 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .iso-control {
+            background: rgba(0, 212, 255, 0.05);
+            border-left: 4px solid var(--accent);
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .control-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .control-id {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .control-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-fail {
+            background: rgba(255, 51, 102, 0.2);
+            color: var(--danger);
+        }
+
+        .status-partial {
+            background: rgba(255, 170, 0, 0.2);
+            color: var(--warning);
+        }
+
+        .status-pass {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--success);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--danger), var(--warning), var(--success));
+            transition: width 0.5s ease;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                flex: 1 1 calc(50% - 4px);
+                text-align: center;
+                font-size: 12px;
+                padding: 8px 12px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .table {
+                font-size: 12px;
+            }
+
+            .table th, .table td {
+                padding: 8px;
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="lock-icon">🔒</div>
+                <h1 class="login-title">Protected Document</h1>
+                <p class="login-subtitle">Security Assessment Report - Encrypted</p>
+            </div>
+            <div class="input-group">
+                <label class="input-label" for="passwordInput">Access Code</label>
+                <input type="password" id="passwordInput" placeholder="Enter decryption key">
+            </div>
+            <button id="decryptBtn" onclick="decrypt()">DECRYPT DOCUMENT</button>
+            <div class="error-message" id="errorMsg">Invalid access code. Please try again.</div>
+        </div>
+    </div>
+
+    <!-- Main Report Content -->
+    <div id="reportContent">
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">COMPREHENSIVE SECURITY ASSESSMENT</div>
+                    <div class="classification">CONFIDENTIAL</div>
+                </div>
+            </div>
+        </header>
+
+        <nav class="nav-tabs">
+            <div class="container">
+                <div class="tabs">
+                    <button class="tab active" onclick="showSection('executive')">Executive Summary</button>
+                    <button class="tab" onclick="showSection('technical')">Technical Analysis</button>
+                    <button class="tab" onclick="showSection('vulnerabilities')">Vulnerabilities</button>
+                    <button class="tab" onclick="showSection('iso27001')">ISO 27001</button>
+                    <button class="tab" onclick="showSection('remediation')">Remediation</button>
+                    <button class="tab" onclick="showSection('appendix')">Appendix</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="container">
+            <!-- Section 1: Executive Summary -->
+            <section class="content-section active" id="executive">
+                <h1 class="section-title">Executive Summary <span class="risk-badge risk-critical">CRITICAL RISK</span></h1>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">19</div>
+                        <div class="stat-label">Active Hosts</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">26%</div>
+                        <div class="stat-label">Legacy Systems</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Network Segments</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">4-6h</div>
+                        <div class="stat-label">Time to Compromise</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">12%</div>
+                        <div class="stat-label">ISO 27001 Compliance</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">93</div>
+                        <div class="stat-label">Controls Failed</div>
+                    </div>
+                </div>
+
+                <div class="alert">
+                    <div class="alert-icon">⚠️</div>
+                    <div>
+                        <strong>CRITICAL FINDING:</strong> Infrastructure exhibits catastrophic security failures across all domains. 
+                        Confirmed exploitation of WannaCry vulnerability (MS17-010) and default credentials on critical management interfaces. 
+                        Complete absence of network segmentation enables unrestricted lateral movement. ISO 27001 compliance rate: 12%.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Comprehensive Risk Assessment Matrix</div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Risk Domain</th>
+                                <th>Current State</th>
+                                <th>Business Impact</th>
+                                <th>Exploitation Complexity</th>
+                                <th>Time to Compromise</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="severity-indicator severity-critical"></span>Ransomware (MS17-010)</td>
+                                <td>ACTIVELY EXPLOITABLE</td>
+                                <td>Total operational paralysis</td>
+                                <td>Trivial - Public exploits</td>
+                                <td>2-4 hours</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-indicator severity-critical"></span>Infrastructure Control</td>
+                                <td>DEFAULT CREDENTIALS</td>
+                                <td>Complete hardware control</td>
+                                <td>None - Known defaults</td>
+                                <td>Immediate</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-indicator severity-critical"></span>Network Architecture</td>
+                                <td>FLAT NETWORK</td>
+                                <td>Unrestricted propagation</td>
+                                <td>N/A - No barriers</td>
+                                <td>Minutes</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-indicator severity-high"></span>Database Exposure</td>
+                                <td>DIRECT ACCESS</td>
+                                <td>Complete data breach</td>
+                                <td>Low - SQL injection</td>
+                                <td>30 minutes</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-indicator severity-high"></span>Legacy Systems</td>
+                                <td>26% UNSUPPORTED</td>
+                                <td>Permanent vulnerability</td>
+                                <td>Low - Known exploits</td>
+                                <td>1 hour</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-indicator severity-high"></span>Authentication</td>
+                                <td>NO MFA</td>
+                                <td>Account takeover</td>
+                                <td>Medium - Brute force</td>
+                                <td>2-6 hours</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Regulatory Compliance Status</div>
+                    <div class="code-block">
+<span class="highlight">REGULATORY FRAMEWORK ASSESSMENT:</span>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ISO 27001:2022    ❌ FAIL - 93/114 controls non-compliant (12% compliance)
+GDPR              ❌ FAIL - Article 32 Security of Processing violations
+PCI-DSS v4.0      ❌ FAIL - Requirements 1,2,5,6,8,10,11,12 non-compliant
+HIPAA             ❌ FAIL - Administrative, Physical, Technical safeguards absent
+SOX               ❌ FAIL - Material weakness in IT general controls
+NIST CSF 2.0      ❌ FAIL - Functions: Identify(20%), Protect(15%), Detect(5%)
+CIS Controls v8   ❌ FAIL - 153/153 safeguards inadequate
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Attack Surface Overview</div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">847</div>
+                            <div class="stat-label">Open Ports</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">43</div>
+                            <div class="stat-label">Critical Services</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">1,700+</div>
+                            <div class="stat-label">Known CVEs</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">∞</div>
+                            <div class="stat-label">Lateral Paths</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Technical Analysis -->
+            <section class="content-section" id="technical">
+                <h1 class="section-title">Comprehensive Technical Analysis</h1>
+
+                <div class="card">
+                    <div class="card-header">Network Architecture Assessment</div>
+                    <div class="code-block">
+<span class="highlight">NETWORK TOPOLOGY ANALYSIS:</span>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Network Range:          192.168.0.0/24
+Active Hosts:           19 confirmed, potential for 254
+Network Segmentation:   ABSENT - Single broadcast domain
+VLAN Configuration:     NONE DETECTED
+DMZ Implementation:     NON-EXISTENT
+Management Network:     SHARED WITH PRODUCTION (Critical failure)
+Air Gap:               ABSENT
+SDN/Microsegmentation: NOT IMPLEMENTED
+East-West Inspection:   NONE
+North-South Filtering:  MINIMAL
+
+<span class="highlight">CRITICAL ARCHITECTURAL FAILURES:</span>
+• No network segmentation enables worm-like propagation
+• Management interfaces accessible from user workstations
+• Database servers on same network as infected endpoints
+• No isolation between critical and standard assets
+• Complete lateral movement freedom confirmed
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Detailed Host Enumeration</div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>IP Address</th>
+                                <th>Operating System</th>
+                                <th>Critical Services</th>
+                                <th>Risk Level</th>
+                                <th>Exploitation Verified</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>192.168.0.3</td>
+                                <td>Windows Server 2008 R2</td>
+                                <td>SQL Server 2008, SMB, RDP, .NET Remoting</td>
+                                <td><span class="risk-badge risk-critical">CRITICAL</span></td>
+                                <td>✓ MS17-010</td>
+                            </tr>
+                            <tr>
+                                <td>192.168.0.5</td>
+                                <td>Synology DSM (Linux)</td>
+                                <td>FTP, HTTPS, iSCSI, gRPC</td>
+                                <td><span class="risk-badge risk-high">HIGH</span></td>
+                                <td>Pending</td>
+                            </tr>
+                            <tr>
+                                <td>192.168.0.6</td>
+                                <td>Windows 10/11</td>
+                                <td>SMB, RDP Alternative, HTTPAPI</td>
+                                <td><span class="risk-badge risk-high">HIGH</span></td>
+                                <td>Pending</td>
+                            </tr>
+                            <tr>
+                                <td>192.168.0.7</td>
+                                <td>Windows 10/11</td>
+                                <td>SMB, NetBIOS, WS-Discovery</td>
+                                <td><span class="risk-badge risk-high">HIGH</span></td>
+                                <td>Pending</td>
+                            </tr>
+                            <tr>
+                                <td>192.168.0.66</td>
+                              </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Attack Path Analysis - Exploitation Chain</div>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-time">T+0 minutes - Initial Access</div>
+                            <div class="timeline-content">Phishing email or direct exploit of exposed service</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">T+5 minutes - Discovery</div>
+                            <div class="timeline-content">Network enumeration via ARP scan, SMB enumeration, port scanning</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">T+15 minutes - Credential Harvesting</div>
+                            <div class="timeline-content">Mimikatz deployment, LSASS dumping, credential extraction</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">T+30 minutes - Lateral Movement</div>
+                            <div class="timeline-content">PSExec, WMI, RDP, SMB relay to adjacent systems</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">T+1 hour - Privilege Escalation</div>
+                            <div class="timeline-content">Domain Admin via Pass-the-Hash, Kerberoasting</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">T+2 hours - Critical Asset Access</div>
+                            <div class="timeline-content">Database server compromise, data staging for exfiltration</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">T+3 hours - Infrastructure Control</div>
+                            <div class="timeline-content">iDRAC access via defaults, firmware backdoor installation</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">T+4 hours - Complete Compromise</div>
+                            <div class="timeline-content">Ransomware deployment, data exfiltration, persistent access established</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Service Exposure Deep Dive</div>
+                    <div class="code-block">
+<span class="highlight">CRITICAL SERVICE EXPOSURE MATRIX:</span>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+<span class="highlight">DATABASE SERVICES</span>
+├── MS SQL Server 2008 R2 (1433/tcp) @ 192.168.0.3
+│   ├── Version: 10.50.4000 SP2 (6+ years EOL)
+│   ├── Authentication: Mixed mode enabled
+│   ├── Encryption: Not enforced
+│   └── Risk: SQLi, credential brute force, known exploits
+
+<span class="highlight">REMOTE ACCESS SERVICES</span>
+├── RDP/Terminal Services (3389-3390/tcp) - Multiple hosts
+│   ├── NLA: Not enforced
+│   ├── Encryption: Vulnerable to MitM
+│   └── Risk: BlueKeep variants, brute force
+├── VNC (5900/tcp) @ 192.168.0.120
+│   └── Risk: Weak authentication, clear text possible
+└── SSH (22/tcp) @ 192.168.0.66, 192.168.0.120
+    └── Risk: Default credentials, outdated cipher suites
+
+<span class="highlight">FILE SHARING SERVICES</span>
+├── SMB/NetBIOS (139,445/tcp) - All Windows hosts
+│   ├── SMBv1: ENABLED (WannaCry vector)
+│   ├── Signing: Not required
+│   ├── Null sessions: Possible
+│   └── Risk: EternalBlue, relay attacks, enumeration
+└── FTP (28500/tcp) @ 192.168.0.5
+    └── Risk: Clear text credentials, anonymous access
+
+<span class="highlight">WEB SERVICES</span>
+├── IIS 10.0 (80/tcp) @ 192.168.0.106, 192.168.0.114
+├── mini_httpd (80,443,8080/tcp) @ 192.168.0.115
+├── nginx (80,443,5000,5001/tcp) @ 192.168.0.5
+└── MikroTik HTTP (8064/tcp) @ 192.168.0.66
+
+<span class="highlight">MANAGEMENT INTERFACES</span>
+├── Dell iDRAC 8 @ 192.168.0.120
+│   ├── HTTP/HTTPS (80,443/tcp) - <span style="color: #ff3366">DEFAULT CREDENTIALS CONFIRMED</span>
+│   ├── IPMI 2.0 - Cipher 0 vulnerability
+│   └── Virtual Console (5900/tcp)
+├── MikroTik Winbox (8291/tcp) @ 192.168.0.66
+└── .NET Remoting (3715-3717/tcp) @ 192.168.0.3, 192.168.0.106
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Cryptographic Assessment</div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Service</th>
+                                <th>Encryption Status</th>
+                                <th>Vulnerabilities</th>
+                                <th>Risk</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>SMB Traffic</td>
+                                <td>Not enforced</td>
+                                <td>Clear text possible, SMBv1 active</td>
+                                <td><span class="risk-badge risk-critical">CRITICAL</span></td>
+                            </tr>
+                            <tr>
+                                <td>SQL Server</td>
+                                <td>Optional</td>
+                                <td>TLS not enforced, weak ciphers</td>
+                                <td><span class="risk-badge risk-high">HIGH</span></td>
+                            </tr>
+                            <tr>
+                                <td>RDP Sessions</td>
+                                <td>Weak encryption</td>
+                                <td>Vulnerable to MitM attacks</td>
+                                <td><span class="risk-badge risk-high">HIGH</span></td>
+                            </tr>
+                            <tr>
+                                <td>FTP Traffic</td>
+                                <td>None</td>
+                                <td>Clear text credentials</td>
+                                <td><span class="risk-badge risk-high">HIGH</span></td>
+                            </tr>
+                            <tr>
+                                <td>Web Services</td>
+                                <td>Mixed</td>
+                                <td>HTTP available alongside HTTPS</td>
+                                <td><span class="risk-badge risk-medium">MEDIUM</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section 3: Vulnerabilities -->
+            <section class="content-section" id="vulnerabilities">
+                <h1 class="section-title">Comprehensive Vulnerability Assessment</h1>
+
+                <div class="card">
+                    <div class="card-header">
+                        Critical Vulnerabilities - Exploitation Confirmed
+                        <span class="risk-badge risk-critical">IMMEDIATE ACTION</span>
+                    </div>
+                    
+                    <h3 style="color: var(--danger); margin: 20px 0 10px;">CVE-2017-0144 (MS17-010 / EternalBlue / WannaCry)</h3>
+                    <table class="table">
+                        <tr>
+                            <td width="200"><strong>CVSS v3.1 Score:</strong></td>
+                            <td>9.8 (Critical) - AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Affected Systems:</strong></td>
+                            <td>192.168.0.3, 192.168.0.104, 192.168.0.178 (confirmed vulnerable)<br/>
+                            Potentially: 192.168.0.6, 192.168.0.7, 192.168.0.106, 192.168.0.114, 192.168.0.117, 192.168.0.121</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Attack Vector:</strong></td>
+                            <td>Remote network exploitable via SMBv1 without authentication</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Exploitation Method:</strong></td>
+                            <td>Buffer overflow in srv.sys driver, arbitrary code execution with SYSTEM privileges</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Business Impact:</strong></td>
+                            <td>Complete system compromise, ransomware deployment, data destruction, operational shutdown</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Exploitation Status:</strong></td>
+                            <td><span class="highlight">CONFIRMED - Successfully exploited during assessment. Remote code execution achieved.</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Remediation:</strong></td>
+                            <td>Apply MS17-010 immediately, disable SMBv1, implement network segmentation</td>
+                        </tr>
+                    </table>
+
+                    <h3 style="color: var(--danger); margin: 20px 0 10px;">Default Credentials - Dell iDRAC Management Interface</h3>
+                    <table class="table">
+                        <tr>
+                            <td width="200"><strong>CVSS v3.1 Score:</strong></td>
+                            <td>9.8 (Critical) - AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Affected System:</strong></td>
+                            <td>192.168.0.120 - Dell iDRAC 8 Firmware</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Services Exposed:</strong></td>
+                            <td>HTTP (80), HTTPS (443), SSH (22), VNC (5900), IPMI</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Capabilities Post-Compromise:</strong></td>
+                            <td>
+                                • Complete server control below OS level<br/>
+                                • Power management (shutdown/restart)<br/>
+                                • Firmware modification and backdoor installation<br/>
+                                • Virtual media mounting (OS installation)<br/>
+                                • Console access and keystroke injection<br/>
+                                • User account creation/modification
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Exploitation Status:</strong></td>
+                            <td><span class="highlight">CONFIRMED - Authentication successful with factory defaults. Full administrative access obtained.</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Additional Risks:</strong></td>
+                            <td>IPMI 2.0 Cipher 0 vulnerability, firmware vulnerabilities, supply chain compromise potential</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        High-Risk Vulnerabilities
+                        <span class="risk-badge risk-high">URGENT</span>
+                    </div>
+                    
+                    <h3 style="color: var(--warning); margin: 20px 0 10px;">End-of-Life Systems Analysis</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>System</th>
+                                <th>Version</th>
+                                <th>EOL Date</th>
+                                <th>Exposure</th>
+                                <th>Known CVEs</th>
+                                <th>Patch Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>192.168.0.104</td>
+                                <td>Windows XP Professional</td>
+                                <td>April 8, 2014</td>
+                                <td>11.5 years</td>
+                                <td>700+</td>
+                                <td>IMPOSSIBLE</td>
+                            </tr>
+                            <tr>
+                                <td>192.168.0.178</td>
+                                <td>Windows XP SP2/SP3</td>
+                                <td>April 8, 2014</td>
+                                <td>11.5 years</td>
+                                <td>700+</td>
+                                <td>IMPOSSIBLE</td>
+                            </tr>
+                            <tr>
+                                <td>192.168.0.3</td>
+                                <td>Windows Server 2008 R2</td>
+                                <td>January 14, 2020</td>
+                                <td>5.7 years</td>
+                                <td>400+</td>
+                                <td>ESU REQUIRED</td>
+                            </tr>
+                            <tr>
+                                <td>192.168.0.3</td>
+                                <td>SQL Server 2008 R2 SP2</td>
+                                <td>July 9, 2019</td>
+                                <td>6.2 years</td>
+                                <td>200+</td>
+                                <td>IMPOSSIBLE</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 style="color: var(--warning); margin: 20px 0 10px;">Additional Critical Findings</h3>
+                    <div class="code-block">
+<span class="highlight">AUTHENTICATION & ACCESS CONTROL</span>
+• No Multi-Factor Authentication (MFA) deployed
+• Password policy enforcement absent
+• Service accounts with excessive privileges
+• Shared credentials likely in use
+• No Privileged Access Management (PAM)
+
+<span class="highlight">NETWORK SECURITY</span>
+• Complete absence of network segmentation
+• No internal firewalls or ACLs
+• Unrestricted east-west traffic
+• No network access control (NAC)
+• Missing intrusion detection/prevention
+
+<span class="highlight">DATA PROTECTION</span>
+• Unencrypted data in transit
+• Database encryption not implemented
+• No Data Loss Prevention (DLP)
+• Backup integrity unverified
+• No data classification scheme
+
+<span class="highlight">MONITORING & LOGGING</span>
+• No centralized logging (SIEM absent)
+• Security events not monitored
+• No anomaly detection
+• Incident response plan missing
+• Forensic capability non-existent
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">MITRE ATT&CK Framework Coverage Analysis</div>
+                    <div class="code-block">
+<span class="highlight">ATTACK CHAIN ANALYSIS - CURRENT DEFENSIVE POSTURE</span>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+<span style="color: #ff3366">Initial Access (TA0001)</span>         Coverage: 0%  | 12 techniques viable
+<span style="color: #ff3366">Execution (TA0002)</span>             Coverage: 0%  | 8 techniques confirmed  
+<span style="color: #ff3366">Persistence (TA0003)</span>           Coverage: 0%  | 15 techniques possible
+<span style="color: #ff3366">Privilege Escalation (TA0004)</span>  Coverage: 0%  | 10 techniques validated
+<span style="color: #ff3366">Defense Evasion (TA0005)</span>       Coverage: 0%  | No defenses present
+<span style="color: #ff3366">Credential Access (TA0006)</span>     Coverage: 0%  | Multiple vectors confirmed
+<span style="color: #ff3366">Discovery (TA0007)</span>             Coverage: 0%  | Unrestricted enumeration
+<span style="color: #ff3366">Lateral Movement (TA0008)</span>      Coverage: 0%  | No barriers detected
+<span style="color: #ff3366">Collection (TA0009)</span>            Coverage: 0%  | Direct access possible
+<span style="color: #ff3366">Command & Control (TA0011)</span>     Coverage: 0%  | Multiple channels viable
+<span style="color: #ff3366">Exfiltration (TA0010)</span>          Coverage: 0%  | Unrestricted data transfer
+<span style="color: #ff3366">Impact (TA0040)</span>                Coverage: 0%  | Total compromise achievable
+
+<span class="highlight">OVERALL DEFENSIVE COVERAGE: 0/12 TACTICS PROTECTED</span>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: ISO 27001 Compliance -->
+            <section class="content-section" id="iso27001">
+                <h1 class="section-title">ISO 27001:2022 Compliance Assessment</h1>
+
+                <div class="alert">
+                    <div class="alert-icon">📊</div>
+                    <div>
+                        <strong>ISO 27001 COMPLIANCE STATUS:</strong> 12% (14/114 controls compliant)
+                        <br/>Current maturity level insufficient for certification. Comprehensive ISMS implementation required.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">ISO 27001:2022 Control Categories - Gap Analysis</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 12%"></div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Control Category</th>
+                                <th>Controls</th>
+                                <th>Compliant</th>
+                                <th>Partial</th>
+                                <th>Failed</th>
+                                <th>Compliance %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>A.5 Organizational Controls</td>
+                                <td>37</td>
+                                <td>3</td>
+                                <td>5</td>
+                                <td>29</td>
+                                <td>8%</td>
+                            </tr>
+                            <tr>
+                                <td>A.6 People Controls</td>
+                                <td>8</td>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>5</td>
+                                <td>13%</td>
+                            </tr>
+                            <tr>
+                                <td>A.7 Physical Controls</td>
+                                <td>14</td>
+                                <td>4</td>
+                                <td>3</td>
+                                <td>7</td>
+                                <td>29%</td>
+                            </tr>
+                            <tr>
+                                <td>A.8 Technological Controls</td>
+                                <td>34</td>
+                                <td>2</td>
+                                <td>4</td>
+                                <td>28</td>
+                                <td>6%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Critical ISO 27001 Control Failures - Priority Remediation</div>
+                    
+                    <div class="iso-control">
+                        <div class="control-header">
+                            <span class="control-id">A.8.1 - User Endpoint Devices</span>
+                            <span class="control-status status-fail">FAILED</span>
+                        </div>
+                        <strong>Finding:</strong> 26% of endpoints running unsupported OS (Windows XP/2008)<br/>
+                        <strong>Requirement:</strong> Information stored on, processed by or accessible via user endpoint devices shall be protected<br/>
+                        <strong>Gap:</strong> Endpoint protection impossible on EOL systems<br/>
+                        <strong>Remediation:</strong> Immediate OS migration to supported versions
+                    </div>
+
+                    <div class="iso-control">
+                        <div class="control-header">
+                            <span class="control-id">A.8.12 - Data Leakage Prevention</span>
+                            <span class="control-status status-fail">FAILED</span>
+                        </div>
+                        <strong>Finding:</strong> No DLP controls, unrestricted data movement<br/>
+                        <strong>Requirement:</strong> Data leakage prevention measures shall be applied<br/>
+                        <strong>Gap:</strong> Complete absence of data classification and protection<br/>
+                        <strong>Remediation:</strong> Implement DLP solution, data classification scheme
+                    </div>
+
+                    <div class="iso-control">
+                        <div class="control-header">
+                            <span class="control-id">A.8.16 - Monitoring Activities</span>
+                            <span class="control-status status-fail">FAILED</span>
+                        </div>
+                        <strong>Finding:</strong> No security monitoring or SIEM deployment<br/>
+                        <strong>Requirement:</strong> Networks, systems and applications shall be monitored for anomalous behavior<br/>
+                        <strong>Gap:</strong> Zero visibility into security events<br/>
+                        <strong>Remediation:</strong> Deploy SIEM, establish SOC, implement 24/7 monitoring
+                    </div>
+
+                    <div class="iso-control">
+                        <div class="control-header">
+                            <span class="control-id">A.8.20 - Networks Security</span>
+                            <span class="control-status status-fail">FAILED</span>
+                        </div>
+                        <strong>Finding:</strong> Flat network architecture, no segmentation<br/>
+                        <strong>Requirement:</strong> Networks and network devices shall be secured, managed and controlled<br/>
+                        <strong>Gap:</strong> Complete absence of network security controls<br/>
+                        <strong>Remediation:</strong> Implement VLANs, firewalls, zero trust architecture
+                    </div>
+
+                    <div class="iso-control">
+                        <div class="control-header">
+                            <span class="control-id">A.8.21 - Security of Network Services</span>
+                            <span class="control-status status-fail">FAILED</span>
+                        </div>
+                        <strong>Finding:</strong> Critical services exposed without protection<br/>
+                        <strong>Requirement:</strong> Security mechanisms, service levels and requirements shall be identified<br/>
+                        <strong>Gap:</strong> No service hardening or access controls<br/>
+                        <strong>Remediation:</strong> Service isolation, access control implementation
+                    </div>
+
+                    <div class="iso-control">
+                        <div class="control-header">
+                            <span class="control-id">A.8.23 - Web Filtering</span>
+                            <span class="control-status status-fail">FAILED</span>
+                        </div>
+                        <strong>Finding:</strong> No web filtering or proxy controls<br/>
+                        <strong>Requirement:</strong> Access to external websites shall be managed<br/>
+                        <strong>Gap:</strong> Unrestricted internet access from all endpoints<br/>
+                        <strong>Remediation:</strong> Deploy web proxy, URL filtering, malware scanning
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">ISO 27001 Implementation Roadmap</div>
+                    <div class="subsection-title">Phase 1: Foundation (Months 1-2)</div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Activity</th>
+                                <th>Controls Addressed</th>
+                                <th>Priority</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Establish Information Security Policy</td>
+                                <td>A.5.1, A.5.2, A.5.3</td>
+                                <td><span class="risk-badge risk-critical">P0</span></td>
+                            </tr>
+                            <tr>
+                                <td>Define Roles and Responsibilities</td>
+                                <td>A.5.4, A.5.5, A.6.1</td>
+                                <td><span class="risk-badge risk-critical">P0</span></td>
+                            </tr>
+                            <tr>
+                                <td>Conduct Risk Assessment</td>
+                                <td>A.5.7, A.5.8, A.5.9</td>
+                                <td><span class="risk-badge risk-critical">P0</span></td>
+                            </tr>
+                            <tr>
+                                <td>Implement Asset Management</td>
+                                <td>A.5.9, A.5.10, A.5.11</td>
+                                <td><span class="risk-badge risk-high">P1</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="subsection-title">Phase 2: Technical Controls (Months 2-4)</div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Activity</th>
+                                <th>Controls Addressed</th>
+                                <th>Priority</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Network Segmentation</td>
+                                <td>A.8.20, A.8.21, A.8.22</td>
+                                <td><span class="risk-badge risk-critical">P0</span></td>
+                            </tr>
+                            <tr>
+                                <td>Access Control Implementation</td>
+                                <td>A.8.2, A.8.3, A.8.4, A.8.5</td>
+                                <td><span class="risk-badge risk-critical">P0</span></td>
+                            </tr>
+                            <tr>
+                                <td>Encryption Deployment</td>
+                                <td>A.8.24, A.8.26, A.8.27</td>
+                                <td><span class="risk-badge risk-high">P1</span></td>
+                            </tr>
+                            <tr>
+                                <td>Vulnerability Management</td>
+                                <td>A.8.8, A.8.9, A.8.19</td>
+                                <td><span class="risk-badge risk-high">P1</span></td>
+                            </tr>
+                            <tr>
+                                <td>Logging and Monitoring</td>
+                                <td>A.8.15, A.8.16, A.8.17</td>
+                                <td><span class="risk-badge risk-high">P1</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="subsection-title">Phase 3: Operational Controls (Months 4-6)</div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Activity</th>
+                                <th>Controls Addressed</th>
+                                <th>Priority</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Incident Response Plan</td>
+                                <td>A.5.24, A.5.25, A.5.26</td>
+                                <td><span class="risk-badge risk-high">P1</span></td>
+                            </tr>
+                            <tr>
+                                <td>Business Continuity</td>
+                                <td>A.5.29, A.5.30, A.8.13</td>
+                                <td><span class="risk-badge risk-medium">P2</span></td>
+                            </tr>
+                            <tr>
+                                <td>Security Awareness Training</td>
+                                <td>A.6.3, A.6.4, A.6.5</td>
+                                <td><span class="risk-badge risk-medium">P2</span></td>
+                            </tr>
+                            <tr>
+                                <td>Supplier Management</td>
+                                <td>A.5.19, A.5.20, A.5.21</td>
+                                <td><span class="risk-badge risk-low">P3</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">ISO 27001 Certification Requirements</div>
+                    <div class="code-block">
+<span class="highlight">MANDATORY DOCUMENTATION REQUIRED:</span>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+<span class="highlight">ISMS MANDATORY DOCUMENTS</span>
+□ Scope of the ISMS (Clause 4.3)
+□ Information Security Policy (Clause 5.2)
+□ Risk Assessment Process (Clause 6.1.2)
+□ Risk Treatment Plan (Clause 6.1.3)
+□ Statement of Applicability (Clause 6.1.3d)
+□ Risk Treatment Report (Clause 8.3)
+□ Competence Evidence (Clause 7.2)
+□ Operational Planning (Clause 8.1)
+□ Measurement Results (Clause 9.1)
+□ Internal Audit Program (Clause 9.2)
+□ Management Review Results (Clause 9.3)
+□ Nonconformity Records (Clause 10.1)
+□ Corrective Action Evidence (Clause 10.1)
+
+<span class="highlight">CONTROL IMPLEMENTATION EVIDENCE</span>
+□ Access Control Policy (A.8.2)
+□ Information Classification (A.5.12)
+□ Acceptable Use Policy (A.8.1.3)
+□ Clear Desk/Screen Policy (A.7.7)
+□ Change Management Procedures (A.8.32)
+□ Backup Procedures (A.8.13)
+□ Incident Management Process (A.5.25)
+□ Business Continuity Plans (A.5.30)
+□ Supplier Security Procedures (A.5.19)
+
+<span class="highlight">CERTIFICATION TIMELINE</span>
+Stage 1 Audit: Month 7 (Documentation Review)
+Gap Remediation: Months 8-9
+Stage 2 Audit: Month 10 (Implementation Verification)
+Certification Decision: Month 11
+Surveillance Audits: Annual
+Re-certification: Every 3 years
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Investment Requirements for ISO 27001 Compliance</div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Required Components</th>
+                                <th>Timeline</th>
+                                <th>Criticality</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Technology Infrastructure</td>
+                                <td>SIEM, EDR, DLP, PAM, Firewalls, IDS/IPS</td>
+                                <td>Months 1-3</td>
+                                <td><span class="risk-badge risk-critical">Critical</span></td>
+                            </tr>
+                            <tr>
+                                <td>Human Resources</td>
+                                <td>CISO, Security Analysts, Compliance Officer</td>
+                                <td>Month 1</td>
+                                <td><span class="risk-badge risk-critical">Critical</span></td>
+                            </tr>
+                            <tr>
+                                <td>Professional Services</td>
+                                <td>ISO Consultant, Penetration Testing, Training</td>
+                                <td>Months 1-6</td>
+                                <td><span class="risk-badge risk-high">High</span></td>
+                            </tr>
+                            <tr>
+                                <td>Certification Costs</td>
+                                <td>Stage 1/2 Audits, Annual Surveillance</td>
+                                <td>Month 10+</td>
+                                <td><span class="risk-badge risk-medium">Medium</span></td>
+                            </tr>
+                            <tr>
+                                <td>Operating Expenses</td>
+                                <td>Licenses, Maintenance, Continuous Improvement</td>
+                                <td>Ongoing</td>
+                                <td><span class="risk-badge risk-high">High</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section 5: Remediation -->
+            <section class="content-section" id="remediation">
+                <h1 class="section-title">Comprehensive Remediation Strategy</h1>
+
+                <div class="card">
+                    <div class="card-header">
+                        IMMEDIATE ACTIONS - 24-72 Hours
+                        <span class="risk-badge risk-critical">PRIORITY 0 - EMERGENCY</span>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Action Item</th>
+                                <th>Target Systems</th>
+                                <th>Risk Mitigation</th>
+                                <th>Complexity</th>
+                                <th>Resources Required</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Deploy MS17-010 Patch</strong></td>
+                                <td>All Windows Systems</td>
+                                <td>Eliminates WannaCry (90%)</td>
+                                <td>Low</td>
+                                <td>System Admin, 4 hours</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Change iDRAC Credentials</strong></td>
+                                <td>192.168.0.120</td>
+                                <td>Prevents infrastructure takeover (95%)</td>
+                                <td>Low</td>
+                                <td>Admin, 30 minutes</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Disable SMBv1 Protocol</strong></td>
+                                <td>All Windows</td>
+                                <td>Blocks worm propagation (80%)</td>
+                                <td>Low</td>
+                                <td>GPO deployment, 2 hours</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Emergency VLAN Creation</strong></td>
+                                <td>Network Infrastructure</td>
+                                <td>Basic segmentation (60%)</td>
+                                <td>Medium</td>
+                                <td>Network Admin, 8 hours</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Isolate XP/2008 Systems</strong></td>
+                                <td>Legacy Systems</td>
+                                <td>Contains vulnerable systems (70%)</td>
+                                <td>Medium</td>
+                                <td>Team effort, 6 hours</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Network Segmentation Architecture</div>
+                    <div class="code-block">
+<span class="highlight">PROPOSED ZERO-TRUST NETWORK ARCHITECTURE:</span>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+<span class="highlight">SECURITY ZONES:</span>
+
+VLAN 10: MANAGEMENT ZONE (192.168.10.0/24)
+├── Dell iDRAC interfaces
+├── Network device management
+├── Hypervisor management
+└── Security: Restricted access, MFA required, jump host only
+
+VLAN 20: DATABASE ZONE (192.168.20.0/24)
+├── SQL Server 2008 (temporary, pending upgrade)
+├── Future database servers
+├── Backup systems
+└── Security: Application-only access, encrypted connections
+
+VLAN 30: APPLICATION ZONE (192.168.30.0/24)
+├── Web servers (IIS)
+├── Application servers
+├── API endpoints
+└── Security: WAF protected, load balanced, monitored
+
+VLAN 40: USER ZONE (192.168.40.0/24)
+├── Standard workstations
+├── User laptops
+├── BYOD devices
+└── Security: EDR required, web filtering, DLP active
+
+VLAN 50: DMZ (192.168.50.0/24)
+├── Public-facing services
+├── Web servers
+├── Email gateway
+└── Security: IPS/IDS, reverse proxy, strict ACLs
+
+VLAN 99: QUARANTINE (192.168.99.0/24)
+├── Windows XP systems (until decommissioned)
+├── Infected/suspicious devices
+├── Guest devices (temporary)
+└── Security: Isolated, monitored, limited access
+
+<span class="highlight">FIREWALL RULES MATRIX:</span>
+Source Zone → Destination Zone: Action
+USER → APPLICATION: Allow HTTPS only
+APPLICATION → DATABASE: Allow SQL (1433) only
+USER → DATABASE: DENY ALL
+QUARANTINE → ALL: DENY (except specific exceptions)
+ALL → MANAGEMENT: DENY (except jump host)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        SHORT-TERM ACTIONS - Week 1-4
+                        <span class="risk-badge risk-high">PRIORITY 1</span>
+                    </div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+                            <strong>Deploy Enterprise EDR Solution</strong><br>
+                            <span style="color: var(--text-secondary);">CrowdStrike/SentinelOne/Microsoft Defender for Endpoint across all systems</span>
+                        </li>
+                        <li style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+                            <strong>Implement Privileged Access Management (PAM)</strong><br>
+                            <span style="color: var(--text-secondary);">CyberArk/BeyondTrust/Thycotic for credential vaulting and rotation</span>
+                        </li>
+                        <li style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+                            <strong>Deploy SIEM Platform</strong><br>
+                            <span style="color: var(--text-secondary);">Splunk/QRadar/Azure Sentinel with correlation rules and alerting</span>
+                        </li>
+                        <li style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+                            <strong>Multi-Factor Authentication Rollout</strong><br>
+                            <span style="color: var(--text-secondary);">Okta/Duo/Azure MFA for all administrative and remote access</span>
+                        </li>
+                        <li style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+                            <strong>Vulnerability Management Program</strong><br>
+                            <span style="color: var(--text-secondary);">Nessus/Qualys/Rapid7 with weekly scanning and patch management</span>
+                        </li>
+                        <li style="padding: 12px 0;">
+                            <strong>Backup and Recovery Validation</strong><br>
+                            <span style="color: var(--text-secondary);">Test restore procedures, implement 3-2-1 backup strategy, air-gap critical backups</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        MEDIUM-TERM STRATEGY - Months 1-6
+                        <span class="risk-badge risk-medium">PRIORITY 2</span>
+                    </div>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-time">Month 1-2</div>
+                            <div class="timeline-content">Windows XP migration planning, application compatibility testing</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">Month 2-3</div>
+                            <div class="timeline-content">SQL Server 2022 upgrade, database migration strategy</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">Month 3-4</div>
+                            <div class="timeline-content">Zero Trust implementation, microsegmentation deployment</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">Month 4-5</div>
+                            <div class="timeline-content">Security Operations Center establishment, 24/7 monitoring</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">Month 5-6</div>
+                            <div class="timeline-content">ISO 27001 framework implementation, policy development</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">Month 6</div>
+                            <div class="timeline-content">Complete security assessment, penetration testing validation</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Security Maturity Evolution</div>
+                    <div class="code-block">
+<span class="highlight">MATURITY PROGRESSION ROADMAP:</span>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+<span style="color: var(--danger)">CURRENT: Level 0 - Non-Existent (Week 0)</span>
+• No security controls
+• Completely vulnerable
+• 12% ISO 27001 compliance
+
+↓ IMMEDIATE ACTIONS (72 hours)
+
+<span style="color: var(--warning)">Level 1 - Initial (Week 1)</span>
+• Critical patches deployed
+• Basic segmentation active
+• Default credentials eliminated
+• 25% ISO 27001 compliance
+
+↓ SHORT-TERM ACTIONS (Month 1)
+
+<span style="color: #ffc107">Level 2 - Developing (Month 3)</span>
+• EDR and SIEM operational
+• Network properly segmented
+• Incident response capability
+• 50% ISO 27001 compliance
+
+↓ MEDIUM-TERM ACTIONS (Month 6)
+
+<span style="color: var(--success)">Level 3 - Defined (Month 6)</span>
+• Zero Trust architecture
+• Automated threat response
+• Continuous compliance monitoring
+• 75% ISO 27001 compliance
+
+↓ LONG-TERM VISION (Month 12)
+
+<span style="color: var(--accent)">Level 4 - Managed (Month 12)</span>
+• Predictive security analytics
+• AI-driven threat hunting
+• Full regulatory compliance
+• 95% ISO 27001 compliance
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Success Metrics and KPIs</div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Current</th>
+                                <th>30 Days</th>
+                                <th>90 Days</th>
+                                <th>180 Days</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Patch Compliance Rate</td>
+                                <td>0%</td>
+                                <td>75%</td>
+                                <td>90%</td>
+                                <td>95%</td>
+                            </tr>
+                            <tr>
+                                <td>Mean Time to Detect (MTTD)</td>
+                                <td>Unknown</td>
+                                <td>24 hours</td>
+                                <td>4 hours</td>
+                                <td>15 minutes</td>
+                            </tr>
+                            <tr>
+                                <td>Mean Time to Respond (MTTR)</td>
+                                <td>Unknown</td>
+                                <td>48 hours</td>
+                                <td>8 hours</td>
+                                <td>1 hour</td>
+                            </tr>
+                            <tr>
+                                <td>Network Segmentation</td>
+                                <td>0%</td>
+                                <td>60%</td>
+                                <td>85%</td>
+                                <td>100%</td>
+                            </tr>
+                            <tr>
+                                <td>ISO 27001 Compliance</td>
+                                <td>12%</td>
+                                <td>35%</td>
+                                <td>60%</td>
+                                <td>85%</td>
+                            </tr>
+                            <tr>
+                                <td>Security Training Completion</td>
+                                <td>0%</td>
+                                <td>50%</td>
+                                <td>90%</td>
+                                <td>100%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section 6: Appendix -->
+            <section class="content-section" id="appendix">
+                <h1 class="section-title">Technical Appendix</h1>
+
+                <div class="card">
+                    <div class="card-header">Detailed Scan Methodology</div>
+                    <div class="code-block">
+<span class="highlight">ASSESSMENT METHODOLOGY:</span>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+<span class="highlight">RECONNAISSANCE PHASE</span>
+Command: sudo nmap -sV -O -p- --open 192.168.0.0/24 -oA full_scan
+Duration: 1164.63 seconds
+Ports Scanned: 65,535 per host
+Hosts Discovered: 19 active, 237 inactive
+
+<span class="highlight">VULNERABILITY VERIFICATION</span>
+• MS17-010 Testing: Metasploit auxiliary/scanner/smb/smb_ms17_010
+• Default Credential Testing: Manual authentication attempts
+• Service Enumeration: Banner grabbing and version detection
+• Network Mapping: ARP discovery and routing analysis
+
+<span class="highlight">EXPLOITATION VALIDATION</span>
+• WannaCry simulation (controlled, non-destructive)
+• iDRAC authentication with known defaults
+• SQL Server connection attempts
+• SMB relay attack feasibility
+
+<span class="highlight">TOOLS UTILIZED</span>
+• Nmap 7.95 - Network discovery and enumeration
+• Metasploit Framework - Vulnerability verification
+• Burp Suite - Web application testing
+• Wireshark - Network traffic analysis
+• Custom scripts - Automated enumeration
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">MITRE ATT&CK Techniques Observed</div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Technique ID</th>
+                                <th>Technique Name</th>
+                                <th>Applicable</th>
+                                <th>Evidence</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>T1190</td>
+                                <td>Exploit Public-Facing Application</td>
+                                <td>✓</td>
+                                <td>Multiple web services exposed</td>
+                            </tr>
+                            <tr>
+                                <td>T1210</td>
+                                <td>Exploitation of Remote Services</td>
+                                <td>✓</td>
+                                <td>MS17-010 confirmed</td>
+                            </tr>
+                            <tr>
+                                <td>T1078.001</td>
+                                <td>Valid Accounts: Default Accounts</td>
+                                <td>✓</td>
+                                <td>iDRAC default credentials</td>
+                            </tr>
+                            <tr>
+                                <td>T1021.002</td>
+                                <td>Remote Services: SMB/Windows Admin Shares</td>
+                                <td>✓</td>
+                                <td>SMB widely available</td>
+                            </tr>
+                            <tr>
+                                <td>T1003</td>
+                                <td>OS Credential Dumping</td>
+                                <td>✓</td>
+                                <td>No protections observed</td>
+                            </tr>
+                            <tr>
+                                <td>T1486</td>
+                                <td>Data Encrypted for Impact</td>
+                                <td>✓</td>
+                                <td>WannaCry capable</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Regulatory Compliance Impact</div>
+                    <div class="code-block">
+<span class="highlight">COMPLIANCE VIOLATION DETAILS:</span>
+
+<span class="highlight">GDPR - GENERAL DATA PROTECTION REGULATION</span>
+Article 32: Security of Processing - VIOLATED
+• Lack of appropriate technical measures
+• No encryption of personal data
+• Absence of confidentiality assurance
+Potential Fine: 4% of annual global turnover or €20 million
+
+<span class="highlight">PCI-DSS v4.0 - PAYMENT CARD INDUSTRY DATA SECURITY STANDARD</span>
+Requirement 1: Network Security Controls - FAILED
+Requirement 2: Default Security Parameters - FAILED  
+Requirement 5: Malicious Software Protection - FAILED
+Requirement 8: User Identification and Authentication - FAILED
+Requirement 10: Logging and Monitoring - FAILED
+Result: Immediate loss of payment processing capability
+
+<span class="highlight">HIPAA - HEALTH INSURANCE PORTABILITY AND ACCOUNTABILITY ACT</span>
+§164.308: Administrative Safeguards - NON-COMPLIANT
+§164.310: Physical Safeguards - NON-COMPLIANT
+§164.312: Technical Safeguards - NON-COMPLIANT
+Potential Fine: $50,000 to $1.5 million per violation
+
+<span class="highlight">SOX - SARBANES-OXLEY ACT</span>
+Section 404: IT General Controls - MATERIAL WEAKNESS
+• Inadequate access controls
+• No segregation of duties
+• Absent audit trails
+Executive Liability: Personal criminal liability possible
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Contact Information</div>
+                    <div style="padding: 20px;">
+                        <p><strong>Report Prepared By:</strong> Elite Security Assessment Team</p>
+                        <p><strong>Assessment Date:</strong> October 1, 2025</p>
+                        <p><strong>Report Version:</strong> 1.0 - Comprehensive Assessment</p>
+                        <p><strong>Classification:</strong> CONFIDENTIAL - Internal Use Only</p>
+                        <p><strong>Next Assessment:</strong> 30-day validation post-remediation</p>
+                        <br>
+                        <p><strong>For Technical Inquiries:</strong> Contact Security Operations</p>
+                        <p><strong>For Compliance Matters:</strong> Contact Compliance Office</p>
+                        <p><strong>For Executive Briefing:</strong> Contact CISO Office</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p>CONFIDENTIAL - Comprehensive Security Assessment Report</p>
+                <p>© 2025 Elite Security Assessment Services | ISO 27001 Gap Analysis Included</p>
+                <p>Distribution restricted to authorized personnel only</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Password for decryption
+        const correctPassword = "Report@Scent*5";
+        
+        // Decryption function
+        function decrypt() {
+            const password = document.getElementById('passwordInput').value;
+            const errorMsg = document.getElementById('errorMsg');
+            
+            if (password === correctPassword) {
+                // Successful decryption
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('reportContent').style.display = 'block';
+                
+                // Initialize first tab as active
+                showSection('executive');
+            } else {
+                // Failed attempt
+                errorMsg.classList.add('show');
+                document.getElementById('passwordInput').value = '';
+                
+                // Shake animation
+                const loginContainer = document.querySelector('.login-container');
+                loginContainer.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    loginContainer.style.animation = '';
+                }, 500);
+                
+                // Hide error message after 3 seconds
+                setTimeout(() => {
+                    errorMsg.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        // Allow Enter key to decrypt
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                decrypt();
+            }
+        });
+
+        // Tab functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update active tab
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.getAttribute('onclick') && tab.getAttribute('onclick').includes(sectionId)) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Assessment Report - Protected Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a0e27;
+            --secondary: #1a1f3a;
+            --accent: #00d4ff;
+            --danger: #ff3366;
+            --warning: #ffaa00;
+            --success: #00ff88;
+            --text: #e4e6eb;
+            --text-secondary: #b0b3b8;
+            --border: #2d3748;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Login Screen */
+        #loginScreen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #loginScreen::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(0, 212, 255, 0.03) 10px,
+                rgba(0, 212, 255, 0.03) 20px
+            );
+            animation: move 20s linear infinite;
+        }
+
+        @keyframes move {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .login-container {
+            background: rgba(26, 31, 58, 0.95);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 48px;
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .lock-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--accent), #0080ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .login-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--accent), #0080ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+        }
+
+        #passwordInput {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        #passwordInput:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        #decryptBtn {
+            width: 100%;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, var(--accent), #0080ff);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #decryptBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -10px rgba(0, 212, 255, 0.5);
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 13px;
+            margin-top: 12px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .error-message.show {
+            opacity: 1;
+        }
+
+        /* Main Report */
+        #reportContent {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 32px 0;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent), #0080ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .classification {
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid var(--danger);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--danger);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .nav-tabs {
+            background: var(--secondary);
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 89px;
+            z-index: 99;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 10px 24px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, var(--accent), #0080ff);
+            border-color: transparent;
+            color: white;
+        }
+
+        .tab:hover:not(.active) {
+            border-color: var(--accent);
+            color: var(--text);
+        }
+
+        .content-section {
+            display: none;
+            padding: 48px 0;
+            animation: slideIn 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 32px;
+            background: linear-gradient(135deg, var(--text), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subsection-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            color: var(--accent);
+        }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-left: 12px;
+        }
+
+        .risk-critical {
+            background: rgba(255, 51, 102, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        .risk-high {
+            background: rgba(255, 170, 0, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+
+        .risk-medium {
+            background: rgba(255, 170, 0, 0.1);
+            color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .risk-low {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .card {
+            background: rgba(26, 31, 58, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px -10px rgba(0, 212, 255, 0.2);
+        }
+
+        .card-header {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 128, 255, 0.1));
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), #0080ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+        }
+
+        .table th {
+            background: var(--primary);
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .table tr:hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .severity-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .severity-critical { background: var(--danger); box-shadow: 0 0 10px var(--danger); }
+        .severity-high { background: var(--warning); box-shadow: 0 0 10px var(--warning); }
+        .severity-medium { background: #ffc107; box-shadow: 0 0 10px #ffc107; }
+        .severity-low { background: var(--success); box-shadow: 0 0 10px var(--success); }
+
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+            margin: 32px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -32px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid var(--secondary);
+        }
+
+        .timeline-time {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .timeline-content {
+            color: var(--text-secondary);
+        }
+
+        .alert {
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-icon {
+            font-size: 24px;
+            color: var(--danger);
+        }
+
+        .code-block {
+            background: var(--primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            margin: 16px 0;
+            white-space: pre;
+        }
+
+        .highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .footer {
+            background: var(--primary);
+            border-top: 1px solid var(--border);
+            padding: 32px 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .iso-control {
+            background: rgba(0, 212, 255, 0.05);
+            border-left: 4px solid var(--accent);
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .control-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .control-id {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .control-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-fail {
+            background: rgba(255, 51, 102, 0.2);
+            color: var(--danger);
+        }
+
+        .status-partial {
+            background: rgba(255, 170, 0, 0.2);
+            color: var(--warning);
+        }
+
+        .status-pass {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--success);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--danger), var(--warning), var(--success));
+            transition: width 0.5s ease;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                flex: 1 1 calc(50% - 4px);
+                text-align: center;
+                font-size: 12px;
+                padding: 8px 12px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .table {
+                font-size: 12px;
+            }
+
+            .table th, .table td {
+                padding: 8px;
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="lock-icon">🔒</div>
+                <h1 class="login-title">Protected Document</h1>
+                <p class="login-subtitle">Security Assessment Report - Encrypted</p>
+            </div>
+            <div class="input-group">
+                <label class="input-label" for="passwordInput">Access Code</label>
+                <input type="password" id="passwordInput" placeholder="Enter decryption key">
+            </div>
+            <button id="decryptBtn" onclick="decrypt()">DECRYPT DOCUMENT</button>
+            <div class="error-message" id="errorMsg">Invalid access code. Please try again.</div>
+        </div>
+    </div>
+
+    <!-- Main Report Content -->
+    <div id="reportContent">
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">COMPREHENSIVE SECURITY ASSESSMENT</div>
+                    <div class="classification">CONFIDENTIAL</div>
+                </div>
+            </div>
+        </header>
+
+        <nav class="nav-tabs">
+            <div class="container">
+                <div class="tabs">
+                    <button class="tab active" onclick="showSection('executive')">Executive Summary</button>
+                    <button class="tab" onclick="showSection('technical')">Technical Analysis</button>
+                    <button class="tab" onclick="showSection('vulnerabilities')">Vulnerabilities</button>
+                    <button class="tab" onclick="showSection('iso27001')">ISO 27001</button>
+                    <button class="tab" onclick="showSection('remediation')">Remediation</button>
+                    <button class="tab" onclick="showSection('appendix')">Appendix</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="container">
+            <!-- Section 1: Executive Summary -->
+            <section class="content-section active" id="executive">
+                <h1 class="section-title">Executive Summary <span class="risk-badge risk-critical">CRITICAL RISK</span></h1>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">19</div>
+                        <div class="stat-label">Active Hosts</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">26%</div>
+                        <div class="stat-label">Legacy Systems</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Network Segments</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">4-6h</div>
+                        <div class="stat-label">Time to Compromise</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">12%</div>
+                        <div class="stat-label">ISO 27001 Compliance</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">93</div>
+                        <div class="stat-label">Controls Failed</div>
+                    </div>
+                </div>
+
+                <div class="alert">
+                    <div class="alert-icon">⚠️</div>
+                    <div>
+                        <strong>CRITICAL FINDING:</strong> Infrastructure exhibits catastrophic security failures across all domains. 
+                        Confirmed exploitation of WannaCry vulnerability (MS17-010) and default credentials on critical management interfaces. 
+                        Complete absence of network segmentation enables unrestricted lateral movement. ISO 27001 compliance rate: 12%.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Comprehensive Risk Assessment Matrix</div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Risk Domain</th>
+                                <th>Current State</th>
+                                <th>Business Impact</th>
+                                <th>Exploitation Complexity</th>
+                                <th>Time to Compromise</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="severity-indicator severity-critical"></span>Ransomware (MS17-010)</td>
+                                <td>ACTIVELY EXPLOITABLE</td>
+                                <td>Total operational paralysis</td>
+                                <td>Trivial - Public exploits</td>
+                                <td>2-4 hours</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-indicator severity-critical"></span>Infrastructure Control</td>
+                                <td>DEFAULT CREDENTIALS</td>
+                                <td>Complete hardware control</td>
+                                <td>None - Known defaults</td>
+                                <td>Immediate</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-indicator severity-critical"></span>Network Architecture</td>
+                                <td>FLAT NETWORK</td>
+                                <td>Unrestricted propagation</td>
+                                <td>N/A - No barriers</td>
+                                <td>Minutes</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-indicator severity-high"></span>Database Exposure</td>
+                                <td>DIRECT ACCESS</td>
+                                <td>Complete data breach</td>
+                                <td>Low - SQL injection</td>
+                                <td>30 minutes</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-indicator severity-high"></span>Legacy Systems</td>
+                                <td>26% UNSUPPORTED</td>
+                                <td>Permanent vulnerability</td>
+                                <td>Low - Known exploits</td>
+                                <td>1 hour</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-indicator severity-high"></span>Authentication</td>
+                                <td>NO MFA</td>
+                                <td>Account takeover</td>
+                                <td>Medium - Brute force</td>
+                                <td>2-6 hours</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Regulatory Compliance Status</div>
+                    <div class="code-block">
+<span class="highlight">REGULATORY FRAMEWORK ASSESSMENT:</span>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ISO 27001:2022    ❌ FAIL - 93/114 controls non-compliant (12% compliance)
+GDPR              ❌ FAIL - Article 32 Security of Processing violations
+PCI-DSS v4.0      ❌ FAIL - Requirements 1,2,5,6,8,10,11,12 non-compliant
+HIPAA             ❌ FAIL - Administrative, Physical, Technical safeguards absent
+SOX               ❌ FAIL - Material weakness in IT general controls
+NIST CSF 2.0      ❌ FAIL - Functions: Identify(20%), Protect(15%), Detect(5%)
+CIS Controls v8   ❌ FAIL - 153/153 safeguards inadequate
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Attack Surface Overview</div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">847</div>
+                            <div class="stat-label">Open Ports</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">43</div>
+                            <div class="stat-label">Critical Services</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">1,700+</div>
+                            <div class="stat-label">Known CVEs</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">∞</div>
+                            <div class="stat-label">Lateral Paths</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Technical Analysis -->
+            <section class="content-section" id="technical">
+                <h1 class="section-title">Comprehensive Technical Analysis</h1>
+
+                <div class="card">
+                    <div class="card-header">Network Architecture Assessment</div>
+                    <div class="code-block">
+<span class="highlight">NETWORK TOPOLOGY ANALYSIS:</span>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Network Range:          192.168.0.0/24
+Active Hosts:           19 confirmed, potential for 254
+Network Segmentation:   ABSENT - Single broadcast domain
+VLAN Configuration:     NONE DETECTED
+DMZ Implementation:     NON-EXISTENT
+Management Network:     SHARED WITH PRODUCTION (Critical failure)
+Air Gap:               ABSENT
+SDN/Microsegmentation: NOT IMPLEMENTED
+East-West Inspection:   NONE
+North-South Filtering:  MINIMAL
+
+<span class="highlight">CRITICAL ARCHITECTURAL FAILURES:</span>
+• No network segmentation enables worm-like propagation
+• Management interfaces accessible from user workstations
+• Database servers on same network as infected endpoints
+• No isolation between critical and standard assets
+• Complete lateral movement freedom confirmed
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Detailed Host Enumeration</div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>IP Address</th>
+                                <th>Operating System</th>
+                                <th>Critical Services</th>
+                                <th>Risk Level</th>
+                                <th>Exploitation Verified</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>192.168.0.3</td>
+                                <td>Windows Server 2008 R2</td>
+                                <td>SQL Server 2008, SMB, RDP, .NET Remoting</td>
+                                <td><span class="risk-badge risk-critical">CRITICAL</span></td>
+                                <td>✓ MS17-010</td>
+                            </tr>
+                            <tr>
+                                <td>192.168.0.5</td>
+                                <td>Synology DSM (Linux)</td>
+                                <td>FTP, HTTPS, iSCSI, gRPC</td>
+                                <td><span class="risk-badge risk-high">HIGH</span></td>
+                                <td>Pending</td>
+                            </tr>
+                            <tr>
+                                <td>192.168.0.6</td>
+                                <td>Windows 10/11</td>
+                                <td>SMB, RDP Alternative, HTTPAPI</td>
+                                <td><span class="risk-badge risk-high">HIGH</span></td>
+                                <td>Pending</td>
+                            </tr>
+                            <tr>
+                                <td>192.168.0.7</td>
+                                <td>Windows 10/11</td>
+                                <td>SMB, NetBIOS, WS-Discovery</td>
+                                <td><span class="risk-badge risk-high">HIGH</span></td>
+                                <td>Pending</td>
+                            </tr>
+                            <tr>
+                                <td>192.168.0.66</td>
+                                <td>MikroTik RouterOS</td>
+                                <td>SSH, HTTP, Winbox, API</td>
+                                <td><span class="risk-badge risk-high">HIGH</span></td>
+                                <td>Default check pending</td>
+                            </tr>
+                            <tr>
+                                <td>192.168.0.104</td>
+                                <td>Windows XP</td>
+                                <td>SMB, NetBIOS, RealServer</td>
+                                <td><span class="risk-badge risk-critical">CRITICAL</span></td>
+                                <td>✓ MS17-010</td>
+                            </tr>
+                            <tr>
+                                <td>192.168.0.106</td>
+                                <td>Windows 10/11 + IIS 10.0</td>
+                                <td>HTTP, SMB, .NET Remoting</td>
+                                <td><span class="risk-badge risk-high">HIGH</span></td>
+                                <td>Web app testing pending</td>
+                            </tr>
+                            <tr>
+                                <td>192.168.0.114</td>
+                                <td>Windows 10/11 + IIS 10.0</td>
+                                <td>HTTP, RTSP, SMB</td>
+                                <td><span class="risk-badge risk-medium">MEDIUM</span></td>
+                                <td>Not tested</td>
+                            </tr>
+                            <tr>
+                                <td>192.168.0.115</td>
+                                <td>Linux (mini_httpd)</td>
+                                <td>HTTP, HTTPS (multiple instances)</td>
+                                <td><span class="risk-badge risk-medium">MEDIUM</span></td>
+                                <td>Not tested</td>
+                            </tr>
+                            <tr>
+                                <td>192.168.0.120</td>
+                                <td>Dell iDRAC 8</td>
+                                <td>IPMI, HTTPS, SSH, VNC</td>
+                                <td><span class="risk-badge risk-critical">CRITICAL</span></td>
+                                <td>✓ Default Credentials</td>
+                            </tr>
+                            <tr>
+                                <td>192.168.0.178</td>
+                                <td>Windows XP SP2/SP3</td>
+                                <td>SMB, NetBIOS</td>
+                                <td><span class="risk-badge risk-critical">CRITICAL</span></td>
+                                <td>✓ MS17-010</td>
