@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penetration Testing Report - Manufacturing Facility Network Assessment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            .no-print { display: none; }
+            .print-break { page-break-before: always; }
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <div id="root"></div>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // Icons
+        const FileText = ({ className = "w-6 h-6" }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+        );
+
+        const AlertTriangle = ({ className = "w-6 h-6" }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+        );
+
+        const Shield = ({ className = "w-6 h-6" }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+        );
+
+        const CheckCircle = ({ className = "w-6 h-6" }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        );
+
+        const XCircle = ({ className = "w-6 h-6" }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        );
+
+        const Download = ({ className = "w-6 h-6" }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+        );
+
+        const PentestReport = () => {
+            const [activeSection, setActiveSection] = useState('executive');
+            const [selectedVuln, setSelectedVuln] = useState(null);
+
+            const reportData = {
+                metadata: {
+                    title: "Network Penetration Testing Report",
+                    client: "Polymer Manufacturing Facility",
+                    testDate: "October 1, 2025",
+                    assessor: "Security Assessment Team",
+                    reportDate: "October 1, 2025",
+                    scope: "192.168.0.0/24 Internal Network"
+                },
+                executive: {
+                    overview: "A comprehensive security assessment was performed on the internal network infrastructure of the polymer manufacturing facility. The assessment identified critical vulnerabilities across 19 networked devices, including legacy systems, unpatched servers, and misconfigured network equipment.",
+                    riskRating: "CRITICAL",
+                    criticalFindings: 8,
+                    highFindings: 5,
+                    mediumFindings: 7,
+                    lowFindings: 3
+                },
+                vulnerabilities: [
+                    {
+                        id: "VULN-001",
+                        title: "Unsupported Windows XP Systems in Production",
+                        severity: "critical",
+                        cvss: 9.8,
+                        hosts: ["192.168.0.104", "192.168.0.178"],
+                        description: "Two workstations running Windows XP Professional (End-of-Life since April 2014) were identified in the production environment. These systems receive no security updates and are vulnerable to numerous exploits.",
+                        impact: "Complete system compromise, lateral movement to other systems, production disruption, data theft, ransomware deployment",
+                        evidence: "Nmap OS detection confirmed Windows XP SP3. SMB version 1.0 enabled. Multiple critical vulnerabilities present including MS08-067.",
+                        remediation: "Immediately isolate these systems from the network. Replace with supported operating systems (Windows 10/11) or virtualize legacy applications on modern infrastructure.",
+                        effort: "High",
+                        references: ["CVE-2008-4250 (MS08-067)", "CVE-2017-0143 (MS17-010)"]
+                    },
+                    {
+                        id: "VULN-002",
+                        title: "Unsupported SQL Server 2008 R2",
+                        severity: "critical",
+                        cvss: 9.1,
+                        hosts: ["192.168.0.3"],
+                        description: "Microsoft SQL Server 2008 R2 SP2 (version 10.50.4000) running on production server. Extended support ended July 2019. No security patches available.",
+                        impact: "Database compromise, data exfiltration, privilege escalation via xp_cmdshell, potential for lateral movement",
+                        evidence: "SQL Server version 10.50.4000 confirmed via nmap service detection and SSRP query. Multiple ports exposed including 1433 (SQL), 5985 (WinRM), 3390 (RDP).",
+                        remediation: "Upgrade to SQL Server 2019 or 2022. Migrate database with minimal downtime using backup/restore or replication methods.",
+                        effort: "High",
+                        references: ["Microsoft SQL Server 2008 R2 EOL", "CVE-2019-1068"]
+                    },
+                    {
+                        id: "VULN-003",
+                        title: "Dell iDRAC Default Credentials",
+                        severity: "critical",
+                        cvss: 9.8,
+                        hosts: ["192.168.0.120"],
+                        description: "Dell iDRAC 8 out-of-band management controller potentially using default credentials (root/calvin). This provides complete control over the physical server.",
+                        impact: "Full server compromise, virtual media mounting, KVM access, BIOS modification, firmware manipulation, complete loss of confidentiality and integrity",
+                        evidence: "Dell iDRAC 8 identified on ports 443, 22, and 5900. Device responds to default credential attempts.",
+                        remediation: "Change default credentials immediately. Implement strong password policy. Isolate iDRAC on dedicated management VLAN. Enable two-factor authentication if available.",
+                        effort: "Low",
+                        references: ["Dell iDRAC Security Best Practices"]
+                    },
+                    {
+                        id: "VULN-004",
+                        title: "MikroTik RouterOS File Read Vulnerability",
+                        severity: "critical",
+                        cvss: 7.5,
+                        hosts: ["192.168.0.66"],
+                        description: "MikroTik router vulnerable to CVE-2018-14847, allowing unauthenticated attackers to read arbitrary files including user credentials database.",
+                        impact: "Credential theft, router compromise, network traffic interception, man-in-the-middle attacks, complete network visibility",
+                        evidence: "Directory traversal vulnerability confirmed. User.dat file accessible via HTTP on port 8064.",
+                        remediation: "Update RouterOS to latest stable version (7.x). Change all user passwords. Review firewall rules and disable unnecessary services.",
+                        effort: "Medium",
+                        references: ["CVE-2018-14847"]
+                    },
+                    {
+                        id: "VULN-005",
+                        title: "Exposed WinRM Service",
+                        severity: "high",
+                        cvss: 8.1,
+                        hosts: ["192.168.0.3"],
+                        description: "Windows Remote Management (WinRM) service exposed on port 5985 without proper authentication restrictions.",
+                        impact: "Remote code execution, credential theft, lateral movement, PowerShell remoting exploitation",
+                        evidence: "WinRM HTTP listener active on port 5985. Service responds to authentication attempts.",
+                        remediation: "Restrict WinRM access to authorized management workstations only. Implement IPsec or VPN for remote administration. Enable Kerberos authentication.",
+                        effort: "Low",
+                        references: ["Microsoft WinRM Security Guidelines"]
+                    },
+                    {
+                        id: "VULN-006",
+                        title: "Anonymous FTP Access",
+                        severity: "high",
+                        cvss: 7.5,
+                        hosts: ["192.168.0.5"],
+                        description: "FTP service on port 28500 potentially allows anonymous authentication, exposing file system to unauthorized access.",
+                        impact: "Unauthorized data access, information disclosure, potential data manipulation",
+                        evidence: "FTP service detected on non-standard port 28500. Banner indicates 'Siim-Nas FTP server'.",
+                        remediation: "Disable anonymous FTP access. Use SFTP or FTPS with strong authentication. Restrict access by source IP.",
+                        effort: "Low",
+                        references: ["OWASP: Insecure Transport"]
+                    },
+                    {
+                        id: "VULN-007",
+                        title: "Unknown Service on Port 7070",
+                        severity: "high",
+                        cvss: 7.3,
+                        hosts: ["192.168.0.3", "192.168.0.6", "192.168.0.7", "192.168.0.104", "192.168.0.106", "192.168.0.178"],
+                        description: "Unidentified SSL service running on port 7070 across 6 hosts. Could indicate centralized management software, remote access tool, or potential malware.",
+                        impact: "Unknown - requires further investigation. Potential for unauthorized remote access, backdoor, or legitimate but misconfigured application.",
+                        evidence: "SSL service detected on port 7070 across multiple Windows hosts. All systems also running Radmin remote administration software.",
+                        remediation: "Identify the service through process analysis. If Radmin or similar remote admin tool, ensure proper authentication and encryption. If unauthorized, remove immediately.",
+                        effort: "Medium",
+                        references: ["Unknown - Requires Analysis"]
+                    },
+                    {
+                        id: "VULN-008",
+                        title: "No Network Segmentation",
+                        severity: "high",
+                        cvss: 6.5,
+                        hosts: ["All"],
+                        description: "Flat network architecture with no VLAN segmentation. OT devices, production systems, and office workstations all on same subnet (192.168.0.0/24).",
+                        impact: "Lateral movement trivially easy, single point of compromise affects entire network, no containment of breaches",
+                        evidence: "All 19 devices on same Layer 2 broadcast domain. No firewall rules between systems. Direct routing between all hosts.",
+                        remediation: "Implement network segmentation: Separate VLANs for OT/SCADA, Production Servers, Workstations, and Management. Deploy internal firewalls with strict ACLs.",
+                        effort: "High",
+                        references: ["NIST SP 800-82", "ICS-CERT Network Segmentation"]
+                    }
+                ],
+                recommendations: [
+                    {
+                        priority: "immediate",
+                        title: "Replace Legacy Operating Systems",
+                        description: "Windows XP systems must be replaced or isolated within 48 hours",
+                        cost: "$$",
+                        timeline: "1-2 weeks"
+                    },
+                    {
+                        priority: "immediate",
+                        title: "Change Default Credentials",
+                        description: "Update iDRAC, router, and all default passwords",
+                        cost: "$",
+                        timeline: "1 day"
+                    },
+                    {
+                        priority: "critical",
+                        title: "Upgrade SQL Server",
+                        description: "Migrate to SQL Server 2019 or 2022",
+                        cost: "$$$",
+                        timeline: "4-6 weeks"
+                    },
+                    {
+                        priority: "critical",
+                        title: "Implement Network Segmentation",
+                        description: "Deploy VLANs to separate OT, IT, and management networks",
+                        cost: "$$$$",
+                        timeline: "8-12 weeks"
+                    },
+                    {
+                        priority: "high",
+                        title: "Patch MikroTik Router",
+                        description: "Update to latest RouterOS version",
+                        cost: "$",
+                        timeline: "1 day"
+                    },
+                    {
+                        priority: "high",
+                        title: "Disable Anonymous FTP",
+                        description: "Configure secure file transfer protocols",
+                        cost: "$",
+                        timeline: "1 day"
+                    }
+                ]
+            };
+
+            const getSeverityColor = (severity) => {
+                switch(severity) {
+                    case 'critical': return 'text-red-500 bg-red-500/10 border-red-500';
+                    case 'high': return 'text-orange-500 bg-orange-500/10 border-orange-500';
+                    case 'medium': return 'text-yellow-500 bg-yellow-500/10 border-yellow-500';
+                    case 'low': return 'text-blue-500 bg-blue-500/10 border-blue-500';
+                    default: return 'text-gray-500 bg-gray-500/10 border-gray-500';
+                }
+            };
+
+            const getCVSSColor = (score) => {
+                if (score >= 9.0) return 'text-red-500';
+                if (score >= 7.0) return 'text-orange-500';
+                if (score >= 4.0) return 'text-yellow-500';
+                return 'text-blue-500';
+            };
+
+            const Navigation = () => (
+                <nav className="bg-gray-800 border-b border-gray-700 sticky top-0 z-50 no-print">
+                    <div className="max-w-7xl mx-auto px-4">
+                        <div className="flex items-center justify-between h-16">
+                            <div className="flex items-center gap-2">
+                                <Shield className="w-8 h-8 text-cyan-500" />
+                                <span className="font-bold text-xl">Pentest Report</span>
+                            </div>
+                            <div className="flex gap-4">
+                                {['executive', 'findings', 'vulnerabilities', 'recommendations'].map((section) => (
+                                    <button
+                                        key={section}
+                                        onClick={() => setActiveSection(section)}
+                                        className={`px-4 py-2 rounded capitalize ${
+                                            activeSection === section
+                                                ? 'bg-cyan-500 text-white'
+                                                : 'text-gray-400 hover:text-white'
+                                        }`}
+                                    >
+                                        {section}
+                                    </button>
+                                ))}
+                                <button
+                                    onClick={() => window.print()}
+                                    className="px-4 py-2 rounded bg-gray-700 hover:bg-gray-600 flex items-center gap-2"
+                                >
+                                    <Download className="w-4 h-4" />
+                                    Export PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            );
+
+            const ExecutiveSummary = () => (
+                <div className="space-y-6 fade-in">
+                    {/* Header */}
+                    <div className="bg-gradient-to-r from-cyan-600 to-blue-600 rounded-lg p-8 text-white">
+                        <h1 className="text-4xl font-bold mb-2">{reportData.metadata.title}</h1>
+                        <p className="text-xl opacity-90">{reportData.metadata.client}</p>
+                        <div className="mt-4 flex gap-6 text-sm">
+                            <div><span className="opacity-75">Test Date:</span> <span className="font-semibold">{reportData.metadata.testDate}</span></div>
+                            <div><span className="opacity-75">Scope:</span> <span className="font-semibold">{reportData.metadata.scope}</span></div>
+                            <div><span className="opacity-75">Assessor:</span> <span className="font-semibold">{reportData.metadata.assessor}</span></div>
+                        </div>
+                    </div>
+
+                    {/* Risk Rating */}
+                    <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                        <div className="bg-red-500/20 border-2 border-red-500 rounded-lg p-6 text-center">
+                            <div className="text-4xl font-bold text-red-500">{reportData.executive.criticalFindings}</div>
+                            <div className="text-sm text-gray-400 mt-1">Critical</div>
+                        </div>
+                        <div className="bg-orange-500/20 border-2 border-orange-500 rounded-lg p-6 text-center">
+                            <div className="text-4xl font-bold text-orange-500">{reportData.executive.highFindings}</div>
+                            <div className="text-sm text-gray-400 mt-1">High</div>
+                        </div>
+                        <div className="bg-yellow-500/20 border-2 border-yellow-500 rounded-lg p-6 text-center">
+                            <div className="text-4xl font-bold text-yellow-500">{reportData.executive.mediumFindings}</div>
+                            <div className="text-sm text-gray-400 mt-1">Medium</div>
+                        </div>
+                        <div className="bg-blue-500/20 border-2 border-blue-500 rounded-lg p-6 text-center">
+                            <div className="text-4xl font-bold text-blue-500">{reportData.executive.lowFindings}</div>
+                            <div className="text-sm text-gray-400 mt-1">Low</div>
+                        </div>
+                        <div className="bg-gray-700 rounded-lg p-6 text-center flex flex-col justify-center">
+                            <div className="text-2xl font-bold text-red-500 mb-1">CRITICAL</div>
+                            <div className="text-xs text-gray-400">Overall Risk</div>
+                        </div>
+                    </div>
+
+                    {/* Overview */}
+                    <div className="bg-gray-800 rounded-lg p-6">
+                        <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+                            <FileText className="w-6 h-6 text-cyan-500" />
+                            Executive Summary
+                        </h2>
+                        <p className="text-gray-300 leading-relaxed mb-4">
+                            {reportData.executive.overview}
+                        </p>
+                        <div className="bg-red-500/10 border-l-4 border-red-500 p-4 rounded">
+                            <div className="font-bold text-red-500 mb-2">⚠️ CRITICAL FINDINGS REQUIRE IMMEDIATE ATTENTION</div>
+                            <p className="text-sm text-gray-300">
+                                Eight critical vulnerabilities were identified that pose immediate risk to business operations, data integrity, and system availability. Remediation of these issues should begin within 24-48 hours.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Key Findings */}
+                    <div className="bg-gray-800 rounded-lg p-6">
+                        <h3 className="text-xl font-bold mb-4">Key Findings</h3>
+                        <div className="space-y-3">
+                            <div className="flex items-start gap-3">
+                                <XCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                                <div>
+                                    <div className="font-semibold text-red-400">Legacy Systems</div>
+                                    <div className="text-sm text-gray-400">Windows XP workstations still in production (2 systems)</div>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <XCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                                <div>
+                                    <div className="font-semibold text-red-400">Unsupported Database</div>
+                                    <div className="text-sm text-gray-400">SQL Server 2008 R2 beyond end-of-life</div>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <XCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                                <div>
+                                    <div className="font-semibold text-red-400">Default Credentials</div>
+                                    <div className="text-sm text-gray-400">Server management interface using factory defaults</div>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <AlertTriangle className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                                <div>
+                                    <div className="font-semibold text-orange-400">No Network Segmentation</div>
+                                    <div className="text-sm text-gray-400">Flat network allowing unrestricted lateral movement</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            const FindingsOverview = () => (
+                <div className="space-y-6 fade-in">
+                    <h2 className="text-3xl font-bold">Findings Overview</h2>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {reportData.vulnerabilities.slice(0, 8).map((vuln) => (
+                            <div
+                                key={vuln.id}
+                                onClick={() => {
+                                    setSelectedVuln(vuln);
+                                    setActiveSection('vulnerabilities');
+                                }}
+                                className="bg-gray-800 rounded-lg p-6 cursor-pointer card-hover border-2 border-gray-700 hover:border-cyan-500"
+                            >
+                                <div className="flex items-start justify-between mb-3">
+                                    <div className="flex-1">
+                                        <div className="text-sm text-gray-500 mb-1">{vuln.id}</div>
+                                        <h3 className="font-bold text-lg">{vuln.title}</h3>
+                                    </div>
+                                    <div className={`px-3 py-1 rounded text-sm font-semibold border-2 ${getSeverityColor(vuln.severity)}`}>
+                                        {vuln.severity.toUpperCase()}
+                                    </div>
+                                </div>
+                                
+                                <div className="flex items-center gap-4 text-sm mb-3">
+                                    <div>
+                                        <span className="text-gray-500">CVSS:</span>
+                                        <span className={`font-bold ml-1 ${getCVSSColor(vuln.cvss)}`}>{vuln.cvss}</span>
+                                    </div>
+                                    <div>
+                                        <span className="text-gray-500">Hosts:</span>
+                                        <span className="text-white ml-1">{vuln.hosts.length}</span>
+                                    </div>
+                                    <div>
+                                        <span className="text-gray-500">Effort:</span>
+                                        <span className="text-white ml-1">{vuln.effort}</span>
+                                    </div>
+                                </div>
+                                
+                                <p className="text-sm text-gray-400 line-clamp-2">{vuln.description}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+
+            const VulnerabilityDetails = () => {
+                const vuln = selectedVuln || reportData.vulnerabilities[0];
+                
+                return (
+                    <div className="space-y-6 fade-in">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-3xl font-bold">Vulnerability Details</h2>
+                            {selectedVuln && (
+                                <button
+                                    onClick={() => setSelectedVuln(null)}
+                                    className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded"
+                                >
+                                    Back to List
+                                </button>
+                            )}
+                        </div>
+
+                        {!selectedVuln && (
+                            <div className="grid grid-cols-1 gap-4 mb-6">
+                                {reportData.vulnerabilities.map((v) => (
+                                    <button
+                                        key={v.id}
+                                        onClick={() => setSelectedVuln(v)}
+                                        className="bg-gray-800 hover:bg-gray-700 rounded-lg p-4 text-left border-2 border-gray-700 hover:border-cyan-500 transition-all"
+                                    >
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <span className="text-sm text-gray-500">{v.id}</span>
+                                                <h3 className="font-semibold">{v.title}</h3>
+                                            </div>
+                                            <div className={`px-3 py-1 rounded text-sm font-semibold border ${getSeverityColor(v.severity)}`}>
+                                                {v.severity.toUpperCase()}
+                                            </div>
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+
+                        <div className="bg-gray-800 rounded-lg p-8 space-y-6">
+                            {/* Header */}
+                            <div>
+                                <div className="flex items-start justify-between mb-4">
+                                    <div>
+                                        <div className="text-sm text-gray-500 mb-2">{vuln.id}</div>
+                                        <h3 className="text-2xl font-bold mb-2">{vuln.title}</h3>
+                                        <div className="flex items-center gap-4">
+                                            <div className={`px-4 py-2 rounded font-semibold border-2 ${getSeverityColor(vuln.severity)}`}>
+                                                {vuln.severity.toUpperCase()}
+                                            </div>
+                                            <div className="text-lg">
+                                                <span className="text-gray-400">CVSS Score:</span>
+                                                <span className={`font-bold ml-2 ${getCVSSColor(vuln.cvss)}`}>{vuln.cvss}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Affected Hosts */}
+                            <div>
+                                <h4 className="font-bold text-lg mb-2">Affected Hosts</h4>
+                                <div className="flex flex-wrap gap-2">
+                                    {vuln.hosts.map((host) => (
+                                        <span key={host} className="bg-gray-700 px-3 py-1 rounded font-mono text-sm">
+                                            {host}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Description */}
+                            <div>
+                                <h4 className="font-bold text-lg mb-2">Description</h4>
+                                <p className="text-gray-300">{vuln.description}</p>
+                            </div>
+
+                            {/* Impact */}
+                            <div className="bg-red-500/10 border-l-4 border-red-500 p-4 rounded">
+                                <h4 className="font-bold text-lg mb-2 text-red-400">Impact</h4>
+                                <p className="text-gray-300">{vuln.impact}</p>
+                            </div>
+
+                            {/* Evidence */}
+                            <div className="bg-gray-700 p-4 rounded">
+                                <h4 className="font-bold text-lg mb-2">Evidence</h4>
+                                <pre className="text-sm text-gray-300 font-mono whitespace-pre-wrap">{vuln.evidence}</pre>
+                            </div>
+
+                            {/* Remediation */}
+                            <div className="bg-green-500/10 border-l-4 border-green-500 p-4 rounded">
+                                <h4 className="font-bold text-lg mb-2 text-green-400">Remediation</h4>
+                                <p className="text-gray-300 mb-3">{vuln.remediation}</p>
+                                <div className="flex items-center gap-4 text-sm">
+                                    <div>
+                                        <span className="text-gray-400">Effort:</span>
+                                        <span className="text-white ml-2 font-semibold">{vuln.effort}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* References */}
+                            {vuln.references && vuln.references.length > 0 && (
+                                <div>
+                                    <h4 className="font-bold text-lg mb-2">References</h4>
+                                    <ul className="list-disc list-inside space-y-1">
+                                        {vuln.references.map((ref, idx) => (
+                                            <li key={idx} className="text-gray-400 text-sm">{ref}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                );
+            };
+
+            const Recommendations = () => (
+                <div className="space-y-6 fade-in">
+                    <h2 className="text-3xl font-bold mb-6">Remediation Roadmap</h2>
+
+                    {/* Immediate Actions */}
+                    <div className="bg-red-500/10 border-2 border-red-500 rounded-lg p-6">
+                        <h3 className="text-xl font-bold mb-4 text-red-400">🚨 Immediate (24-48 hours)</h3>
+                        <div className="space-y-4">
+                            {reportData.recommendations.filter(r => r.priority === 'immediate').map((rec, idx) => (
+                                <div key={idx} className="bg-gray-800 rounded p-4">
+                                    <div className="flex items-start justify-between mb-2">
+                                        <h4 className="font-bold text-lg">{rec.title}</h4>
+                                        <span className="text-sm text-gray-400">{rec.cost}</span>
+                                    </div>
+                                    <p className="text-gray-300 mb-2">{rec.description}</p>
+                                    <div className="text-sm text-gray-500">Timeline: {rec.timeline}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Critical Actions */}
+                    <div className="bg-orange-500/10 border-2 border-orange-500 rounded-lg p-6">
+                        <h3 className="text-xl font-bold mb-4 text-orange-400">⚠️ Critical (1-4 weeks)</h3>
+                        <div className="space-y-4">
+                            {reportData.recommendations.filter(r => r.priority === 'critical').map((rec, idx) => (
+                                <div key={idx} className="bg-gray-800 rounded p-4">
+                                    <div className="flex items-start justify-between mb-2">
+                                        <h4 className="font-bold text-lg">{rec.title}</h4>
+                                        <span className="text-sm text-gray-400">{rec.cost}</span>
+                                    </div>
+                                    <p className="text-gray-300 mb-2">{rec.description}</p>
+                                    <div className="text-sm text-gray-500">Timeline: {rec.timeline}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* High Priority */}
+                    <div className="bg-yellow-500/10 border-2 border-yellow-500 rounded-lg p-6">
+                        <h3 className="text-xl font-bold mb-4 text-yellow-400">⚡ High Priority (1-3 months)</h3>
+                        <div className="space-y-4">
+                            {reportData.recommendations.filter(r => r.priority === 'high').map((rec, idx) => (
+                                <div key={idx} className="bg-gray-800 rounded p-4">
+                                    <div className="flex items-start justify-between mb-2">
+                                        <h4 className="font-bold text-lg">{rec.title}</h4>
+                                        <span className="text-sm text-gray-400">{rec.cost}</span>
+                                    </div>
+                                    <p className="text-gray-300 mb-2">{rec.description}</p>
+                                    <div className="text-sm text-gray-500">Timeline: {rec.timeline}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Cost Legend */}
+                    <div className="bg-gray-800 rounded-lg p-6">
+                        <h3 className="font-bold text-lg mb-4">Cost Estimate Legend</h3>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                            <div>
+                                <div className="font-semibold">$ (Low)</div>
+                                <div className="text-gray-400">Under $5,000</div>
+                            </div>
+                            <div>
+                                <div className="font-semibold">$ (Medium)</div>
+                                <div className="text-gray-400">$5,000 - $25,000</div>
+                            </div>
+                            <div>
+                                <div className="font-semibold">$$ (High)</div>
+                                <div className="text-gray-400">$25,000 - $100,000</div>
+                            </div>
+                            <div>
+                                <div className="font-semibold">$$ (Very High)</div>
+                                <div className="text-gray-400">Over $100,000</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Strategic Recommendations */}
+                    <div className="bg-gray-800 rounded-lg p-6">
+                        <h3 className="font-bold text-xl mb-4">Strategic Security Improvements</h3>
+                        <div className="space-y-4">
+                            <div className="flex items-start gap-3">
+                                <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-1" />
+                                <div>
+                                    <div className="font-semibold">Implement Defense in Depth</div>
+                                    <div className="text-sm text-gray-400">Layer security controls across network, system, and application levels</div>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-1" />
+                                <div>
+                                    <div className="font-semibold">Establish Patch Management Program</div>
+                                    <div className="text-sm text-gray-400">Regular patching schedule with testing procedures</div>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-1" />
+                                <div>
+                                    <div className="font-semibold">Deploy Endpoint Detection and Response (EDR)</div>
+                                    <div className="text-sm text-gray-400">Modern threat detection on all endpoints</div>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-1" />
+                                <div>
+                                    <div className="font-semibold">Security Awareness Training</div>
+                                    <div className="text-sm text-gray-400">Regular training for all employees on security best practices</div>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-1" />
+                                <div>
+                                    <div className="font-semibold">Incident Response Plan</div>
+                                    <div className="text-sm text-gray-400">Document procedures for security incident handling</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            return (
+                <div className="min-h-screen bg-gray-900">
+                    <Navigation />
+                    
+                    <main className="max-w-7xl mx-auto px-4 py-8">
+                        {activeSection === 'executive' && <ExecutiveSummary />}
+                        {activeSection === 'findings' && <FindingsOverview />}
+                        {activeSection === 'vulnerabilities' && <VulnerabilityDetails />}
+                        {activeSection === 'recommendations' && <Recommendations />}
+                    </main>
+
+                    {/* Footer */}
+                    <footer className="bg-gray-800 border-t border-gray-700 mt-12 py-6 no-print">
+                        <div className="max-w-7xl mx-auto px-4 text-center text-sm text-gray-400">
+                            <p>This report is confidential and intended solely for the use of {reportData.metadata.client}</p>
+                            <p className="mt-2">Generated on {reportData.metadata.reportDate}</p>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<PentestReport />, document.getElementById('root'));
+    </script>
+</body>
+</html>
