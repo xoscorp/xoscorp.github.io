@@ -1,0 +1,2082 @@
+<div class="iso-control">
+                    <div class="iso-control-header">
+                        <div class="iso-control-id">A.8.8</div>
+                        <div class="badge critical">Critical Priority</div>
+                    </div>
+                    <div class="iso-control-title">Management of Technical Vulnerabilities</div>
+                    <div class="iso-control-description">
+                        <strong>Requirement:</strong> Information about technical vulnerabilities of information systems in use shall be obtained, the organization's exposure to such vulnerabilities shall be evaluated and appropriate measures shall be taken.
+                        <br><br>
+                        <strong>Implementation:</strong> Deploy vulnerability scanning platform (Nessus/Qualys/Rapid7), establish scan schedules, create vulnerability assessment procedures, define remediation SLAs, document patching processes. Directly addresses CVE-2017-0144 and CVE-2023-32154.
+                    </div>
+                </div>
+
+                <div class="iso-control">
+                    <div class="iso-control-header">
+                        <div class="iso-control-id">A.8.9</div>
+                        <div class="badge high">Required</div>
+                    </div>
+                    <div class="iso-control-title">Configuration Management</div>
+                    <div class="iso-control-description">
+                        <strong>Requirement:</strong> Configurations, including security configurations, of hardware, software, services and networks shall be established, documented, implemented, monitored and reviewed.
+                        <br><br>
+                        <strong>Implementation:</strong> Document baseline security configurations for all platforms (Windows, Linux, network devices), implement configuration management database (CMDB), establish change control procedures, deploy configuration monitoring tools.
+                    </div>
+                </div>
+
+                <div class="iso-control">
+                    <div class="iso-control-header">
+                        <div class="iso-control-id">A.8.15</div>
+                        <div class="badge critical">Critical Priority</div>
+                    </div>
+                    <div class="iso-control-title">Logging</div>
+                    <div class="iso-control-description">
+                        <strong>Requirement:</strong> Logs that record activities, exceptions, faults and other relevant events shall be produced, stored, protected and analyzed.
+                        <br><br>
+                        <strong>Implementation:</strong> Deploy centralized logging platform (SIEM), define log retention policies, implement log protection mechanisms, establish log review procedures, document logging standards for all systems.
+                    </div>
+                </div>
+
+                <div class="iso-control">
+                    <div class="iso-control-header">
+                        <div class="iso-control-id">A.8.16</div>
+                        <div class="badge high">Required</div>
+                    </div>
+                    <div class="iso-control-title">Monitoring Activities</div>
+                    <div class="iso-control-description">
+                        <strong>Requirement:</strong> Networks, systems and applications shall be monitored for anomalous behaviour and appropriate action taken to evaluate potential information security incidents.
+                        <br><br>
+                        <strong>Implementation:</strong> Deploy security monitoring capabilities, establish baseline behavior patterns, create alerting rules, define monitoring scope, implement automated response procedures where appropriate.
+                    </div>
+                </div>
+
+                <div class="iso-control">
+                    <div class="iso-control-header">
+                        <div class="iso-control-id">A.8.20</div>
+                        <div class="badge critical">Critical Priority</div>
+                    </div>
+                    <div class="iso-control-title">Networks Security</div>
+                    <div class="iso-control-description">
+                        <strong>Requirement:</strong> Networks and network devices shall be secured, managed and controlled to protect information in systems and applications.
+                        <br><br>
+                        <strong>Implementation:</strong> Implement network segmentation (VLANs), deploy firewalls with documented rulesets, establish network security architecture, create network diagrams, document network security procedures. Directly addresses flat network architecture vulnerability.
+                    </div>
+                </div>
+
+                <div class="iso-control">
+                    <div class="iso-control-header">
+                        <div class="iso-control-id">A.8.21</div>
+                        <div class="badge high">Required</div>
+                    </div>
+                    <div class="iso-control-title">Security of Network Services</div>
+                    <div class="iso-control-description">
+                        <strong>Requirement:</strong> Security mechanisms, service levels and requirements of network services shall be identified, implemented and monitored.
+                        <br><br>
+                        <strong>Implementation:</strong> Document all network services, define security requirements per service, implement service hardening configurations, establish service monitoring procedures. Addresses SMB, RDP, SQL Server, and other exposed services.
+                    </div>
+                </div>
+
+                <div class="iso-control">
+                    <div class="iso-control-header">
+                        <div class="iso-control-id">A.8.22</div>
+                        <div class="badge high">Required</div>
+                    </div>
+                    <div class="iso-control-title">Segregation in Networks</div>
+                    <div class="iso-control-description">
+                        <strong>Requirement:</strong> Groups of information services, users and information systems shall be segregated in the organization's networks.
+                        <br><br>
+                        <strong>Implementation:</strong> Design segregated network architecture, implement DMZ for internet-facing services, create dedicated management network, separate production from development environments, document segregation strategy.
+                    </div>
+                </div>
+
+                <div class="iso-control">
+                    <div class="iso-control-header">
+                        <div class="iso-control-id">A.8.24</div>
+                        <div class="badge high">Required</div>
+                    </div>
+                    <div class="iso-control-title">Use of Cryptography</div>
+                    <div class="iso-control-description">
+                        <strong>Requirement:</strong> Rules for the effective use of cryptography, including cryptographic key management, shall be defined and implemented.
+                        <br><br>
+                        <strong>Implementation:</strong> Create cryptography policy, implement encryption for data at rest and in transit, enable SMB signing, deploy TLS for all web services, establish key management procedures, document encryption standards.
+                    </div>
+                </div>
+
+                <div class="iso-control">
+                    <div class="iso-control-header">
+                        <div class="iso-control-id">A.8.25</div>
+                        <div class="badge medium">Recommended</div>
+                    </div>
+                    <div class="iso-control-title">Secure Development Life Cycle</div>
+                    <div class="iso-control-description">
+                        <strong>Requirement:</strong> Rules for the secure development of software and systems shall be established and applied.
+                        <br><br>
+                        <strong>Implementation:</strong> Document secure coding standards, implement code review procedures, establish security testing in development lifecycle, create secure development guidelines.
+                    </div>
+                </div>
+
+                <div class="iso-control">
+                    <div class="iso-control-header">
+                        <div class="iso-control-id">A.8.28</div>
+                        <div class="badge high">Required</div>
+                    </div>
+                    <div class="iso-control-title">Secure Coding</div>
+                    <div class="iso-control-description">
+                        <strong>Requirement:</strong> Secure coding principles shall be applied to software development.
+                        <br><br>
+                        <strong>Implementation:</strong> Establish secure coding guidelines (OWASP), implement static code analysis tools, conduct security training for developers, document coding standards.
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 60px;">
+                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 24px; color: var(--text-primary);">Priority Control Implementation Sequence</h3>
+                
+                <div class="info-box">
+                    <div class="info-box-title">
+                        <span style="font-size: 24px;">⚡</span>
+                        Vulnerability-Driven Implementation Priority
+                    </div>
+                    <div class="info-box-content">
+                        Control implementation sequence prioritizes controls directly addressing identified vulnerabilities. This approach achieves dual objectives: immediate risk reduction and ISO 27001 compliance progress.
+                    </div>
+                </div>
+
+                <div class="card-grid" style="margin-top: 24px;">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Immediate Priority Controls</div>
+                            <div class="badge critical">Critical</div>
+                        </div>
+                        <div class="card-content">
+                            <ul class="styled-list">
+                                <li><strong>A.8.8</strong> - Management of Technical Vulnerabilities</li>
+                                <li><strong>A.8.20</strong> - Networks Security</li>
+                                <li><strong>A.5.15</strong> - Access Control</li>
+                                <li><strong>A.5.17</strong> - Authentication Information</li>
+                                <li><strong>A.8.15</strong> - Logging</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Short-Term Controls</div>
+                            <div class="badge high">High Priority</div>
+                        </div>
+                        <div class="card-content">
+                            <ul class="styled-list">
+                                <li><strong>A.8.9</strong> - Configuration Management</li>
+                                <li><strong>A.8.21</strong> - Security of Network Services</li>
+                                <li><strong>A.8.22</strong> - Segregation in Networks</li>
+                                <li><strong>A.8.16</strong> - Monitoring Activities</li>
+                                <li><strong>A.5.9</strong> - Inventory of Assets</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Medium-Term Controls</div>
+                            <div class="badge medium">Standard Priority</div>
+                        </div>
+                        <div class="card-content">
+                            <ul class="styled-list">
+                                <li><strong>A.8.24</strong> - Use of Cryptography</li>
+                                <li><strong>A.5.12</strong> - Classification of Information</li>
+                                <li><strong>A.5.10</strong> - Acceptable Use</li>
+                                <li><strong>A.8.25</strong> - Secure Development Life Cycle</li>
+                                <li><strong>A.5.7</strong> - Threat Intelligence</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Documentation Tab -->
+    <div class="tab-content" id="documentation">
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📚</div>
+                <h2 class="section-title">ISMS Documentation Framework</h2>
+            </div>
+
+            <p style="font-size: 16px; line-height: 1.9; margin-bottom: 32px; color: var(--text-secondary);">
+                Comprehensive documentation forms the evidence foundation for ISO 27001 certification. Each document must demonstrate control implementation, operational effectiveness, and continuous improvement.
+            </p>
+
+            <div class="section">
+                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 24px; color: var(--text-primary);">Essential Policy Documents</h3>
+                
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Document</th>
+                                <th>ISO Reference</th>
+                                <th>Priority</th>
+                                <th>Review Frequency</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Information Security Policy</strong></td>
+                                <td>Clause 5.2, A.5.1</td>
+                                <td><span class="badge critical">Mandatory</span></td>
+                                <td>Annual</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Risk Assessment Methodology</strong></td>
+                                <td>Clause 6.1.2</td>
+                                <td><span class="badge critical">Mandatory</span></td>
+                                <td>Annual</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Risk Treatment Plan</strong></td>
+                                <td>Clause 6.1.3</td>
+                                <td><span class="badge critical">Mandatory</span></td>
+                                <td>Quarterly</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Statement of Applicability</strong></td>
+                                <td>Clause 6.1.3d</td>
+                                <td><span class="badge critical">Mandatory</span></td>
+                                <td>Annual</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Access Control Policy</strong></td>
+                                <td>A.5.15, A.5.18</td>
+                                <td><span class="badge high">Required</span></td>
+                                <td>Annual</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Acceptable Use Policy</strong></td>
+                                <td>A.5.10</td>
+                                <td><span class="badge high">Required</span></td>
+                                <td>Annual</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Information Classification Policy</strong></td>
+                                <td>A.5.12</td>
+                                <td><span class="badge high">Required</span></td>
+                                <td>Annual</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cryptography Policy</strong></td>
+                                <td>A.8.24</td>
+                                <td><span class="badge high">Required</span></td>
+                                <td>Annual</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Incident Management Procedure</strong></td>
+                                <td>A.5.24, A.5.25, A.5.26</td>
+                                <td><span class="badge high">Required</span></td>
+                                <td>Annual</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Business Continuity Plan</strong></td>
+                                <td>A.5.29, A.5.30</td>
+                                <td><span class="badge medium">Standard</span></td>
+                                <td>Annual</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 60px;">
+                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 24px; color: var(--text-primary);">Operational Procedures & Records</h3>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Vulnerability Management</div>
+                        </div>
+                        <div class="card-content">
+                            <strong>Required Documentation:</strong>
+                            <ul class="checkbox-list" style="margin-top: 12px;">
+                                <li>Vulnerability scanning procedures</li>
+                                <li>Patch management process</li>
+                                <li>Vulnerability assessment records</li>
+                                <li>Remediation tracking documentation</li>
+                                <li>Exception approval records</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Access Management</div>
+                        </div>
+                        <div class="card-content">
+                            <strong>Required Documentation:</strong>
+                            <ul class="checkbox-list" style="margin-top: 12px;">
+                                <li>User access provisioning procedure</li>
+                                <li>Access review records</li>
+                                <li>Privileged account inventory</li>
+                                <li>Authentication standards</li>
+                                <li>Access termination procedures</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Network Security</div>
+                        </div>
+                        <div class="card-content">
+                            <strong>Required Documentation:</strong>
+                            <ul class="checkbox-list" style="margin-top: 12px;">
+                                <li>Network architecture diagrams</li>
+                                <li>Network segmentation design</li>
+                                <li>Firewall configuration standards</li>
+                                <li>Firewall rule review records</li>
+                                <li>Network change management logs</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Configuration Management</div>
+                        </div>
+                        <div class="card-content">
+                            <strong>Required Documentation:</strong>
+                            <ul class="checkbox-list" style="margin-top: 12px;">
+                                <li>Security configuration baselines</li>
+                                <li>Configuration management procedure</li>
+                                <li>Change control records</li>
+                                <li>Configuration deviation reports</li>
+                                <li>Baseline review documentation</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Monitoring & Logging</div>
+                        </div>
+                        <div class="card-content">
+                            <strong>Required Documentation:</strong>
+                            <ul class="checkbox-list" style="margin-top: 12px;">
+                                <li>Logging standards and requirements</li>
+                                <li>Log retention policy</li>
+                                <li>Log review procedures</li>
+                                <li>Security monitoring procedures</li>
+                                <li>Incident detection records</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Training & Awareness</div>
+                        </div>
+                        <div class="card-content">
+                            <strong>Required Documentation:</strong>
+                            <ul class="checkbox-list" style="margin-top: 12px;">
+                                <li>Security awareness program</li>
+                                <li>Training records and attendance</li>
+                                <li>Competence evaluation evidence</li>
+                                <li>Role-specific training materials</li>
+                                <li>Training effectiveness assessment</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 60px;">
+                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 24px; color: var(--text-primary);">Statement of Applicability (SOA)</h3>
+                
+                <div class="info-box">
+                    <div class="info-box-title">
+                        <span style="font-size: 24px;">📋</span>
+                        SOA Development Requirements
+                    </div>
+                    <div class="info-box-content">
+                        The Statement of Applicability is a mandatory document per Clause 6.1.3d that declares which Annex A controls are applicable to the organization's ISMS. For each of the 93 controls, the SOA must document:
+                        <br><br>
+                        <strong>1. Applicability Decision:</strong> Whether the control is applicable or excluded<br>
+                        <strong>2. Justification:</strong> Reasoning for inclusion or exclusion based on risk assessment<br>
+                        <strong>3. Implementation Status:</strong> Current state (Implemented, Partially Implemented, Not Implemented)<br>
+                        <strong>4. Implementation Details:</strong> How the control is implemented<br>
+                        <strong>5. Evidence References:</strong> Links to supporting documentation and evidence
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 24px;">
+                    <div class="card-header">
+                        <div class="card-title">SOA Control Entry Example</div>
+                    </div>
+                    <div class="card-content">
+                        <strong>Control A.8.8 - Management of Technical Vulnerabilities</strong>
+                        <br><br>
+                        <strong>Applicability:</strong> Included<br>
+                        <strong>Justification:</strong> Risk assessment identified unpatched systems (CVE-2017-0144, CVE-2023-32154) presenting critical exploitation risk. Vulnerability management essential for risk mitigation.<br>
+                        <strong>Implementation Status:</strong> Partially Implemented<br>
+                        <strong>Implementation Details:</strong> Vulnerability scanning platform deployed, remediation procedures documented, monthly scan schedule established. Patch management automation in progress.<br>
+                        <strong>Evidence:</strong> Vulnerability Management Procedure v1.2, Scan Reports (October 2025), Patch Deployment Records, Remediation Tracking Spreadsheet
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 60px;">
+                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 24px; color: var(--text-primary);">Audit Preparation Checklist</h3>
+                
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Audit Requirement</th>
+                                <th>Clause Reference</th>
+                                <th>Evidence Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>ISMS Scope Definition</strong></td>
+                                <td>Clause 4.3</td>
+                                <td>Documented scope statement with boundaries</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Risk Assessment Results</strong></td>
+                                <td>Clause 8.2</td>
+                                <td>Completed risk assessment with documented methodology</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Risk Treatment Decisions</strong></td>
+                                <td>Clause 8.3</td>
+                                <td>Risk treatment plan with approved controls</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Internal Audit Execution</strong></td>
+                                <td>Clause 9.2</td>
+                                <td>Audit program, audit reports, corrective actions</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Management Review</strong></td>
+                                <td>Clause 9.3</td>
+                                <td>Management review minutes with decisions</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Competence Records</strong></td>
+                                <td>Clause 7.2</td>
+                                <td>Training records, qualifications, certifications</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Control Implementation Evidence</strong></td>
+                                <td>Annex A</td>
+                                <td>Procedures, configurations, logs, test results</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Incident Records</strong></td>
+                                <td>A.5.24, A.5.25</td>
+                                <td>Incident logs, response documentation, lessons learned</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Change Records</strong></td>
+                                <td>A.8.32</td>
+                                <td>Change requests, approvals, implementation records</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Monitoring Results</strong></td>
+                                <td>Clause 9.1</td>
+                                <td>Performance metrics, KPIs, measurement records</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- End of Main Content -->
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-title">Vulnerability Assessment & ISO 27001 Certification Roadmap</div>
+            <div class="footer-text">
+                This comprehensive framework integrates technical vulnerability remediation with ISO 27001:2022 Information Security Management System implementation. Strategic alignment ensures efficient resource utilization while achieving dual objectives: immediate risk reduction and certification readiness.
+            </div>
+            
+            <div class="footer-meta">
+                <div class="footer-meta-item">
+                    <div class="footer-meta-label">Prepared By</div>
+                    <div class="footer-meta-value">Security Assessment Team</div>
+                </div>
+                <div class="footer-meta-item">
+                    <div class="footer-meta-label">Assessment Date</div>
+                    <div class="footer-meta-value">October 2025</div>
+                </div>
+                <div class="footer-meta-item">
+                    <div class="footer-meta-label">Report Version</div>
+                    <div class="footer-meta-value">1.0 - Final</div>
+                </div>
+                <div class="footer-meta-item">
+                    <div class="footer-meta-label">Classification</div>
+                    <div class="footer-meta-value">Confidential</div>
+                </div>
+                <div class="footer-meta-item">
+                    <div class="footer-meta-label">Certification Target</div>
+                    <div class="footer-meta-value">ISO 27001:2022</div>
+                </div>
+                <div class="footer-meta-item">
+                    <div class="footer-meta-label">Framework Edition</div>
+                    <div class="footer-meta-value">Annex A 2022</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-muted);">
+                <p style="margin-bottom: 12px;">
+                    <strong>Confidentiality Notice:</strong> This document contains confidential security information and proprietary ISMS documentation. Distribution restricted to authorized personnel only.
+                </p>
+                <p>
+                    <strong>ISO 27001 Notice:</strong> Control implementations and documentation requirements reflect ISO/IEC 27001:2022 standard. Certification requires accredited auditor validation of all mandatory documented information.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // PASSWORD PROTECTION
+        const correctPassword = "VAPT2025!Secure";
+        
+        function checkPassword() {
+            const input = document.getElementById('passwordInput');
+            const errorMsg = document.getElementById('errorMessage');
+            const overlay = document.getElementById('passwordOverlay');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (input.value === correctPassword) {
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    setTimeout(() => {
+                        mainContent.style.opacity = '1';
+                    }, 50);
+                }, 300);
+                sessionStorage.setItem('reportAccess', 'granted');
+            } else {
+                errorMsg.style.display = 'block';
+                input.value = '';
+                input.style.borderColor = 'var(--critical)';
+                input.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    input.style.animation = '';
+                    input.style.borderColor = 'var(--border)';
+                }, 500);
+            }
+        }
+        
+        if (sessionStorage.getItem('reportAccess') === 'granted') {
+            document.getElementById('passwordOverlay').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            document.getElementById('mainContent').style.opacity = '1';
+        }
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+            #mainContent {
+                opacity: 0;
+                transition: opacity 0.5s ease;
+            }
+            #passwordOverlay {
+                transition: opacity 0.3s ease;
+            }
+            #passwordInput:focus {
+                outline: none;
+                border-color: var(--primary);
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
+            button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+            }
+            button:active {
+                transform: translateY(0);
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Tab switching functionality
+        function switchTab(tabName) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.vulnerability-card, .card, .section, .iso-control').forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(element);
+        });
+    </script>
+</body>
+</html>            <!-- CVE-2017-0144 -->
+            <div class="vulnerability-card">
+                <div class="vuln-header">
+                    <div class="vuln-title">CVE-2017-0144: SMBv1 Remote Code Execution</div>
+                    <div class="cvss-badge">
+                        <span class="cvss-label">CVSS v3.1 Score</span>
+                        <div class="cvss-score">9.8</div>
+                    </div>
+                </div>
+
+                <div class="vuln-meta">
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Classification</div>
+                        <div class="vuln-meta-value">Critical Priority</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Attack Vector</div>
+                        <div class="vuln-meta-value">Network - Remote</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Exploitability</div>
+                        <div class="vuln-meta-value">Trivial - Public Exploits</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">ISO 27001 Controls</div>
+                        <div class="vuln-meta-value">A.8.8, A.8.20, A.8.21</div>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Technical Assessment</div>
+                    <div class="vuln-content">
+                        Server Message Block version 1 protocol implementation contains buffer overflow vulnerability enabling remote code execution with SYSTEM privileges. Exploitation requires no authentication and succeeds with trivial complexity using publicly available tooling. Affected systems confirmed within production environment.
+                        <br><br>
+                        <strong>Exploitation Characteristics:</strong> Wormable propagation enables autonomous network-wide compromise. Attack succeeds through single malformed SMB packet transmission. Real-world deployment in WannaCry ransomware demonstrated global impact potential.
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Remediation Requirements</div>
+                    <div class="vuln-content">
+                        <ul class="styled-list">
+                            <li>Deploy Microsoft Security Bulletin MS17-010 across all Windows systems</li>
+                            <li>Disable SMBv1 protocol via Group Policy configuration</li>
+                            <li>Implement SMB signing requirements (addresses A.8.24 Cryptography)</li>
+                            <li>Deploy network segmentation controls (fulfills A.8.20 Networks Security)</li>
+                            <li>Enable comprehensive logging (satisfies A.8.15 Logging)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">ISO 27001 Control Mapping</div>
+                    <div class="vuln-content">
+                        <strong>A.8.8 Management of Technical Vulnerabilities:</strong> Patch deployment process<br>
+                        <strong>A.8.20 Networks Security:</strong> Network segmentation implementation<br>
+                        <strong>A.8.21 Security of Network Services:</strong> Protocol hardening and service security<br>
+                        <strong>A.8.24 Use of Cryptography:</strong> SMB signing enforcement
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Reference Materials</div>
+                    <div class="vuln-content">
+                        <a href="https://nvd.nist.gov/vuln/detail/CVE-2017-0144" target="_blank" class="external-link">NIST NVD - CVE-2017-0144</a><br>
+                        <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2017-0144" target="_blank" class="external-link">Microsoft Security Response Center</a><br>
+                        <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" class="external-link">CISA Known Exploited Vulnerabilities</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CVE-2023-32154 -->
+            <div class="vulnerability-card" style="border-left-color: var(--high);">
+                <div class="vuln-header">
+                    <div class="vuln-title">CVE-2023-32154: MikroTik RouterOS Buffer Overflow</div>
+                    <div class="cvss-badge" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                        <span class="cvss-label">CVSS v3.1 Score</span>
+                        <div class="cvss-score" style="color: #7c2d12;">8.8</div>
+                    </div>
+                </div>
+
+                <div class="vuln-meta">
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Classification</div>
+                        <div class="vuln-meta-value">High Priority</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Attack Vector</div>
+                        <div class="vuln-meta-value">Adjacent Network</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Exploitability</div>
+                        <div class="vuln-meta-value">Low - Network Adjacent</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">ISO 27001 Controls</div>
+                        <div class="vuln-meta-value">A.8.8, A.8.9, A.8.20</div>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Technical Assessment</div>
+                    <div class="vuln-content">
+                        Router Advertisement Daemon in MikroTik RouterOS contains out-of-bounds write vulnerability when IPv6 RA functionality enabled. Exploitation requires network-adjacent positioning but achieves pre-authentication remote code execution. Demonstrated at Pwn2Own competition confirming practical exploitability.
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Remediation Requirements</div>
+                    <div class="vuln-content">
+                        <ul class="styled-list">
+                            <li>Upgrade RouterOS firmware to version 7.9.1 or later</li>
+                            <li>Review and disable unnecessary IPv6 router advertisements</li>
+                            <li>Implement management interface access controls (A.8.3 Access Control)</li>
+                            <li>Enable comprehensive audit logging (A.8.15 Logging)</li>
+                            <li>Isolate network infrastructure on dedicated management VLAN</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">ISO 27001 Control Mapping</div>
+                    <div class="vuln-content">
+                        <strong>A.8.8 Management of Technical Vulnerabilities:</strong> Firmware update process<br>
+                        <strong>A.8.9 Configuration Management:</strong> Secure configuration baseline<br>
+                        <strong>A.8.20 Networks Security:</strong> Infrastructure isolation controls
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Reference Materials</div>
+                    <div class="vuln-content">
+                        <a href="https://nvd.nist.gov/vuln/detail/CVE-2023-32154" target="_blank" class="external-link">NIST NVD - CVE-2023-32154</a><br>
+                        <a href="https://mikrotik.com/supportsec/cve-2023-32154" target="_blank" class="external-link">MikroTik Official Advisory</a><br>
+                        <a href="https://www.zerodayinitiative.com/advisories/ZDI-23-710/" target="_blank" class="external-link">Zero Day Initiative Advisory</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Default Credentials -->
+            <div class="vulnerability-card" style="border-left-color: var(--critical);">
+                <div class="vuln-header">
+                    <div class="vuln-title">Default Credentials: Infrastructure Management</div>
+                    <div class="cvss-badge">
+                        <span class="cvss-label">CVSS v3.1 Score</span>
+                        <div class="cvss-score">9.8</div>
+                    </div>
+                </div>
+
+                <div class="vuln-meta">
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Classification</div>
+                        <div class="vuln-meta-value">Critical Priority</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Attack Vector</div>
+                        <div class="vuln-meta-value">Network - Remote</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Exploitability</div>
+                        <div class="vuln-meta-value">Trivial - Known Defaults</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">ISO 27001 Controls</div>
+                        <div class="vuln-meta-value">A.5.15, A.5.16, A.5.17, A.5.18</div>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Technical Assessment</div>
+                    <div class="vuln-content">
+                        Out-of-band management interfaces utilizing factory default credentials present immediate compromise pathway. Dell iDRAC controllers provide below-OS infrastructure control including firmware modification, power management, and console access. Default credentials are publicly documented and universally known.
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Remediation Requirements</div>
+                    <div class="vuln-content">
+                        <ul class="styled-list">
+                            <li>Implement unique complex credentials immediately (A.5.17 Authentication)</li>
+                            <li>Deploy privileged access management solution (A.5.18 Access Rights)</li>
+                            <li>Establish credential rotation procedures (A.5.18 Access Rights)</li>
+                            <li>Implement jump host architecture with MFA (A.5.18 Access Rights)</li>
+                            <li>Isolate management interfaces on dedicated VLAN (A.8.20 Networks Security)</li>
+                            <li>Enable comprehensive audit logging (A.8.15 Logging)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">ISO 27001 Control Mapping</div>
+                    <div class="vuln-content">
+                        <strong>A.5.15 Access Control:</strong> Access control policy implementation<br>
+                        <strong>A.5.16 Identity Management:</strong> Unique user identification<br>
+                        <strong>A.5.17 Authentication Information:</strong> Password management procedures<br>
+                        <strong>A.5.18 Access Rights:</strong> Privileged access management
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Reference Materials</div>
+                    <div class="vuln-content">
+                        <a href="https://www.dell.com/support/kbdoc/en-us/000178115/idrac-security-best-practices" target="_blank" class="external-link">Dell iDRAC Security Best Practices</a><br>
+                        <a href="https://www.cisa.gov/news-events/alerts/2013/07/19/risks-default-passwords-internet" target="_blank" class="external-link">CISA Alert: Default Passwords</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Network Architecture -->
+            <div class="vulnerability-card" style="border-left-color: var(--high);">
+                <div class="vuln-header">
+                    <div class="vuln-title">Network Architecture: Segmentation Absence</div>
+                    <div class="cvss-badge" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                        <span class="cvss-label">Priority Rating</span>
+                        <div class="cvss-score" style="color: #7c2d12;">High</div>
+                    </div>
+                </div>
+
+                <div class="vuln-meta">
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Classification</div>
+                        <div class="vuln-meta-value">High Priority</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Impact Scope</div>
+                        <div class="vuln-meta-value">Lateral Movement</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Architecture Type</div>
+                        <div class="vuln-meta-value">Flat Network Topology</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">ISO 27001 Controls</div>
+                        <div class="vuln-meta-value">A.8.20, A.8.21, A.8.22</div>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Technical Assessment</div>
+                    <div class="vuln-content">
+                        Current network topology implements single broadcast domain without segmentation controls. Architecture enables unrestricted lateral movement following initial compromise. Management interfaces, production systems, and user endpoints share network segments without isolation boundaries.
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Remediation Requirements</div>
+                    <div class="vuln-content">
+                        <ul class="styled-list">
+                            <li>Design comprehensive VLAN segmentation strategy (A.8.20 Networks Security)</li>
+                            <li>Implement zero-trust network architecture principles</li>
+                            <li>Deploy next-generation firewall with microsegmentation (A.8.22 Segregation)</li>
+                            <li>Establish dedicated management VLAN (A.8.20 Networks Security)</li>
+                            <li>Create DMZ for internet-facing services (A.8.22 Segregation)</li>
+                            <li>Implement network access control (NAC) system</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">ISO 27001 Control Mapping</div>
+                    <div class="vuln-content">
+                        <strong>A.8.20 Networks Security:</strong> Network security controls implementation<br>
+                        <strong>A.8.21 Security of Network Services:</strong> Service-level security mechanisms<br>
+                        <strong>A.8.22 Segregation in Networks:</strong> Network segregation controls
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ISO 27001 Roadmap Tab -->
+    <div class="tab-content" id="iso27001">
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2 class="section-title">ISO 27001:2022 Certification Roadmap</h2>
+            </div>
+
+            <p style="font-size: 16px; line-height: 1.9; margin-bottom: 32px; color: var(--text-secondary);">
+                ISO 27001:2022 certification requires systematic implementation of an Information Security Management System (ISMS) encompassing organizational controls, documented processes, and technical safeguards. This roadmap provides structured phases for achieving certification readiness.
+            </p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Phase 1: ISMS Foundation</div>
+                        <div class="badge critical">Governance Framework</div>
+                    </div>
+                    <div class="card-content">
+                        <strong>Mandatory Deliverables:</strong>
+                        <ul class="styled-list" style="margin-top: 12px;">
+                            <li>Define ISMS scope boundaries (Clause 4.3)</li>
+                            <li>Establish information security policy (Clause 5.2)</li>
+                            <li>Assign roles and responsibilities (Clause 5.3)</li>
+                            <li>Develop risk assessment methodology (Clause 6.1.2)</li>
+                            <li>Create risk treatment plan (Clause 6.1.3)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Phase 2: Control Implementation</div>
+                        <div class="badge high">Technical Deployment</div>
+                    </div>
+                    <div class="card-content">
+                        <strong>Annex A Control Deployment:</strong>
+                        <ul class="styled-list" style="margin-top: 12px;">
+                            <li>Implement 93 Annex A controls</li>
+                            <li>Deploy technical security measures</li>
+                            <li>Establish operational procedures</li>
+                            <li>Create control implementation evidence</li>
+                            <li>Document Statement of Applicability (SOA)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Phase 3: Documentation</div>
+                        <div class="badge medium">Evidence Creation</div>
+                    </div>
+                    <div class="card-content">
+                        <strong>Mandatory Documentation:</strong>
+                        <ul class="styled-list" style="margin-top: 12px;">
+                            <li>ISMS policy documents</li>
+                            <li>Risk assessment records</li>
+                            <li>Statement of Applicability</li>
+                            <li>Control implementation evidence</li>
+                            <li>Operational procedures</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Phase 4: Certification Audit</div>
+                        <div class="badge low">Validation Process</div>
+                    </div>
+                    <div class="card-content">
+                        <strong>Audit Preparation:</strong>
+                        <ul class="styled-list" style="margin-top: 12px;">
+                            <li>Internal audit execution (Clause 9.2)</li>
+                            <li>Management review completion (Clause 9.3)</li>
+                            <li>Stage 1 audit preparation</li>
+                            <li>Stage 2 audit readiness</li>
+                            <li>Certification decision</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 60px;">
+                <div class="section-header">
+                    <div class="section-icon">📝</div>
+                    <h2 class="section-title">Mandatory ISMS Documentation</h2>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">
+                        <span style="font-size: 24px;">📋</span>
+                        ISO 27001 Clause 7.5 - Documented Information Requirements
+                    </div>
+                    <div class="info-box-content">
+                        The following documented information is mandatory for ISO 27001:2022 certification. Each document must be version controlled, approved by management, and regularly reviewed.
+                    </div>
+                </div>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Clause 4 - Context</div>
+                        </div>
+                        <div class="card-content">
+                            <ul class="checkbox-list">
+                                <li><strong>Clause 4.3:</strong> Scope of the ISMS</li>
+                                <li><strong>Clause 4.4:</strong> ISMS and its processes</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Clause 5 - Leadership</div>
+                        </div>
+                        <div class="card-content">
+                            <ul class="checkbox-list">
+                                <li><strong>Clause 5.2:</strong> Information Security Policy</li>
+                                <li><strong>Clause 5.3:</strong> Organizational roles, responsibilities, authorities</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Clause 6 - Planning</div>
+                        </div>
+                        <div class="card-content">
+                            <ul class="checkbox-list">
+                                <li><strong>Clause 6.1.2:</strong> Information security risk assessment process</li>
+                                <li><strong>Clause 6.1.3:</strong> Information security risk treatment process</li>
+                                <li><strong>Clause 6.1.3d:</strong> Statement of Applicability</li>
+                                <li><strong>Clause 6.2:</strong> Information security objectives</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Clause 7 - Support</div>
+                        </div>
+                        <div class="card-content">
+                            <ul class="checkbox-list">
+                                <li><strong>Clause 7.2:</strong> Evidence of competence</li>
+                                <li><strong>Clause 7.3:</strong> Awareness evidence</li>
+                                <li><strong>Clause 7.4:</strong> Communication procedures</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Clause 8 - Operation</div>
+                        </div>
+                        <div class="card-content">
+                            <ul class="checkbox-list">
+                                <li><strong>Clause 8.1:</strong> Operational planning and control</li>
+                                <li><strong>Clause 8.2:</strong> Information security risk assessment results</li>
+                                <li><strong>Clause 8.3:</strong> Information security risk treatment results</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Clause 9 - Evaluation</div>
+                        </div>
+                        <div class="card-content">
+                            <ul class="checkbox-list">
+                                <li><strong>Clause 9.1:</strong> Evidence of monitoring and measurement results</li>
+                                <li><strong>Clause 9.2:</strong> Internal audit program and results</li>
+                                <li><strong>Clause 9.3:</strong> Management review results</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Clause 10 - Improvement</div>
+                        </div>
+                        <div class="card-content">
+                            <ul class="checkbox-list">
+                                <li><strong>Clause 10.1:</strong> Evidence of nonconformities</li>
+                                <li><strong>Clause 10.1:</strong> Results of corrective actions</li>
+                                <li><strong>Clause 10.2:</strong> Continual improvement evidence</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Control Implementation Tab -->
+    <div class="tab-content" id="controls">
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔐</div>
+                <h2 class="section-title">Annex A Control Implementation</h2>
+            </div>
+
+            <p style="font-size: 16px; line-height: 1.9; margin-bottom: 32px; color: var(--text-secondary);">
+                ISO 27001:2022 Annex A contains 93 controls organized into four categories. Implementation priority aligns with identified vulnerabilities and operational risk.
+            </p>
+
+            <div class="section">
+                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 24px; color: var(--text-primary);">A.5 Organizational Controls (37 Controls)</h3>
+                
+                <div class="iso-control">
+                    <div class="iso-control-header">
+                        <div class="iso-control-id">A.5.1</div>
+                        <div class="badge critical">Mandatory</div>
+                    </div>
+                    <div class="iso-control-title">Policies for Information Security</div>
+                    <div class="iso-control-description">
+                        <strong>Requirement:</strong> Information security policy and topic-specific policies shall be defined, approved by management, published, communicated to and acknowledged by relevant personnel and relevant interested parties, and reviewed at planned intervals.
+                        <br><br>
+                        <strong>Implementation:</strong> Draft comprehensive information security policy framework, obtain executive approval, establish annual review cycle, implement policy acknowledgment tracking system.
+                    </div>
+                </div>
+
+                <div class="iso-control">
+                    <div class="iso-control-header">
+                        <div class="iso-control-id">A.5.7</div>
+                        <div class="badge critical">Mandatory</div>
+                    </div>
+                    <div class="iso-control-title">Threat Intelligence</div>
+                    <div class="iso-control-description">
+                        <strong>Requirement:</strong> Information relating to information security threats shall be collected and analyzed to produce threat intelligence.
+                        <br><br>
+                        <strong>Implementation:</strong> Subscribe to threat intelligence feeds (CISA, MS-ISAC), establish threat analysis procedures, integrate threat intelligence into vulnerability management, document threat intelligence review process.
+                    </div>
+                </div>
+
+                <div class="iso-control">
+                    <div class="iso-control-header">
+                        <div class="iso-control-id">A.5.9</div>
+                        <div class="badge high">Required</div>
+                    </div>
+                    <div class="iso-control-title">Inventory of Information and Other Associated Assets</div>
+                    <div class="iso-control-description">
+                        <strong>Requirement:</strong> An inventory of information and other associated assets, including owners, shall be developed and maintained.
+                        <br><br>
+                        <strong>Implementation:</strong> Deploy asset management system, document all network infrastructure, assign asset owners, classify information assets, establish asset register maintenance procedures. Direct correlation with identified systems (192.168.0.0/24 inventory).
+                    </div>
+                </div>
+
+                <div class="iso-control">
+                    <div class="iso-control-header">
+                        <div class="iso-control-id">A.5.10</div>
+                        <div class="badge high">Required</div>
+                    </div>
+                    <div class="iso-control-title">Acceptable Use of Information and Other Associated Assets</div>
+                    <div class="iso-control-description">
+                        <strong>Requirement:</strong> Rules for the acceptable use and procedures for handling information and other associated assets shall be identified, documented and implemented.
+                        <br><br>
+                        <strong>Implementation:</strong> Create Acceptable Use Policy, define information handling procedures, implement user acknowledgment process, establish monitoring mechanisms for policy violations.
+                    </div>
+                </div>
+
+                <div class="iso-control">
+                    <div class="iso-control-header">
+                        <div class="iso-control-id">A.5.12</div>
+                        <div class="badge high">Required</div>
+                    </div>
+                    <div class="iso-control-title">Classification of Information</div>
+                    <div class="iso-control-description">
+                        <strong>Requirement:</strong> Information shall be classified according to the information security needs of the organization based on confidentiality, integrity, availability and relevant interested party requirements.
+                        <br><br>
+                        <strong>Implementation:</strong> Define classification schema (Public, Internal, Confidential, Restricted), establish classification procedures, implement labeling requirements, train personnel on classification handling.
+                    </div>
+                </div>
+
+                <div class="iso-control">
+                    <div class="iso-control-header">
+                        <div class="iso-control-id">A.5.15</div>
+                        <div class="badge critical">Priority</div>
+                    </div>
+                    <div class="iso-control-title">Access Control</div>
+                    <div class="iso-control-description">
+                        <strong>Requirement:</strong> Rules to control physical and logical access to information and other associated assets shall be established and implemented based on business and information security requirements.
+                        <br><br>
+                        <strong>Implementation:</strong> Document access control policy, implement least privilege principles, establish access review procedures. Directly addresses identified default credential vulnerabilities.
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 60px;">
+                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 24px; color: var(--text-primary);">A.8 Technological Controls (34 Controls)</h3>
+                
+                <div class="iso-control">
+                    <div class="iso-control-header">
+                        <div class="iso-control-id">A.8.8</div>
+                        <div class="badge critical">Critical Priority</div>
+                    </div>
+                    <div class="iso-control-title">Management of Technical Vulnerabilities</div<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vulnerability Assessment & ISO 27001 Certification Roadmap</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5568d3;
+            --secondary: #764ba2;
+            --bg-dark: #0f1419;
+            --bg-darker: #080a0d;
+            --surface: #1a1f2e;
+            --surface-light: #252b3b;
+            --text-primary: #e4e7eb;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --border: #2d3748;
+            --critical: #f56565;
+            --high: #ed8936;
+            --medium: #ecc94b;
+            --low: #48bb78;
+            --success: #10b981;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-danger: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        .nav-container {
+            background: var(--bg-darker);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .nav-brand {
+            font-size: 24px;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .nav-tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-tab:hover {
+            color: var(--text-primary);
+            background: var(--surface);
+        }
+        
+        .nav-tab.active {
+            color: var(--primary);
+            background: var(--surface);
+        }
+        
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40%;
+            height: 2px;
+            background: var(--gradient-primary);
+        }
+        
+        /* Header */
+        .header {
+            background: var(--gradient-primary);
+            padding: 80px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-50px, 50px) rotate(180deg); }
+        }
+        
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+        
+        .header .subtitle {
+            font-size: 24px;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+        
+        /* Meta Grid */
+        .meta-grid {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .meta-card {
+            background: var(--surface-light);
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .meta-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+        }
+        
+        .meta-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .meta-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Section Headers */
+        .section {
+            margin-bottom: 60px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.2);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .badge.critical {
+            background: var(--gradient-danger);
+            color: white;
+        }
+        
+        .badge.high {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #7c2d12;
+        }
+        
+        .badge.medium {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #7c2d12;
+        }
+        
+        .badge.low {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #065f46;
+        }
+        
+        .card-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        
+        /* Vulnerability Details */
+        .vulnerability-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 32px;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--critical);
+        }
+        
+        .vuln-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+        
+        .vuln-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            flex: 1;
+        }
+        
+        .cvss-badge {
+            background: var(--gradient-danger);
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 140px;
+        }
+        
+        .cvss-label {
+            font-size: 12px;
+            opacity: 0.9;
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        .cvss-score {
+            font-size: 32px;
+            font-weight: 800;
+        }
+        
+        .vuln-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+            padding: 24px;
+            background: var(--surface-light);
+            border-radius: 12px;
+        }
+        
+        .vuln-meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .vuln-meta-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        
+        .vuln-meta-value {
+            font-size: 15px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .vuln-section {
+            margin: 32px 0;
+        }
+        
+        .vuln-section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .vuln-section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+        
+        .vuln-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            padding-left: 16px;
+        }
+        
+        /* Tables */
+        .data-table-container {
+            background: var(--surface);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin: 32px 0;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table thead {
+            background: var(--gradient-primary);
+        }
+        
+        .data-table th {
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .data-table td {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .data-table tbody tr:hover {
+            background: var(--surface-light);
+        }
+        
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Status Indicators */
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .status.vulnerable {
+            background: rgba(245, 101, 101, 0.1);
+            color: var(--critical);
+            border: 1px solid rgba(245, 101, 101, 0.3);
+        }
+        
+        .status.attention {
+            background: rgba(237, 137, 54, 0.1);
+            color: var(--high);
+            border: 1px solid rgba(237, 137, 54, 0.3);
+        }
+        
+        .status.secure {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        /* Info Box */
+        .info-box {
+            background: var(--surface-light);
+            border-left: 4px solid var(--primary);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 32px 0;
+        }
+        
+        .info-box-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .info-box-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        
+        /* Links */
+        .external-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid transparent;
+        }
+        
+        .external-link:hover {
+            border-bottom-color: var(--primary);
+        }
+        
+        /* Lists */
+        .styled-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .styled-list li {
+            padding: 16px 0 16px 32px;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        
+        .styled-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .styled-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 20px;
+        }
+        
+        /* Checkbox List */
+        .checkbox-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .checkbox-list li {
+            padding: 12px 0 12px 36px;
+            position: relative;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        
+        .checkbox-list li::before {
+            content: '☐';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-size: 20px;
+        }
+        
+        /* ISO Control Box */
+        .iso-control {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 16px 0;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .iso-control:hover {
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+        
+        .iso-control-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .iso-control-id {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 14px;
+        }
+        
+        .iso-control-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        
+        .iso-control-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--bg-darker);
+            padding: 60px 40px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        .footer-text {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+        
+        .footer-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .footer-meta-item {
+            text-align: center;
+        }
+        
+        .footer-meta-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+        
+        .footer-meta-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-tabs {
+                display: none;
+            }
+            
+            .header h1 {
+                font-size: 36px;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-darker);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 6px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+    <!-- Password Protection Overlay -->
+    <div id="passwordOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-darker); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+        <div style="background: var(--surface); padding: 60px; border-radius: 24px; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); max-width: 500px; width: 90%; border: 1px solid var(--border);">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <div style="width: 80px; height: 80px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 40px;">🔒</div>
+                <h2 style="font-size: 32px; font-weight: 800; margin-bottom: 12px; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Protected Document</h2>
+                <p style="color: var(--text-secondary); font-size: 16px; line-height: 1.6;">This Vulnerability Assessment & ISO 27001 Certification Report is confidential. Please enter the access code to continue.</p>
+            </div>
+            
+            <div style="margin-bottom: 24px;">
+                <label style="display: block; font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em;">Access Code</label>
+                <input type="password" id="passwordInput" placeholder="Enter password" style="width: 100%; padding: 16px 20px; background: var(--surface-light); border: 2px solid var(--border); border-radius: 12px; color: var(--text-primary); font-size: 16px; font-family: 'Inter', sans-serif; transition: all 0.3s ease;" onkeypress="if(event.key === 'Enter') checkPassword()">
+            </div>
+            
+            <button onclick="checkPassword()" style="width: 100%; padding: 16px; background: var(--gradient-primary); border: none; border-radius: 12px; color: white; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.05em;">
+                Unlock Report
+            </button>
+            
+            <div id="errorMessage" style="margin-top: 16px; padding: 12px 16px; background: rgba(245, 101, 101, 0.1); border: 1px solid rgba(245, 101, 101, 0.3); border-radius: 8px; color: var(--critical); font-size: 14px; display: none;">
+                <strong>⚠️ Access Denied:</strong> Invalid password. Please try again.
+            </div>
+            
+            <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); text-align: center;">
+                <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+                    <strong>Security Notice:</strong> Unauthorized access attempts are logged and monitored. This document contains confidential security information.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden until password is entered) -->
+    <div id="mainContent" style="display: none;">
+    <!-- Navigation -->
+    <div class="nav-container">
+        <div class="nav">
+            <div class="nav-brand">VAPT & ISO 27001</div>
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="switchTab('overview')">Overview</button>
+                <button class="nav-tab" onclick="switchTab('vulnerabilities')">Vulnerabilities</button>
+                <button class="nav-tab" onclick="switchTab('iso27001')">ISO 27001 Roadmap</button>
+                <button class="nav-tab" onclick="switchTab('controls')">Control Implementation</button>
+                <button class="nav-tab" onclick="switchTab('documentation')">Documentation</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <h1>Vulnerability Assessment & ISO 27001 Certification</h1>
+            <div class="subtitle">Security Enhancement & Compliance Framework Implementation</div>
+        </div>
+    </div>
+
+    <!-- Meta Information -->
+    <div class="meta-grid">
+        <div class="meta-card">
+            <div class="meta-label">Assessment Date</div>
+            <div class="meta-value">October 2025</div>
+        </div>
+        <div class="meta-card">
+            <div class="meta-label">Network Scope</div>
+            <div class="meta-value">192.168.0.0/24</div>
+        </div>
+        <div class="meta-card">
+            <div class="meta-label">Certification Target</div>
+            <div class="meta-value">ISO 27001:2022</div>
+        </div>
+        <div class="meta-card">
+            <div class="meta-label">Primary Focus</div>
+            <div class="meta-value">ISMS Implementation</div>
+        </div>
+        <div class="meta-card">
+            <div class="meta-label">Report Classification</div>
+            <div class="meta-value">Confidential</div>
+        </div>
+        <div class="meta-card">
+            <div class="meta-label">Implementation Approach</div>
+            <div class="meta-value">Phased Deployment</div>
+        </div>
+    </div>
+
+    <!-- Overview Tab -->
+    <div class="tab-content active" id="overview">
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📊</div>
+                <h2 class="section-title">Executive Summary</h2>
+            </div>
+            
+            <p style="font-size: 18px; line-height: 1.9; margin-bottom: 32px; color: var(--text-secondary);">
+                This assessment establishes a comprehensive framework for addressing identified security vulnerabilities while simultaneously pursuing ISO 27001:2022 certification. The dual-track approach ensures immediate risk mitigation while building the foundational Information Security Management System (ISMS) required for certification. Our strategy prioritizes technical remediation alongside systematic documentation and control implementation.
+            </p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Critical Priority Vulnerabilities</div>
+                        <div class="badge critical">Immediate Action</div>
+                    </div>
+                    <div class="card-content">
+                        Legacy protocol vulnerabilities and authentication weaknesses require immediate remediation. These findings directly impact ISO 27001 control A.8.20 (Networks Security) and A.5.18 (Access Rights) compliance.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">High Priority Infrastructure</div>
+                        <div class="badge high">Strategic Focus</div>
+                    </div>
+                    <div class="card-content">
+                        Network architecture enhancements and access control implementations form the technical foundation for ISO 27001 Annex A controls across multiple domains.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Medium Priority Systems</div>
+                        <div class="badge medium">Systematic Improvement</div>
+                    </div>
+                    <div class="card-content">
+                        Configuration hardening and monitoring capabilities support ongoing ISMS operational requirements and continuous improvement processes.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">ISO 27001 Certification Path</div>
+                        <div class="badge low">Framework Implementation</div>
+                    </div>
+                    <div class="card-content">
+                        Structured ISMS development including scope definition, risk assessment methodology, Statement of Applicability, and comprehensive control implementation evidence.
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">
+                    <span style="font-size: 24px;">🎯</span>
+                    Strategic Approach
+                </div>
+                <div class="info-box-content">
+                    <strong>Parallel Implementation Strategy:</strong> Technical vulnerability remediation proceeds simultaneously with ISO 27001 framework development. Vulnerability fixes directly fulfill specific Annex A control requirements, creating efficiency through aligned objectives. This integrated methodology ensures certification readiness while materially improving security posture.
+                    <br><br>
+                    <strong>Documentation First:</strong> Every technical implementation generates required ISO 27001 evidence artifacts. Remediation activities produce control implementation documentation, test results, and operational procedures that satisfy auditor requirements.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vulnerabilities Tab -->
+    <div class="tab-content" id="vulnerabilities">
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔍</div>
+                <h2 class="section-title">Vulnerability Assessment & Remediation</h2>
+            </div>
+
+            <p style="font-size: 16px; line-height: 1.9; margin-bottom: 32px; color: var(--text-secondary);">
+                The following vulnerabilities have been identified through comprehensive security testing. Each finding directly correlates to specific ISO 27001:2022 Annex A controls, enabling integrated remediation and compliance achievement.
+            </p>
+
+            <!-- CVE-2017-0144 -->
+            <div
