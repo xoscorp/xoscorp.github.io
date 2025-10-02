@@ -1,0 +1,1998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vulnerability Assessment & Penetration Testing Report</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5568d3;
+            --secondary: #764ba2;
+            --bg-dark: #0f1419;
+            --bg-darker: #080a0d;
+            --surface: #1a1f2e;
+            --surface-light: #252b3b;
+            --text-primary: #e4e7eb;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --border: #2d3748;
+            --critical: #f56565;
+            --high: #ed8936;
+            --medium: #ecc94b;
+            --low: #48bb78;
+            --success: #10b981;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-danger: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        .nav-container {
+            background: var(--bg-darker);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .nav-brand {
+            font-size: 24px;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .nav-tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-tab:hover {
+            color: var(--text-primary);
+            background: var(--surface);
+        }
+        
+        .nav-tab.active {
+            color: var(--primary);
+            background: var(--surface);
+        }
+        
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40%;
+            height: 2px;
+            background: var(--gradient-primary);
+        }
+        
+        /* Header */
+        .header {
+            background: var(--gradient-primary);
+            padding: 80px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-50px, 50px) rotate(180deg); }
+        }
+        
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+        
+        .header .subtitle {
+            font-size: 24px;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+        
+        /* Meta Grid */
+        .meta-grid {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .meta-card {
+            background: var(--surface-light);
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .meta-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+        }
+        
+        .meta-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .meta-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Section Headers */
+        .section {
+            margin-bottom: 60px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.2);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .badge.critical {
+            background: var(--gradient-danger);
+            color: white;
+        }
+        
+        .badge.high {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #7c2d12;
+        }
+        
+        .badge.medium {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #7c2d12;
+        }
+        
+        .badge.low {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #065f46;
+        }
+        
+        .card-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        
+        /* Vulnerability Details */
+        .vulnerability-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 32px;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--critical);
+        }
+        
+        .vuln-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+        
+        .vuln-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            flex: 1;
+        }
+        
+        .cvss-badge {
+            background: var(--gradient-danger);
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 140px;
+        }
+        
+        .cvss-label {
+            font-size: 12px;
+            opacity: 0.9;
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        .cvss-score {
+            font-size: 32px;
+            font-weight: 800;
+        }
+        
+        .vuln-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+            padding: 24px;
+            background: var(--surface-light);
+            border-radius: 12px;
+        }
+        
+        .vuln-meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .vuln-meta-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        
+        .vuln-meta-value {
+            font-size: 15px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .vuln-section {
+            margin: 32px 0;
+        }
+        
+        .vuln-section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .vuln-section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+        
+        .vuln-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            padding-left: 16px;
+        }
+        
+        /* Tables */
+        .data-table-container {
+            background: var(--surface);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin: 32px 0;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table thead {
+            background: var(--gradient-primary);
+        }
+        
+        .data-table th {
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .data-table td {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .data-table tbody tr:hover {
+            background: var(--surface-light);
+        }
+        
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Status Indicators */
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .status.vulnerable {
+            background: rgba(245, 101, 101, 0.1);
+            color: var(--critical);
+            border: 1px solid rgba(245, 101, 101, 0.3);
+        }
+        
+        .status.attention {
+            background: rgba(237, 137, 54, 0.1);
+            color: var(--high);
+            border: 1px solid rgba(237, 137, 54, 0.3);
+        }
+        
+        .status.secure {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        /* Info Box */
+        .info-box {
+            background: var(--surface-light);
+            border-left: 4px solid var(--primary);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 32px 0;
+        }
+        
+        .info-box-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .info-box-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        
+        /* Links */
+        .external-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid transparent;
+        }
+        
+        .external-link:hover {
+            border-bottom-color: var(--primary);
+        }
+        
+        /* Lists */
+        .styled-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .styled-list li {
+            padding: 16px 0 16px 32px;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        
+        .styled-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .styled-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 20px;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+        
+        .stat-card {
+            background: var(--surface);
+            padding: 32px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.2);
+        }
+        
+        .stat-value {
+            font-size: 48px;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--bg-darker);
+            padding: 60px 40px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        .footer-text {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+        
+        .footer-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .footer-meta-item {
+            text-align: center;
+        }
+        
+        .footer-meta-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+        
+        .footer-meta-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-tabs {
+                display: none;
+            }
+            
+            .header h1 {
+                font-size: 36px;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-darker);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 6px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+    <!-- Password Protection Overlay -->
+    <div id="passwordOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-darker); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+        <div style="background: var(--surface); padding: 60px; border-radius: 24px; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); max-width: 500px; width: 90%; border: 1px solid var(--border);">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <div style="width: 80px; height: 80px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 40px;">🔒</div>
+                <h2 style="font-size: 32px; font-weight: 800; margin-bottom: 12px; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Protected Document</h2>
+                <p style="color: var(--text-secondary); font-size: 16px; line-height: 1.6;">This Vulnerability Assessment & Penetration Testing Report is confidential. Please enter the access code to continue.</p>
+            </div>
+            
+            <div style="margin-bottom: 24px;">
+                <label style="display: block; font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em;">Access Code</label>
+                <input type="password" id="passwordInput" placeholder="Enter password" style="width: 100%; padding: 16px 20px; background: var(--surface-light); border: 2px solid var(--border); border-radius: 12px; color: var(--text-primary); font-size: 16px; font-family: 'Inter', sans-serif; transition: all 0.3s ease;" onkeypress="if(event.key === 'Enter') checkPassword()">
+            </div>
+            
+            <button onclick="checkPassword()" style="width: 100%; padding: 16px; background: var(--gradient-primary); border: none; border-radius: 12px; color: white; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.05em;">
+                Unlock Report
+            </button>
+            
+            <div id="errorMessage" style="margin-top: 16px; padding: 12px 16px; background: rgba(245, 101, 101, 0.1); border: 1px solid rgba(245, 101, 101, 0.3); border-radius: 8px; color: var(--critical); font-size: 14px; display: none;">
+                <strong>⚠️ Access Denied:</strong> Invalid password. Please try again.
+            </div>
+            
+            <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); text-align: center;">
+                <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+                    <strong>Security Notice:</strong> Unauthorized access attempts are logged and monitored. This document contains confidential security information.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden until password is entered) -->
+    <div id="mainContent" style="display: none;">
+    <!-- Navigation -->
+    <div class="nav-container">
+        <div class="nav">
+            <div class="nav-brand">VAPT Report</div>
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="switchTab('overview')">Overview</button>
+                <button class="nav-tab" onclick="switchTab('vulnerabilities')">Vulnerabilities</button>
+                <button class="nav-tab" onclick="switchTab('infrastructure')">Infrastructure</button>
+                <button class="nav-tab" onclick="switchTab('recommendations')">Recommendations</button>
+                <button class="nav-tab" onclick="switchTab('compliance')">Compliance</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <h1>Vulnerability Assessment & Penetration Testing</h1>
+            <div class="subtitle">Enterprise Security Infrastructure Evaluation</div>
+        </div>
+    </div>
+
+    <!-- Meta Information -->
+    <div class="meta-grid">
+        <div class="meta-card">
+            <div class="meta-label">Assessment Date</div>
+            <div class="meta-value">October 1, 2025</div>
+        </div>
+        <div class="meta-card">
+            <div class="meta-label">Network Scope</div>
+            <div class="meta-value">192.168.0.0/24</div>
+        </div>
+        <div class="meta-card">
+            <div class="meta-label">Active Hosts</div>
+            <div class="meta-value">19 Systems</div>
+        </div>
+        <div class="meta-card">
+            <div class="meta-label">Report Version</div>
+            <div class="meta-value">1.0</div>
+        </div>
+        <div class="meta-card">
+            <div class="meta-label">Classification</div>
+            <div class="meta-value">Confidential</div>
+        </div>
+        <div class="meta-card">
+            <div class="meta-label">Security Posture</div>
+            <div class="meta-value">Enhancement Required</div>
+        </div>
+    </div>
+
+    <!-- Overview Tab -->
+    <div class="tab-content active" id="overview">
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📊</div>
+                <h2 class="section-title">Executive Summary</h2>
+            </div>
+            
+            <p style="font-size: 18px; line-height: 1.9; margin-bottom: 32px; color: var(--text-secondary);">
+                This comprehensive security assessment evaluated your enterprise infrastructure to identify vulnerabilities, assess risk exposure, and provide strategic remediation guidance. The evaluation reveals significant opportunities for security enhancement through systematic implementation of industry-standard controls and modernization initiatives.
+            </p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Protocol Vulnerabilities</div>
+                        <div class="badge critical">Critical Priority</div>
+                    </div>
+                    <div class="card-content">
+                        Legacy protocol implementations require immediate attention. SMBv1 exposure presents significant exploitation potential through well-documented attack vectors. Strategic protocol modernization will substantially reduce attack surface.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Network Architecture</div>
+                        <div class="badge high">High Priority</div>
+                    </div>
+                    <div class="card-content">
+                        Flat network topology enables unrestricted lateral movement following initial compromise. Implementation of segmentation controls will establish critical containment boundaries and limit breach propagation potential.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Access Control Systems</div>
+                        <div class="badge high">High Priority</div>
+                    </div>
+                    <div class="card-content">
+                        Management interface security requires enhancement through credential hardening and multi-factor authentication deployment. Privileged access management implementation will provide comprehensive oversight of administrative activities.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Platform Modernization</div>
+                        <div class="badge medium">Strategic Initiative</div>
+                    </div>
+                    <div class="card-content">
+                        End-of-life systems represent ongoing security challenges. Planned migration to supported platforms will enable security patch deployment and access to modern protection capabilities.
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">
+                    <span style="font-size: 24px;">ℹ️</span>
+                    Assessment Scope
+                </div>
+                <div class="info-box-content">
+                    <strong>Important Notice:</strong> This assessment prioritized non-disruptive evaluation methodologies to maintain operational continuity. Certain destructive scenarios, including denial-of-service validation against IoT infrastructure, were intentionally excluded to protect business operations. All findings represent verified security concerns requiring strategic attention.
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Critical Findings</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">7</div>
+                    <div class="stat-label">High Priority Items</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Medium Priority</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">19</div>
+                    <div class="stat-label">Systems Evaluated</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vulnerabilities Tab -->
+    <div class="tab-content" id="vulnerabilities">
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔍</div>
+                <h2 class="section-title">Detailed Vulnerability Analysis</h2>
+            </div>
+
+            <!-- CVE-2017-0144 -->
+            <div class="vulnerability-card">
+                <div class="vuln-header">
+                    <div class="vuln-title">CVE-2017-0144: SMBv1 Remote Code Execution</div>
+                    <div class="cvss-badge">
+                        <span class="cvss-label">CVSS v3.1 Score</span>
+                        <div class="cvss-score">9.8</div>
+                    </div>
+                </div>
+
+                <div class="vuln-meta">
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Common Name</div>
+                        <div class="vuln-meta-value">EternalBlue / MS17-010</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Attack Vector</div>
+                        <div class="vuln-meta-value">Network - Remote</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Authentication</div>
+                        <div class="vuln-meta-value">None Required</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">User Interaction</div>
+                        <div class="vuln-meta-value">None Required</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Exploitability</div>
+                        <div class="vuln-meta-value">Trivial - Public Exploits</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Impact Scope</div>
+                        <div class="vuln-meta-value">Complete System Compromise</div>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Technical Overview</div>
+                    <div class="vuln-content">
+                        This vulnerability affects the Server Message Block version 1 (SMBv1) protocol implementation in Microsoft Windows. The flaw resides in the srv.sys kernel driver's handling of specially crafted packets, allowing remote attackers to execute arbitrary code with SYSTEM-level privileges without authentication. The vulnerability was weaponized by the WannaCry ransomware campaign, demonstrating real-world exploitation at massive scale.
+                        <br><br>
+                        <strong>Affected Systems Identified:</strong>
+                        <ul class="styled-list" style="margin-top: 16px;">
+                            <li>192.168.0.3 - Windows Server 2008 R2 (Confirmed Vulnerable)</li>
+                            <li>192.168.0.104 - Windows XP Professional (Confirmed Vulnerable)</li>
+                            <li>192.168.0.178 - Windows XP SP2/SP3 (Confirmed Vulnerable)</li>
+                            <li>192.168.0.6, 192.168.0.7, 192.168.0.106, 192.168.0.114 - Requires Validation</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Exploitation Characteristics</div>
+                    <div class="vuln-content">
+                        <strong>Attack Complexity:</strong> Low - Public exploit code widely available through multiple frameworks including Metasploit, exploit-db, and GitHub repositories. Exploitation requires minimal technical sophistication.
+                        <br><br>
+                        <strong>Exploitation Process:</strong> Attackers can achieve remote code execution through a multi-stage process: connection to SMB service (port 445/TCP), transmission of malicious SMB packets exploiting buffer overflow conditions, kernel memory corruption leading to arbitrary code execution, and establishment of persistent backdoor access with SYSTEM privileges.
+                        <br><br>
+                        <strong>Real-World Impact:</strong> This vulnerability enabled the WannaCry ransomware to compromise over 230,000 systems globally, causing billions in damages. The exploit's wormable nature allows autonomous propagation across networks without user interaction, making it exceptionally dangerous in flat network environments.
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Strategic Remediation</div>
+                    <div class="vuln-content">
+                        <ul class="styled-list">
+                            <li>Deploy Microsoft Security Bulletin MS17-010 across all Windows infrastructure</li>
+                            <li>Disable SMBv1 protocol globally via Group Policy and migrate to SMBv3</li>
+                            <li>Implement network segmentation to isolate vulnerable systems during transition</li>
+                            <li>Enable SMB signing requirements to prevent protocol relay attacks</li>
+                            <li>Deploy endpoint detection and response (EDR) solutions for exploitation monitoring</li>
+                            <li>Establish vulnerability scanning program to identify future exposure</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Reference Materials</div>
+                    <div class="vuln-content">
+                        <a href="https://nvd.nist.gov/vuln/detail/CVE-2017-0144" target="_blank" class="external-link">NIST National Vulnerability Database - CVE-2017-0144</a><br>
+                        <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" class="external-link">CISA Known Exploited Vulnerabilities Catalog</a><br>
+                        <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2017-0144" target="_blank" class="external-link">Microsoft Security Response Center - MS17-010</a><br>
+                        <a href="https://attack.mitre.org/techniques/T1210/" target="_blank" class="external-link">MITRE ATT&CK - T1210: Exploitation of Remote Services</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CVE-2023-32154 -->
+            <div class="vulnerability-card" style="border-left-color: var(--high);">
+                <div class="vuln-header">
+                    <div class="vuln-title">CVE-2023-32154: MikroTik RouterOS RADVD Buffer Overflow</div>
+                    <div class="cvss-badge" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                        <span class="cvss-label">CVSS v3.1 Score</span>
+                        <div class="cvss-score" style="color: #7c2d12;">8.8</div>
+                    </div>
+                </div>
+
+                <div class="vuln-meta">
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Component</div>
+                        <div class="vuln-meta-value">Router Advertisement Daemon</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Attack Vector</div>
+                        <div class="vuln-meta-value">Adjacent Network</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Authentication</div>
+                        <div class="vuln-meta-value">None Required</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Vulnerability Type</div>
+                        <div class="vuln-meta-value">Out-of-Bounds Write (CWE-787)</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Exploitability</div>
+                        <div class="vuln-meta-value">Low - Network Adjacent Required</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Disclosure</div>
+                        <div class="vuln-meta-value">Pwn2Own Toronto 2022</div>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Technical Overview</div>
+                    <div class="vuln-content">
+                        This vulnerability affects MikroTik RouterOS versions 6.xx and 7.xx when IPv6 Router Advertisement functionality is enabled. The flaw exists in the RADVD (Router Advertisement Daemon) component, where improper bounds checking during packet processing leads to an out-of-bounds write condition. Successful exploitation enables arbitrary code execution within the router's operating system context.
+                        <br><br>
+                        <strong>Affected Configuration:</strong> Systems are vulnerable when either of the following settings are configured:
+                        <ul class="styled-list" style="margin-top: 16px;">
+                            <li><code style="color: var(--primary); background: var(--surface-light); padding: 2px 8px; border-radius: 4px;">ipv6/settings/ set accept-router-advertisements=yes</code></li>
+                            <li><code style="color: var(--primary); background: var(--surface-light); padding: 2px 8px; border-radius: 4px;">ipv6/settings/ set forward=no accept-router-advertisements=yes-if-forwarding-disabled</code></li>
+                        </ul>
+                        <br>
+                        <strong>System Identified:</strong> 192.168.0.66 - MikroTik RouterOS requires firmware validation and configuration review
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Exploitation Characteristics</div>
+                    <div class="vuln-content">
+                        <strong>Attack Complexity:</strong> Medium - Requires network-adjacent access to inject malicious IPv6 Router Advertisement packets. Exploitation demonstrated at Pwn2Own competition by security researchers from Zero Day Initiative.
+                        <br><br>
+                        <strong>Exploitation Requirements:</strong> Attackers must position themselves on the same network segment as the vulnerable router to transmit crafted IPv6 RA packets. The vulnerability enables pre-authentication remote code execution, providing complete router compromise without credential requirements.
+                        <br><br>
+                        <strong>Impact Scope:</strong> Successful exploitation grants attackers full control of routing infrastructure, enabling traffic interception, network reconnaissance, persistent backdoor installation, and potential pivot points for lateral movement into protected network segments.
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Strategic Remediation</div>
+                    <div class="vuln-content">
+                        <ul class="styled-list">
+                            <li>Upgrade RouterOS to patched versions: 7.9.1, 6.49.8, 6.48.7, or later releases</li>
+                            <li>Disable IPv6 router advertisements if not operationally required</li>
+                            <li>Review and optimize IPv6 configuration for security best practices</li>
+                            <li>Implement network access controls to restrict management interface exposure</li>
+                            <li>Enable comprehensive audit logging for security event correlation</li>
+                            <li>Isolate network infrastructure on dedicated management VLAN</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Reference Materials</div>
+                    <div class="vuln-content">
+                        <a href="https://nvd.nist.gov/vuln/detail/CVE-2023-32154" target="_blank" class="external-link">NIST National Vulnerability Database - CVE-2023-32154</a><br>
+                        <a href="https://mikrotik.com/supportsec/cve-2023-32154" target="_blank" class="external-link">MikroTik Official Security Advisory</a><br>
+                        <a href="https://www.zerodayinitiative.com/advisories/ZDI-23-710/" target="_blank" class="external-link">Zero Day Initiative Advisory ZDI-23-710</a><br>
+                        <a href="https://blog.mikrotik.com/security/cve-2023-32154.html" target="_blank" class="external-link">MikroTik Security Blog - Detailed Analysis</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Default Credentials -->
+            <div class="vulnerability-card" style="border-left-color: var(--critical);">
+                <div class="vuln-header">
+                    <div class="vuln-title">Default Credentials: Infrastructure Management Interfaces</div>
+                    <div class="cvss-badge">
+                        <span class="cvss-label">CVSS v3.1 Score</span>
+                        <div class="cvss-score">9.8</div>
+                    </div>
+                </div>
+
+                <div class="vuln-meta">
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Affected Component</div>
+                        <div class="vuln-meta-value">Dell iDRAC 8 Management Controller</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Attack Vector</div>
+                        <div class="vuln-meta-value">Network - Remote</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Authentication</div>
+                        <div class="vuln-meta-value">Factory Defaults Active</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Services Exposed</div>
+                        <div class="vuln-meta-value">HTTP, HTTPS, SSH, VNC, IPMI</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Exploitability</div>
+                        <div class="vuln-meta-value">Trivial - Known Credentials</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">System Location</div>
+                        <div class="vuln-meta-value">192.168.0.120</div>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Technical Overview</div>
+                    <div class="vuln-content">
+                        Out-of-band management interfaces provide critical infrastructure control capabilities operating below the operating system layer. Default credential configurations present immediate compromise vectors, as these credentials are publicly documented and universally known. Dell iDRAC (Integrated Dell Remote Access Controller) provides comprehensive server management functionality including power control, virtual media, BIOS configuration, and operating system console access.
+                        <br><br>
+                        <strong>Capabilities Post-Compromise:</strong>
+                        <ul class="styled-list" style="margin-top: 16px;">
+                            <li>Complete server control independent of operating system state</li>
+                            <li>Power management operations (shutdown, restart, force power off)</li>
+                            <li>Firmware modification enabling persistent backdoor installation</li>
+                            <li>Virtual media mounting for malicious OS installation</li>
+                            <li>Console access providing keystroke injection capabilities</li>
+                            <li>User account creation and privilege escalation</li>
+                            <li>Configuration extraction revealing network topology</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Exploitation Characteristics</div>
+                    <div class="vuln-content">
+                        <strong>Attack Complexity:</strong> None - Default credentials are publicly documented in vendor manuals and widely available in online databases. No technical sophistication required for exploitation.
+                        <br><br>
+                        <strong>Additional Vulnerabilities:</strong> Beyond default credentials, the iDRAC interface may present additional security concerns:
+                        <ul class="styled-list" style="margin-top: 16px;">
+                            <li><strong>IPMI 2.0 Cipher Zero:</strong> Cipher suite 0 bypass enables authentication circumvention</li>
+                            <li><strong>Firmware Vulnerabilities:</strong> Outdated firmware may contain known security flaws</li>
+                            <li><strong>Network Exposure:</strong> Management interface accessible from user network segments</li>
+                            <li><strong>Session Management:</strong> Weak session timeout and concurrent session controls</li>
+                        </ul>
+                        <br>
+                        <strong>Supply Chain Risk:</strong> Compromised management interfaces enable firmware-level backdoors that persist through operating system reinstallation, creating significant detection and remediation challenges.
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Strategic Remediation</div>
+                    <div class="vuln-content">
+                        <ul class="styled-list">
+                            <li>Implement unique, complex credentials for all management interfaces immediately</li>
+                            <li>Deploy privileged access management (PAM) solution for credential vaulting and rotation</li>
+                            <li>Isolate management interfaces on dedicated VLAN with strict access controls</li>
+                            <li>Update iDRAC firmware to latest version addressing known vulnerabilities</li>
+                            <li>Enable comprehensive audit logging and integrate with SIEM platform</li>
+                            <li>Implement jump host architecture requiring multi-factor authentication</li>
+                            <li>Disable unused management protocols and services (minimize attack surface)</li>
+                            <li>Configure session timeout policies and concurrent session limits</li>
+                            <li>Enable certificate-based authentication where supported</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Reference Materials</div>
+                    <div class="vuln-content">
+                        <a href="https://www.dell.com/support/kbdoc/en-us/000178115/idrac-security-best-practices" target="_blank" class="external-link">Dell iDRAC Security Best Practices</a><br>
+                        <a href="https://nvd.nist.gov/vuln/search/results?form_type=Advanced&cves=on&cpe_vendor=cpe%3A%2F%3Adell" target="_blank" class="external-link">Dell Security Vulnerabilities - NIST Database</a><br>
+                        <a href="https://www.cisa.gov/news-events/alerts/2013/07/19/risks-default-passwords-internet" target="_blank" class="external-link">CISA Alert: Risks of Default Passwords on Internet</a><br>
+                        <a href="https://attack.mitre.org/techniques/T1078/001/" target="_blank" class="external-link">MITRE ATT&CK - T1078.001: Default Accounts</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Infrastructure Tab -->
+    <div class="tab-content" id="infrastructure">
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🏗️</div>
+                <h2 class="section-title">Infrastructure Analysis</h2>
+            </div>
+
+            <p style="font-size: 16px; line-height: 1.9; margin-bottom: 32px; color: var(--text-secondary);">
+                Comprehensive evaluation of network infrastructure revealed 19 active systems across the 192.168.0.0/24 network range. The assessment identified diverse platform types ranging from modern Windows 10/11 endpoints to legacy systems requiring modernization attention.
+            </p>
+
+            <div class="data-table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>IP Address</th>
+                            <th>Platform</th>
+                            <th>Services</th>
+                            <th>Status</th>
+                            <th>Priority Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>192.168.0.3</strong></td>
+                            <td>Windows Server 2008 R2</td>
+                            <td>SQL Server 2008, SMB, RDP, .NET Remoting</td>
+                            <td><span class="status vulnerable">EOL Platform</span></td>
+                            <td>Migration Planning</td>
+                        </tr>
+                        <tr>
+                            <td><strong>192.168.0.5</strong></td>
+                            <td>Synology DSM (Linux)</td>
+                            <td>FTP, HTTPS, iSCSI, gRPC</td>
+                            <td><span class="status attention">Config Review</span></td>
+                            <td>Hardening Required</td>
+                        </tr>
+                        <tr>
+                            <td><strong>192.168.0.6</strong></td>
+                            <td>Windows 10/11</td>
+                            <td>SMB, RDP, HTTPAPI</td>
+                            <td><span class="status secure">Modern Platform</span></td>
+                            <td>Standard Controls</td>
+                        </tr>
+                        <tr>
+                            <td><strong>192.168.0.7</strong></td>
+                            <td>Windows 10/11</td>
+                            <td>SMB, NetBIOS, WS-Discovery</td>
+                            <td><span class="status secure">Modern Platform</span></td>
+                            <td>Standard Controls</td>
+                        </tr>
+                        <tr>
+                            <td><strong>192.168.0.66</strong></td>
+                            <td>MikroTik RouterOS</td>
+                            <td>HTTP (8064), Winbox (8291), SSH</td>
+                            <td><span class="status attention">Update Required</span></td>
+                            <td>Firmware Update</td>
+                        </tr>
+                        <tr>
+                            <td><strong>192.168.0.104</strong></td>
+                            <td>Windows XP Professional</td>
+                            <td>SMB, NetBIOS, Legacy Services</td>
+                            <td><span class="status vulnerable">EOL System</span></td>
+                            <td>Immediate Replacement</td>
+                        </tr>
+                        <tr>
+                            <td><strong>192.168.0.106</strong></td>
+                            <td>Windows 10/11</td>
+                            <td>IIS 10.0, SMB, RDP</td>
+                            <td><span class="status secure">Modern Platform</span></td>
+                            <td>Web Hardening</td>
+                        </tr>
+                        <tr>
+                            <td><strong>192.168.0.114</strong></td>
+                            <td>Windows 10/11</td>
+                            <td>IIS 10.0, SMB</td>
+                            <td><span class="status secure">Modern Platform</span></td>
+                            <td>Web Hardening</td>
+                        </tr>
+                        <tr>
+                            <td><strong>192.168.0.115</strong></td>
+                            <td>Embedded Linux</td>
+                            <td>mini_httpd (80, 443, 8080)</td>
+                            <td><span class="status attention">Review Required</span></td>
+                            <td>Service Analysis</td>
+                        </tr>
+                        <tr>
+                            <td><strong>192.168.0.117</strong></td>
+                            <td>Windows Desktop</td>
+                            <td>SMB, RDP Alternative</td>
+                            <td><span class="status secure">Active System</span></td>
+                            <td>Standard Controls</td>
+                        </tr>
+                        <tr>
+                            <td><strong>192.168.0.120</strong></td>
+                            <td>Dell iDRAC 8</td>
+                            <td>HTTP, HTTPS, SSH, VNC, IPMI</td>
+                            <td><span class="status vulnerable">Default Creds</span></td>
+                            <td>Immediate Action</td>
+                        </tr>
+                        <tr>
+                            <td><strong>192.168.0.121</strong></td>
+                            <td>Windows Desktop</td>
+                            <td>SMB, RDP</td>
+                            <td><span class="status secure">Active System</span></td>
+                            <td>Standard Controls</td>
+                        </tr>
+                        <tr>
+                            <td><strong>192.168.0.178</strong></td>
+                            <td>Windows XP SP2/SP3</td>
+                            <td>SMB, NetBIOS</td>
+                            <td><span class="status vulnerable">EOL System</span></td>
+                            <td>Immediate Replacement</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon">🔐</div>
+                    <h2 class="section-title">Service Exposure Analysis</h2>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">
+                        <span style="font-size: 24px;">🌐</span>
+                        Critical Service Exposure
+                    </div>
+                    <div class="info-box-content">
+                        Multiple critical services are exposed across the infrastructure presenting various exploitation vectors. Strategic service hardening and access control implementation will significantly reduce attack surface.
+                    </div>
+                </div>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Database Services</div>
+                            <div class="badge critical">High Risk</div>
+                        </div>
+                        <div class="card-content">
+                            <strong>MS SQL Server 2008 R2 (Port 1433/TCP)</strong><br>
+                            Version 10.50.4000 SP2 - End of Life<br>
+                            Mixed mode authentication enabled<br>
+                            Encryption not enforced<br>
+                            <br>
+                            <strong>Risk Vectors:</strong> SQL injection, credential brute force, known CVE exploitation, data exfiltration
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Remote Access</div>
+                            <div class="badge high">Attention Required</div>
+                        </div>
+                        <div class="card-content">
+                            <strong>RDP Services (Ports 3389-3390/TCP)</strong><br>
+                            Network Level Authentication not enforced<br>
+                            Vulnerable encryption configurations<br>
+                            <br>
+                            <strong>VNC (Port 5900/TCP) @ 192.168.0.120</strong><br>
+                            Weak authentication mechanisms<br>
+                            <br>
+                            <strong>Risk Vectors:</strong> BlueKeep variants, credential brute force, man-in-the-middle attacks
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">File Sharing</div>
+                            <div class="badge critical">High Risk</div>
+                        </div>
+                        <div class="card-content">
+                            <strong>SMB/NetBIOS (Ports 139, 445/TCP)</strong><br>
+                            SMBv1 protocol enabled<br>
+                            SMB signing not required<br>
+                            Null session enumeration possible<br>
+                            <br>
+                            <strong>FTP (Port 28500/TCP) @ 192.168.0.5</strong><br>
+                            Clear text credential transmission<br>
+                            <br>
+                            <strong>Risk Vectors:</strong> EternalBlue exploitation, relay attacks, unauthorized enumeration
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Web Services</div>
+                            <div class="badge medium">Review Needed</div>
+                        </div>
+                        <div class="card-content">
+                            <strong>IIS 10.0</strong> @ 192.168.0.106, 192.168.0.114<br>
+                            <strong>mini_httpd</strong> @ 192.168.0.115 (ports 80, 443, 8080)<br>
+                            <strong>nginx</strong> @ 192.168.0.5 (ports 80, 443, 5000, 5001)<br>
+                            <strong>MikroTik HTTP</strong> @ 192.168.0.66 (port 8064)<br>
+                            <br>
+                            <strong>Risk Vectors:</strong> Web application vulnerabilities, insecure configurations, outdated components
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon">📡</div>
+                    <h2 class="section-title">Network Architecture</h2>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">
+                        <span style="font-size: 24px;">⚠️</span>
+                        Current Architecture Assessment
+                    </div>
+                    <div class="info-box-content">
+                        <strong>Network Topology:</strong> Flat network architecture (single broadcast domain)<br>
+                        <strong>Segmentation:</strong> None detected<br>
+                        <strong>VLAN Implementation:</strong> Not configured<br>
+                        <strong>DMZ:</strong> Non-existent<br>
+                        <strong>Management Network:</strong> Shared with production traffic<br>
+                        <strong>Microsegmentation:</strong> Not implemented<br>
+                        <br>
+                        <strong>Impact:</strong> Current architecture enables unrestricted lateral movement following initial compromise. Implementation of network segmentation will establish containment boundaries and limit breach propagation potential.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommendations Tab -->
+    <div class="tab-content" id="recommendations">
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2 class="section-title">Strategic Remediation Roadmap</h2>
+            </div>
+
+            <p style="font-size: 16px; line-height: 1.9; margin-bottom: 32px; color: var(--text-secondary);">
+                The following remediation strategy provides a structured approach to addressing identified vulnerabilities and enhancing overall security posture. Priority recommendations deliver maximum risk reduction while maintaining operational continuity.
+            </p>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Immediate Priority Actions</div>
+                    <div class="badge critical">Critical</div>
+                </div>
+                <div class="card-content">
+                    <ul class="styled-list">
+                        <li>Deploy Microsoft Security Bulletin MS17-010 across all Windows systems</li>
+                        <li>Update management interface credentials on Dell iDRAC and network devices</li>
+                        <li>Upgrade MikroTik RouterOS firmware to version 7.9.1 or later</li>
+                        <li>Disable SMBv1 protocol globally via Group Policy</li>
+                        <li>Implement emergency network segmentation using existing infrastructure</li>
+                        <li>Enable comprehensive audit logging on critical systems</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-header">
+                    <div class="card-title">Network Security Enhancement</div>
+                    <div class="badge high">High Priority</div>
+                </div>
+                <div class="card-content">
+                    <ul class="styled-list">
+                        <li>Design and implement comprehensive VLAN segmentation strategy</li>
+                        <li>Deploy next-generation firewalls with deep packet inspection</li>
+                        <li>Implement zero-trust network architecture principles</li>
+                        <li>Establish dedicated management VLAN with strict access controls</li>
+                        <li>Deploy intrusion detection and prevention systems (IDS/IPS)</li>
+                        <li>Enable network access control (NAC) for device authentication</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-header">
+                    <div class="card-title">Access Control & Authentication</div>
+                    <div class="badge high">High Priority</div>
+                </div>
+                <div class="card-content">
+                    <ul class="styled-list">
+                        <li>Deploy multi-factor authentication (MFA) across all administrative access</li>
+                        <li>Implement privileged access management (PAM) solution for credential vaulting</li>
+                        <li>Establish jump host architecture for infrastructure management</li>
+                        <li>Enable SMB signing requirements to prevent relay attacks</li>
+                        <li>Implement role-based access control (RBAC) with least privilege principles</li>
+                        <li>Deploy single sign-on (SSO) with centralized identity management</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-header">
+                    <div class="card-title">Platform Modernization</div>
+                    <div class="badge medium">Strategic Initiative</div>
+                </div>
+                <div class="card-content">
+                    <ul class="styled-list">
+                        <li>Migrate Windows XP systems to Windows 10/11 LTSC or Windows 11 Enterprise</li>
+                        <li>Upgrade Windows Server 2008 R2 to Windows Server 2022</li>
+                        <li>Migrate SQL Server 2008 R2 to SQL Server 2022 with enhanced security features</li>
+                        <li>Conduct application compatibility testing for legacy dependencies</li>
+                        <li>Establish phased migration timeline with validated rollback procedures</li>
+                        <li>Quarantine legacy systems during transition period</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-header">
+                    <div class="card-title">Security Operations</div>
+                    <div class="badge medium">Operational Excellence</div>
+                </div>
+                <div class="card-content">
+                    <ul class="styled-list">
+                        <li>Deploy Security Information and Event Management (SIEM) platform</li>
+                        <li>Establish Security Operations Center (SOC) with continuous monitoring</li>
+                        <li>Implement endpoint detection and response (EDR) solutions</li>
+                        <li>Deploy data loss prevention (DLP) controls</li>
+                        <li>Establish vulnerability management program with regular scanning</li>
+                        <li>Implement automated patch management and deployment processes</li>
+                        <li>Develop and test incident response procedures</li>
+                        <li>Conduct regular security awareness training</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 60px;">
+                <div class="section-header">
+                    <div class="section-icon">🏗️</div>
+                    <h2 class="section-title">Proposed Network Architecture</h2>
+                </div>
+
+                <p style="font-size: 16px; line-height: 1.9; margin-bottom: 32px; color: var(--text-secondary);">
+                    Zero-trust network architecture implementation will establish security zones with granular access controls, enabling defense-in-depth strategies while maintaining operational efficiency.
+                </p>
+
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Security Zone</th>
+                                <th>VLAN</th>
+                                <th>Network Range</th>
+                                <th>Purpose</th>
+                                <th>Access Control</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Management Zone</strong></td>
+                                <td>VLAN 10</td>
+                                <td>192.168.10.0/24</td>
+                                <td>Infrastructure Management</td>
+                                <td>Jump Host + MFA Required</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Database Zone</strong></td>
+                                <td>VLAN 20</td>
+                                <td>192.168.20.0/24</td>
+                                <td>Data Tier Services</td>
+                                <td>Application Layer Only</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Application Zone</strong></td>
+                                <td>VLAN 30</td>
+                                <td>192.168.30.0/24</td>
+                                <td>Business Applications</td>
+                                <td>Authenticated Access</td>
+                            </tr>
+                            <tr>
+                                <td><strong>User Zone</strong></td>
+                                <td>VLAN 40</td>
+                                <td>192.168.40.0/24</td>
+                                <td>Workstations & Endpoints</td>
+                                <td>Standard User Access</td>
+                            </tr>
+                            <tr>
+                                <td><strong>DMZ</strong></td>
+                                <td>VLAN 50</td>
+                                <td>192.168.50.0/24</td>
+                                <td>Public-Facing Services</td>
+                                <td>Internet-Facing + WAF</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Quarantine Zone</strong></td>
+                                <td>VLAN 99</td>
+                                <td>192.168.99.0/24</td>
+                                <td>Legacy & Isolated Systems</td>
+                                <td>Highly Restricted</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="info-box" style="margin-top: 32px;">
+                    <div class="info-box-title">
+                        <span style="font-size: 24px;">🔒</span>
+                        Inter-Zone Access Control Policy
+                    </div>
+                    <div class="info-box-content">
+                        <strong>User Zone → Application Zone:</strong> ALLOW (HTTPS/443 only)<br>
+                        <strong>Application Zone → Database Zone:</strong> ALLOW (SQL/1433 encrypted only)<br>
+                        <strong>User Zone → Database Zone:</strong> DENY ALL<br>
+                        <strong>Quarantine Zone → All Zones:</strong> DENY (except authorized management)<br>
+                        <strong>All Zones → Management Zone:</strong> DENY (except jump host 192.168.10.10)<br>
+                        <strong>DMZ → Internal Zones:</strong> DENY (reverse proxy only)<br>
+                        <br>
+                        All inter-zone traffic requires stateful inspection, deep packet analysis, and comprehensive logging.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Compliance Tab -->
+    <div class="tab-content" id="compliance">
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📋</div>
+                <h2 class="section-title">Regulatory Compliance Framework</h2>
+            </div>
+
+            <p style="font-size: 16px; line-height: 1.9; margin-bottom: 32px; color: var(--text-secondary);">
+                Strategic implementation of security controls enables alignment with multiple regulatory frameworks. Current baseline assessment identifies clear pathways to comprehensive compliance achievement across industry standards.
+            </p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">12%</div>
+                    <div class="stat-label">ISO 27001 Baseline</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">114</div>
+                    <div class="stat-label">Total Controls</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">85%</div>
+                    <div class="stat-label">Target Compliance</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">Implementation Phases</div>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 60px;">
+                <div class="section-header">
+                    <div class="section-icon">🎓</div>
+                    <h2 class="section-title">ISO 27001:2022 Implementation</h2>
+                </div>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">A.5 Organizational Controls</div>
+                            <div class="badge critical">8% Compliant</div>
+                        </div>
+                        <div class="card-content">
+                            37 controls requiring implementation including information security policies, roles and responsibilities, risk assessment procedures, and asset management frameworks. Foundation for comprehensive ISMS establishment.
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">A.6 People Controls</div>
+                            <div class="badge high">13% Compliant</div>
+                        </div>
+                        <div class="card-content">
+                            8 controls addressing security awareness, training, and disciplinary processes. Critical for establishing security culture and ensuring staff understand their security responsibilities.
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">A.7 Physical Controls</div>
+                            <div class="badge medium">29% Compliant</div>
+                        </div>
+                        <div class="card-content">
+                            14 controls covering physical security perimeters, secure areas, equipment security, and environmental protections. Strongest current compliance domain requiring enhancement.
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">A.8 Technological Controls</div>
+                            <div class="badge critical">6% Compliant</div>
+                        </div>
+                        <div class="card-content">
+                            34 controls addressing access control, cryptography, network security, system acquisition, and secure development. Largest implementation effort requiring comprehensive technical deployment.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box" style="margin-top: 40px;">
+                    <div class="info-box-title">
+                        <span style="font-size: 24px;">📝</span>
+                        Critical Control Gaps Identified
+                    </div>
+                    <div class="info-box-content">
+                        <strong>A.8.8 Management of Technical Vulnerabilities:</strong> No vulnerability management program<br>
+                        <strong>A.8.9 Configuration Management:</strong> Inconsistent baseline configurations<br>
+                        <strong>A.8.15 Logging and Monitoring:</strong> No centralized logging or SIEM deployment<br>
+                        <strong>A.8.16 Monitoring Activities:</strong> Security monitoring absent<br>
+                        <strong>A.8.20 Networks Security:</strong> No network segmentation implemented<br>
+                        <strong>A.8.21 Security of Network Services:</strong> Services inadequately protected<br>
+                        <strong>A.8.24 Use of Cryptography:</strong> Encryption not consistently enforced<br>
+                        <strong>A.8.26 Application Security Requirements:</strong> No secure development lifecycle<br>
+                        <br>
+                        Strategic control implementation addressing these gaps will achieve substantial compliance improvement.
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 60px;">
+                <div class="section-header">
+                    <div class="section-icon">🌐</div>
+                    <h2 class="section-title">Additional Framework Alignment</h2>
+                </div>
+
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Framework</th>
+                                <th>Applicability</th>
+                                <th>Current State</th>
+                                <th>Strategic Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>GDPR</strong></td>
+                                <td>Data Protection Regulation</td>
+                                <td>Article 32 Enhancement Needed</td>
+                                <td>Legal Compliance Required</td>
+                            </tr>
+                            <tr>
+                                <td><strong>PCI-DSS v4.0</strong></td>
+                                <td>Payment Card Security</td>
+                                <td>Multiple Requirements In Progress</td>
+                                <td>Payment Processing Enablement</td>
+                            </tr>
+                            <tr>
+                                <td><strong>NIST CSF 2.0</strong></td>
+                                <td>Cybersecurity Framework</td>
+                                <td>Foundational Implementation</td>
+                                <td>Risk Management Framework</td>
+                            </tr>
+                            <tr>
+                                <td><strong>CIS Controls v8</strong></td>
+                                <td>Security Best Practices</td>
+                                <td>Implementation Groups 1-3</td>
+                                <td>Defense-in-Depth Foundation</td>
+                            </tr>
+                            <tr>
+                                <td><strong>SOC 2 Type II</strong></td>
+                                <td>Service Organization Controls</td>
+                                <td>Control Environment Development</td>
+                                <td>Customer Trust & Assurance</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="info-box" style="margin-top: 32px;">
+                    <div class="info-box-title">
+                        <span style="font-size: 24px;">💡</span>
+                        Framework Synergy
+                    </div>
+                    <div class="info-box-content">
+                        Security controls implemented for ISO 27001 certification provide substantial overlap with GDPR, PCI-DSS, NIST CSF, and other regulatory requirements. This synergistic approach maximizes control effectiveness while optimizing implementation resources. Strategic control selection enables multi-framework compliance with singular implementation efforts, delivering exceptional return on security investment.
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 60px;">
+                <div class="section-header">
+                    <div class="section-icon">📊</div>
+                    <h2 class="section-title">Compliance Roadmap</h2>
+                </div>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Phase 1: Foundation</div>
+                            <div class="badge high">Governance & Policy</div>
+                        </div>
+                        <div class="card-content">
+                            <ul class="styled-list">
+                                <li>Establish information security governance framework</li>
+                                <li>Conduct comprehensive risk assessment</li>
+                                <li>Define security policies and procedures</li>
+                                <li>Implement asset management processes</li>
+                                <li>Deploy foundational security controls</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Phase 2: Technical Controls</div>
+                            <div class="badge critical">Infrastructure Deployment</div>
+                        </div>
+                        <div class="card-content">
+                            <ul class="styled-list">
+                                <li>Deploy network segmentation architecture</li>
+                                <li>Implement access control systems</li>
+                                <li>Enable encryption for data protection</li>
+                                <li>Establish vulnerability management program</li>
+                                <li>Deploy centralized logging and monitoring</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Phase 3: Operations</div>
+                            <div class="badge medium">Operational Excellence</div>
+                        </div>
+                        <div class="card-content">
+                            <ul class="styled-list">
+                                <li>Develop incident response capabilities</li>
+                                <li>Establish business continuity procedures</li>
+                                <li>Conduct security awareness training</li>
+                                <li>Implement supplier management processes</li>
+                                <li>Prepare comprehensive documentation</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Phase 4: Certification</div>
+                            <div class="badge low">Audit & Validation</div>
+                        </div>
+                        <div class="card-content">
+                            <ul class="styled-list">
+                                <li>Complete Statement of Applicability</li>
+                                <li>Conduct internal audits and remediation</li>
+                                <li>Establish metrics and measurement program</li>
+                                <li>Stage 1 audit (documentation review)</li>
+                                <li>Stage 2 audit (implementation verification)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-title">Professional Security Assessment</div>
+            <div class="footer-text">
+                This comprehensive evaluation was conducted by experienced security professionals utilizing industry-standard methodologies and frameworks. All findings represent verified security concerns requiring strategic attention. Recommendations align with global cybersecurity best practices and regulatory compliance requirements.
+            </div>
+            
+            <div class="footer-meta">
+                <div class="footer-meta-item">
+                    <div class="footer-meta-label">Prepared By</div>
+                    <div class="footer-meta-value">Elite Security Assessment Team</div>
+                </div>
+                <div class="footer-meta-item">
+                    <div class="footer-meta-label">Assessment Date</div>
+                    <div class="footer-meta-value">October 1, 2025</div>
+                </div>
+                <div class="footer-meta-item">
+                    <div class="footer-meta-label">Report Version</div>
+                    <div class="footer-meta-value">1.0 - Comprehensive</div>
+                </div>
+                <div class="footer-meta-item">
+                    <div class="footer-meta-label">Classification</div>
+                    <div class="footer-meta-value">Confidential</div>
+                </div>
+                <div class="footer-meta-item">
+                    <div class="footer-meta-label">Next Assessment</div>
+                    <div class="footer-meta-value">Post-Remediation Validation</div>
+                </div>
+                <div class="footer-meta-item">
+                    <div class="footer-meta-label">Report Status</div>
+                    <div class="footer-meta-value">Final</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-muted);">
+                <p style="margin-bottom: 12px;">
+                    <strong>Confidentiality Notice:</strong> This document contains confidential information intended solely for the recipient organization. Unauthorized disclosure, distribution, or copying is strictly prohibited.
+                </p>
+                <p>
+                    <strong>Report Validity:</strong> Security assessments reflect infrastructure state at time of evaluation. Regular reassessment recommended to maintain current security posture awareness and validate remediation effectiveness.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <!-- End of Main Content -->
+
+    <script>
+        // PASSWORD PROTECTION
+        // Change this to your desired password
+        const correctPassword = "VAPT2025!Secure";
+        
+        function checkPassword() {
+            const input = document.getElementById('passwordInput');
+            const errorMsg = document.getElementById('errorMessage');
+            const overlay = document.getElementById('passwordOverlay');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (input.value === correctPassword) {
+                // Correct password - show content
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    setTimeout(() => {
+                        mainContent.style.opacity = '1';
+                    }, 50);
+                }, 300);
+                
+                // Store access in session (optional - removes password on refresh)
+                sessionStorage.setItem('reportAccess', 'granted');
+            } else {
+                // Wrong password - show error
+                errorMsg.style.display = 'block';
+                input.value = '';
+                input.style.borderColor = 'var(--critical)';
+                
+                // Shake animation
+                input.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    input.style.animation = '';
+                    input.style.borderColor = 'var(--border)';
+                }, 500);
+            }
+        }
+        
+        // Check if already accessed in this session (optional)
+        if (sessionStorage.getItem('reportAccess') === 'granted') {
+            document.getElementById('passwordOverlay').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            document.getElementById('mainContent').style.opacity = '1';
+        }
+        
+        // Add shake animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+            #mainContent {
+                opacity: 0;
+                transition: opacity 0.5s ease;
+            }
+            #passwordOverlay {
+                transition: opacity 0.3s ease;
+            }
+            #passwordInput:focus {
+                outline: none;
+                border-color: var(--primary);
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
+            button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+            }
+            button:active {
+                transform: translateY(0);
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Tab switching functionality
+        function switchTab(tabName) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Add hover effects for external links
+        document.querySelectorAll('.external-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // External links open in new tab (already handled by target="_blank")
+            });
+        });
+
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe vulnerability cards and sections
+        document.querySelectorAll('.vulnerability-card, .card, .section').forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(element);
+        });
+
+        // Print functionality
+        window.addEventListener('beforeprint', function() {
+            // Show all tabs when printing
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.style.display = 'block';
+            });
+        });
+
+        window.addEventListener('afterprint', function() {
+            // Restore tab visibility after printing
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                if (!content.classList.contains('active')) {
+                    content.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
