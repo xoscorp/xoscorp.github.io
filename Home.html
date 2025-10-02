@@ -1,0 +1,1771 @@
+<div class="card">
+                    <div class="card-header">
+                        <div class="card-title">PLC Network Security</div>
+                        <div class="badge success">Strong Implementation</div>
+                    </div>
+                    <div class="card-content">
+                        Industrial control systems (PLC infrastructure) demonstrate excellent network isolation. Multiple IP addresses sharing single MAC address indicates proper VLAN segmentation and network security controls, protecting critical operational technology from general network access.
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <div class="info-box-title">
+                    <span style="font-size: 24px;">🎯</span>
+                    Strategic Recommendation
+                </div>
+                <div class="info-box-content">
+                    <strong>Immediate Actions Required:</strong> While ISO-documented systems maintain excellent security posture, undocumented legacy infrastructure must either be:
+                    <br><br>
+                    <strong>Option 1:</strong> Completely removed from network infrastructure to eliminate attack vectors<br>
+                    <strong>Option 2:</strong> Isolated through comprehensive network segmentation preventing access from general network segments<br>
+                    <strong>Option 3:</strong> Brought into ISO 27001 scope with full security remediation and documentation
+                    <br><br>
+                    Current configuration creates scenario where auditor performing network reconnaissance will identify exploitable systems capable of compromising entire infrastructure despite strong security on documented production environment.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vulnerabilities Tab -->
+    <div class="tab-content" id="vulnerabilities">
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔍</div>
+                <h2 class="section-title">Detailed Vulnerability Analysis</h2>
+            </div>
+
+            <p style="font-size: 16px; line-height: 1.9; margin-bottom: 32px; color: var(--text-secondary);">
+                The following vulnerabilities exist exclusively on systems outside ISO 27001 documentation scope. Documented production infrastructure demonstrates no critical security weaknesses.
+            </p>
+
+            <!-- CVE-2017-0144 -->
+            <div class="vulnerability-card">
+                <div class="vuln-header">
+                    <div class="vuln-title">CVE-2017-0144: Windows XP SMBv1 Exploitation Vector</div>
+                    <div class="cvss-badge">
+                        <span class="cvss-label">CVSS v3.1 Score</span>
+                        <div class="cvss-score">9.8</div>
+                    </div>
+                </div>
+
+                <div class="vuln-meta">
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Classification</div>
+                        <div class="vuln-meta-value">Critical Priority</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">ISO Documentation Status</div>
+                        <div class="vuln-meta-value">Not Documented</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Exploitability</div>
+                        <div class="vuln-meta-value">Trivial - WannaCry Vector</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Attack Vector</div>
+                        <div class="vuln-meta-value">Network - Remote</div>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Technical Assessment</div>
+                    <div class="vuln-content">
+                        <strong>Critical Scope Gap:</strong> Windows XP workstations identified during network reconnaissance exist outside ISO 27001 documentation scope. While not part of certified infrastructure, these systems maintain network connectivity enabling exploitation as attack vectors.
+                        <br><br>
+                        <strong>Exploitation Scenario:</strong> Attacker gaining network-level access (physical network access, compromised VPN, or social engineering) can deploy WannaCry-style exploitation against Windows XP systems. Successful compromise enables lateral movement capabilities throughout network infrastructure.
+                        <br><br>
+                        <strong>EternalBlue (MS17-010) Characteristics:</strong> Server Message Block version 1 protocol buffer overflow enabling remote code execution with SYSTEM privileges. No authentication required. Public exploit code readily available. Wormable propagation enables autonomous spread across network segments.
+                        <br><br>
+                        <strong>Impact on ISO-Documented Systems:</strong> Compromised XP systems can access 192.168.0.6 master server containing confidential documents and critical file shares. Configuration-dependent lateral movement enables complete infrastructure compromise despite strong security on production systems.
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Auditor Risk Scenario</div>
+                    <div class="vuln-content">
+                        <strong>Certification Concern:</strong> ISO 27001 auditor performing network scanning will identify vulnerable Windows XP systems. Despite exclusion from documentation scope, auditor will note these systems provide exploitable paths into documented production environment, potentially impacting certification decision.
+                        <br><br>
+                        Auditor will question:
+                        <ul class="styled-list" style="margin-top: 12px;">
+                            <li>Why are exploitable systems network-accessible to production infrastructure?</li>
+                            <li>How does organization prevent lateral movement from compromised legacy systems?</li>
+                            <li>What network segmentation prevents undocumented systems from accessing documented assets?</li>
+                            <li>Why weren't these systems either documented for remediation or network-isolated?</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Remediation Requirements</div>
+                    <div class="vuln-content">
+                        <ul class="styled-list">
+                            <li><strong>Option 1 - Decommission:</strong> Remove Windows XP systems from network entirely</li>
+                            <li><strong>Option 2 - Network Isolation:</strong> Implement strict VLAN segmentation preventing access to production infrastructure</li>
+                            <li><strong>Option 3 - Migration:</strong> Replace with modern operating systems and include in ISO scope</li>
+                            <li><strong>Interim Control:</strong> Deploy network-level IDS/IPS to detect exploitation attempts</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Reference Materials</div>
+                    <div class="vuln-content">
+                        <a href="https://nvd.nist.gov/vuln/detail/CVE-2017-0144" target="_blank" class="external-link">NIST NVD - CVE-2017-0144</a><br>
+                        <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2017-0144" target="_blank" class="external-link">Microsoft Security Response Center</a><br>
+                        <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" class="external-link">CISA Known Exploited Vulnerabilities</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- iDRAC Default Credentials -->
+            <div class="vulnerability-card" style="border-left-color: var(--critical);">
+                <div class="vuln-header">
+                    <div class="vuln-title">Dell iDRAC Default Credentials: Infrastructure Control Risk</div>
+                    <div class="cvss-badge">
+                        <span class="cvss-label">CVSS v3.1 Score</span>
+                        <div class="cvss-score">9.8</div>
+                    </div>
+                </div>
+
+                <div class="vuln-meta">
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Classification</div>
+                        <div class="vuln-meta-value">Critical Priority</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">ISO Documentation Status</div>
+                        <div class="vuln-meta-value">Not Documented</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Exploitability</div>
+                        <div class="vuln-meta-value">Trivial - Known Defaults</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">System Location</div>
+                        <div class="vuln-meta-value">192.168.0.120</div>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Technical Assessment</div>
+                    <div class="vuln-content">
+                        <strong>Management Interface Exposure:</strong> Dell iDRAC out-of-band management controllers identified at 192.168.0.120 utilizing factory default credentials. While these infrastructure management systems fall outside ISO 27001 documentation scope, they provide below-operating-system control of server hardware.
+                        <br><br>
+                        <strong>Exploitation Impact:</strong> Successful authentication with default credentials grants complete control over server infrastructure including:
+                        <ul class="styled-list" style="margin-top: 12px;">
+                            <li>Power management (shutdown, restart, forced power cycles)</li>
+                            <li>Firmware modification enabling persistent backdoors surviving OS reinstallation</li>
+                            <li>Virtual media mounting for malicious OS installation</li>
+                            <li>Console access providing keystroke injection capabilities</li>
+                            <li>Configuration extraction revealing network topology and security architecture</li>
+                            <li>User account manipulation across managed infrastructure</li>
+                        </ul>
+                        <br>
+                        <strong>Network Discovery Risk:</strong> Auditor performing network scanning will immediately identify iDRAC interfaces. Default credential testing represents standard security assessment procedure. Successful authentication demonstrates infrastructure-wide compromise potential despite strong security on documented production systems.
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">ISO 27001 Certification Impact</div>
+                    <div class="vuln-content">
+                        <strong>Auditor Perspective:</strong> While iDRAC interfaces exist outside formal documentation scope, auditor will identify these systems during network assessment. Discovery of infrastructure management using default credentials demonstrates significant security control gaps that may impact certification decision.
+                        <br><br>
+                        Auditor concerns:
+                        <ul class="styled-list" style="margin-top: 12px;">
+                            <li>Management infrastructure excluded from security policy scope</li>
+                            <li>No privileged access management for infrastructure control</li>
+                            <li>Network architecture enabling management interface access from general network</li>
+                            <li>Absence of documented procedures for out-of-band management security</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Remediation Requirements</div>
+                    <div class="vuln-content">
+                        <ul class="styled-list">
+                            <li><strong>Immediate:</strong> Change all iDRAC default credentials to unique complex passwords</li>
+                            <li><strong>Network Isolation:</strong> Migrate iDRAC interfaces to dedicated management VLAN</li>
+                            <li><strong>Access Control:</strong> Implement jump host architecture for management access</li>
+                            <li><strong>Documentation:</strong> Include infrastructure management in ISO scope with documented procedures</li>
+                            <li><strong>Monitoring:</strong> Deploy logging and alerting for management interface access</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Reference Materials</div>
+                    <div class="vuln-content">
+                        <a href="https://www.dell.com/support/kbdoc/en-us/000178115/idrac-security-best-practices" target="_blank" class="external-link">Dell iDRAC Security Best Practices</a><br>
+                        <a href="https://www.cisa.gov/news-events/alerts/2013/07/19/risks-default-passwords-internet" target="_blank" class="external-link">CISA Alert: Default Passwords</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CVE-2023-32154 -->
+            <div class="vulnerability-card" style="border-left-color: var(--high);">
+                <div class="vuln-header">
+                    <div class="vuln-title">CVE-2023-32154: MikroTik RouterOS Buffer Overflow</div>
+                    <div class="cvss-badge" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                        <span class="cvss-label">CVSS v3.1 Score</span>
+                        <div class="cvss-score" style="color: #7c2d12;">8.8</div>
+                    </div>
+                </div>
+
+                <div class="vuln-meta">
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Classification</div>
+                        <div class="vuln-meta-value">High Priority</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Attack Vector</div>
+                        <div class="vuln-meta-value">Adjacent Network</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">Exploitability</div>
+                        <div class="vuln-meta-value">Low - Network Adjacent</div>
+                    </div>
+                    <div class="vuln-meta-item">
+                        <div class="vuln-meta-label">System Location</div>
+                        <div class="vuln-meta-value">192.168.0.66</div>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Technical Assessment</div>
+                    <div class="vuln-content">
+                        Network routing infrastructure running vulnerable MikroTik RouterOS firmware with IPv6 Router Advertisement Daemon buffer overflow. Exploitation enables pre-authentication remote code execution on routing equipment, providing network-level control capabilities.
+                        <br><br>
+                        <strong>Combined with Weak Password Policies:</strong> Devices with SIM connectivity utilizing weak passwords compound routing infrastructure risk. Successful router compromise enables traffic interception, network reconnaissance, and controlled access to all network segments.
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Remediation Requirements</div>
+                    <div class="vuln-content">
+                        <ul class="styled-list">
+                            <li>Upgrade MikroTik RouterOS to firmware version 7.9.1 or later</li>
+                            <li>Implement strong password policies across all network infrastructure</li>
+                            <li>Disable IPv6 router advertisements if not operationally required</li>
+                            <li>Deploy network infrastructure monitoring and anomaly detection</li>
+                            <li>Isolate routing equipment on dedicated management network</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="vuln-section">
+                    <div class="vuln-section-title">Reference Materials</div>
+                    <div class="vuln-content">
+                        <a href="https://nvd.nist.gov/vuln/detail/CVE-2023-32154" target="_blank" class="external-link">NIST NVD - CVE-2023-32154</a><br>
+                        <a href="https://mikrotik.com/supportsec/cve-2023-32154" target="_blank" class="external-link">MikroTik Official Advisory</a><br>
+                        <a href="https://www.zerodayinitiative.com/advisories/ZDI-23-710/" target="_blank" class="external-link">Zero Day Initiative Advisory</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Attack Chain Tab -->
+    <div class="tab-content" id="attackchain">
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⛓️</div>
+                <h2 class="section-title">Attack Chain Analysis</h2>
+            </div>
+
+            <p style="font-size: 16px; line-height: 1.9; margin-bottom: 32px; color: var(--text-secondary);">
+                The following attack chain demonstrates how network-level access enables complete infrastructure compromise through exploitation of undocumented systems, ultimately reaching confidential data on ISO-documented production servers.
+            </p>
+
+            <div class="info-box critical">
+                <div class="info-box-title">
+                    <span style="font-size: 24px;">🎯</span>
+                    Critical Data Exposure: Master Server 192.168.0.6
+                </div>
+                <div class="info-box-content">
+                    <strong>High-Value Target Identified:</strong> System 192.168.0.6 hosts extensive confidential documents and critical file shares representing organization's most sensitive information assets. This system serves as master file server for business-critical data.
+                    <br><br>
+                    <strong>Compromise Impact:</strong> Successful access to this server enables:
+                    <ul class="styled-list" style="margin-top: 12px;">
+                        <li>Exfiltration of confidential business documents</li>
+                        <li>Access to proprietary intellectual property</li>
+                        <li>Customer/client confidential information exposure</li>
+                        <li>Financial records and sensitive business data breach</li>
+                        <li>Potential regulatory compliance violations (GDPR, etc.)</li>
+                    </ul>
+                    <br>
+                    <strong>Attack Chain Objective:</strong> All exploitation paths target eventual access to this master server through lateral movement from initially compromised systems.
+                </div>
+            </div>
+
+            <div class="attack-chain">
+                <div class="chain-step">
+                    <div class="chain-number">1</div>
+                    <div class="chain-content">
+                        <div class="chain-title">Initial Network Access</div>
+                        <div class="chain-description">
+                            <strong>Scenario 1 - Physical Access:</strong> Attacker connects to network via physical ethernet jack in facility
+                            <br>
+                            <strong>Scenario 2 - Social Engineering:</strong> Compromised employee credentials provide VPN or wireless access
+                            <br>
+                            <strong>Scenario 3 - Supply Chain:</strong> Vendor or contractor with network access credentials
+                            <br>
+                            <strong>Scenario 4 - ISO Auditor:</strong> External auditor performing network security assessment discovers exploitable systems
+                            <br><br>
+                            <strong>Result:</strong> Attacker positioned on internal 192.168.0.0/24 network segment
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chain-step">
+                    <div class="chain-number">2</div>
+                    <div class="chain-content">
+                        <div class="chain-title">Network Reconnaissance</div>
+                        <div class="chain-description">
+                            Attacker performs network scanning to identify active systems and services:
+                            <br><br>
+                            <strong>Discovery Tools:</strong> Nmap, Masscan, or similar network discovery utilities
+                            <br>
+                            <strong>Targets Identified:</strong> Windows XP systems (192.168.0.104, 192.168.0.178), iDRAC interface (192.168.0.120), MikroTik router (192.168.0.66), File server (192.168.0.6)
+                            <br>
+                            <strong>Service Enumeration:</strong> SMB, RDP, HTTP/HTTPS management interfaces
+                            <br><br>
+                            <strong>Result:</strong> Complete network topology mapping revealing exploitable targets
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chain-step">
+                    <div class="chain-number">3</div>
+                    <div class="chain-content">
+                        <div class="chain-title">Initial Compromise - Multiple Vectors</div>
+                        <div class="chain-description">
+                            <strong>Vector A - Windows XP Exploitation (EternalBlue/WannaCry):</strong>
+                            <br>
+                            Deploy MS17-010 exploit against Windows XP systems using Metasploit or standalone exploit code. Achieve SYSTEM-level access without authentication. Compromise succeeds within minutes.
+                            <br><br>
+                            <strong>Vector B - iDRAC Default Credentials:</strong>
+                            <br>
+                            Attempt authentication to 192.168.0.120 using publicly documented default credentials. Successful login provides complete out-of-band infrastructure control. Below-OS access enables firmware manipulation and persistent backdoor installation.
+                            <br><br>
+                            <strong>Vector C - MikroTik Router Exploitation:</strong>
+                            <br>
+                            Exploit CVE-2023-32154 buffer overflow in RouterOS to gain router-level access. Control routing infrastructure enabling traffic interception and network manipulation.
+                            <br><br>
+                            <strong>Result:</strong> Established foothold with administrative privileges on undocumented system
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chain-step">
+                    <div class="chain-number">4</div>
+                    <div class="chain-content">
+                        <div class="chain-title">Credential Harvesting & Privilege Escalation</div>
+                        <div class="chain-description">
+                            From compromised Windows XP system or iDRAC interface:
+                            <br><br>
+                            <strong>Memory Dumping:</strong> Deploy Mimikatz to extract cached credentials from LSASS process
+                            <br>
+                            <strong>Network Sniffing:</strong> Capture SMB authentication attempts revealing password hashes
+                            <br>
+                            <strong>Configuration Extraction:</strong> Access stored credentials in registry, configuration files, or management interfaces
+                            <br>
+                            <strong>Domain Reconnaissance:</strong> Enumerate domain accounts, administrators, and trust relationships
+                            <br><br>
+                            <strong>Result:</strong> Collection of valid domain credentials enabling lateral movement
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chain-step">
+                    <div class="chain-number">5</div>
+                    <div class="chain-content">
+                        <div class="chain-title">Lateral Movement to Master Server (192.168.0.6)</div>
+                        <div class="chain-description">
+                            <strong>Configuration-Dependent Attack Paths:</strong>
+                            <br><br>
+                            <strong>Scenario A - Shared Credentials:</strong> If compromised Windows XP systems share credentials with master server, direct authentication succeeds via SMB or RDP
+                            <br><br>
+                            <strong>Scenario B - Pass-the-Hash:</strong> Utilize captured NTLM hashes to authenticate without knowing plaintext passwords
+                            <br><br>
+                            <strong>Scenario C - Trust Relationships:</strong> Leverage domain trust relationships or file sharing permissions granting access to master server
+                            <br><br>
+                            <strong>Scenario D - iDRAC Pivot:</strong> If master server 192.168.0.6 runs on compromised iDRAC-managed hardware, use out-of-band management to access system console
+                            <br><br>
+                            <strong>Result:</strong> Successful authentication and access to master file server containing confidential documents
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chain-step">
+                    <div class="chain-number">6</div>
+                    <div class="chain-content">
+                        <div class="chain-title">Data Exfiltration & Persistence</div>
+                        <div class="chain-description">
+                            <strong>Confidential Data Access:</strong>
+                            <br>
+                            Navigate extensive file shares on 192.168.0.6 containing business-critical documents, financial records, intellectual property, customer data, and proprietary information
+                            <br><br>
+                            <strong>Exfiltration Methods:</strong>
+                            <br>
+                            Stage data for transfer, compress sensitive files, establish covert channels (DNS tunneling, HTTPS to attacker infrastructure), exfiltrate during business hours to blend with normal traffic
+                            <br><br>
+                            <strong>Persistence Mechanisms:</strong>
+                            <br>
+                            Install remote access trojans, create privileged accounts, deploy scheduled tasks, establish additional backdoors on multiple systems
+                            <br><br>
+                            <strong>Result:</strong> Complete breach of confidential information with maintained persistent access to infrastructure
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box critical" style="margin-top: 40px;">
+                <div class="info-box-title">
+                    <span style="font-size: 24px;">⚡</span>
+                    Critical Takeaway
+                </div>
+                <div class="info-box-content">
+                    <strong>Undocumented Systems = Production Data Breach:</strong> While ISO-documented production systems maintain strong security, undocumented Windows XP machines and iDRAC interfaces create exploitable paths to master server containing organization's most sensitive data.
+                    <br><br>
+                    <strong>Auditor Perspective:</strong> External ISO 27001 auditor performing network assessment will identify identical attack chain. Discovery demonstrates that strong security on documented systems becomes ineffective when network-accessible legacy infrastructure provides bypass mechanisms.
+                    <br><br>
+                    <strong>Mitigation Imperative:</strong> Remove undocumented systems from network OR implement strict network segmentation preventing lateral movement to production infrastructure. Current flat network topology enables complete compromise despite excellent security on business-critical systems.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ISO 27001 Assessment Tab -->
+    <div class="tab-content" id="iso27001">
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📋</div>
+                <h2 class="section-title">ISO 27001 Compliance Assessment</h2>
+            </div>
+
+            <p style="font-size: 16px; line-height: 1.9; margin-bottom: 32px; color: var(--text-secondary);">
+                Assessment of systems within ISO 27001 documentation scope reveals strong security posture with proper controls implementation. However, undocumented systems accessible from same network present certification risks.
+            </p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Documented Production Systems</div>
+                        <div class="badge success">Excellent Security</div>
+                    </div>
+                    <div class="card-content">
+                        <strong>Security Posture:</strong> Production systems within ISO 27001 scope demonstrate no critical vulnerabilities, current patch levels, proper encryption implementation, and appropriate access controls.
+                        <br><br>
+                        <strong>Compliance Status:</strong> Documented infrastructure meets certification requirements with strong technical controls implementation.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">PLC Network Infrastructure</div>
+                        <div class="badge success">Strong Implementation</div>
+                    </div>
+                    <div class="card-content">
+                        <strong>Network Isolation:</strong> Industrial control systems demonstrate excellent segmentation. Multiple IP addresses sharing single MAC address indicates proper VLAN configuration and network security.
+                        <br><br>
+                        <strong>Operational Technology Security:</strong> PLC infrastructure properly isolated from general network access following OT security best practices.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Encryption Implementation</div>
+                        <div class="badge success">Properly Configured</div>
+                    </div>
+                    <div class="card-content">
+                        <strong>Data Protection:</strong> Documented systems utilize appropriate encryption protocols for data in transit and at rest. TLS/SSL configurations meet modern security standards.
+                        <br><br>
+                        <strong>Compliance:</strong> Encryption controls satisfy ISO 27001 Annex A.8.24 requirements.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Patch Management</div>
+                        <div class="badge success">Up to Date</div>
+                    </div>
+                    <div class="card-content">
+                        <strong>Vulnerability Management:</strong> Production systems within ISO scope maintain current security patches and updates. No outdated software versions identified on documented infrastructure.
+                        <br><br>
+                        <strong>Compliance:</strong> Meets ISO 27001 Annex A.8.8 vulnerability management requirements.
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box warning" style="margin-top: 40px;">
+                <div class="info-box-title">
+                    <span style="font-size: 24px;">⚠️</span>
+                    Certification Risk: Scope Boundary Weakness
+                </div>
+                <div class="info-box-content">
+                    <strong>Critical Audit Finding Risk:</strong> While documented production systems demonstrate excellent security, undocumented legacy infrastructure creates certification vulnerabilities:
+                    <br><br>
+                    <strong>Auditor Concerns:</strong>
+                    <ul class="styled-list" style="margin-top: 12px;">
+                        <li><strong>Scope Definition Issue:</strong> Why are network-accessible systems excluded from ISO scope when they can access documented production data?</li>
+                        <li><strong>Boundary Controls:</strong> What technical controls prevent undocumented systems from compromising documented infrastructure?</li>
+                        <li><strong>Risk Assessment Gap:</strong> Risk assessment should identify lateral movement threats from out-of-scope systems</li>
+                        <li><strong>Network Architecture:</strong> Flat network topology contradicts defense-in-depth principles required for ISO 27001</li>
+                    </ul>
+                    <br>
+                    <strong>Certification Impact:</strong> Auditor discovering exploitable attack paths from undocumented systems to production infrastructure may issue non-conformance findings or defer certification pending remediation.
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 60px;">
+                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 24px; color: var(--text-primary);">Recommended Actions for Certification Success</h3>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Scope Expansion</div>
+                            <div class="badge high">Option 1</div>
+                        </div>
+                        <div class="card-content">
+                            <strong>Include All Network-Accessible Systems:</strong>
+                            <br>
+                            Expand ISO 27001 scope to include Windows XP workstations and iDRAC interfaces with formal remediation plans. Document these systems, their security limitations, and planned decommissioning timelines.
+                            <br><br>
+                            <strong>Benefits:</strong> Transparent approach demonstrating organizational awareness of security gaps with documented improvement roadmap.
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Network Segmentation</div>
+                            <div class="badge critical">Option 2 - Recommended</div>
+                        </div>
+                        <div class="card-content">
+                            <strong>Implement Strict VLAN Isolation:</strong>
+                            <br>
+                            Deploy comprehensive network segmentation isolating undocumented legacy systems from production infrastructure. Implement firewall rules preventing lateral movement.
+                            <br><br>
+                            <strong>Benefits:</strong> Maintains current ISO scope while eliminating attack vectors through technical controls. Demonstrates defense-in-depth security architecture.
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">System Decommissioning</div>
+                            <div class="badge high">Option 3</div>
+                        </div>
+                        <div class="card-content">
+                            <strong>Remove Legacy Infrastructure:</strong>
+                            <br>
+                            Completely disconnect Windows XP systems and iDRAC interfaces from network. Replace or retire systems no longer serving business-critical functions.
+                            <br><br>
+                            <strong>Benefits:</strong> Eliminates vulnerability vectors entirely. Simplest solution with no ongoing maintenance burden.
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Hybrid Approach</div>
+                            <div class="badge medium">Option 4</div>
+                        </div>
+                        <div class="card-content">
+                            <strong>Combine Multiple Strategies:</strong>
+                            <br>
+                            Implement immediate network segmentation, update iDRAC credentials, plan Windows XP system retirement, and document interim security controls in ISO scope.
+                            <br><br>
+                            <strong>Benefits:</strong> Addresses immediate risks while establishing long-term remediation path. Shows auditor continuous improvement commitment.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box success" style="margin-top: 40px;">
+                <div class="info-box-title">
+                    <span style="font-size: 24px;">✅</span>
+                    Strong Foundation for Certification
+                </div>
+                <div class="info-box-content">
+                    <strong>Positive Assessment:</strong> Despite challenges with undocumented systems, your organization demonstrates strong security fundamentals:
+                    <br><br>
+                    <ul class="styled-list">
+                        <li>Production systems within ISO scope show excellent security posture with no critical vulnerabilities</li>
+                        <li>PLC infrastructure demonstrates proper industrial control system isolation and security</li>
+                        <li>Encryption properly implemented across documented infrastructure</li>
+                        <li>Patch management processes functioning effectively on production systems</li>
+                        <li>Security awareness sufficient to exclude problematic systems from certification scope</li>
+                    </ul>
+                    <br>
+                    <strong>Path Forward:</strong> Addressing network segmentation or system decommissioning concerns positions organization for successful ISO 27001 certification with strong technical security foundation already in place.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommendations Tab -->
+    <div class="tab-content" id="recommendations">
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2 class="section-title">Strategic Remediation Roadmap</h2>
+            </div>
+
+            <p style="font-size: 16px; line-height: 1.9; margin-bottom: 32px; color: var(--text-secondary);">
+                Prioritized remediation strategy addressing identified vulnerabilities while supporting ISO 27001 certification objectives. Focus on protecting confidential data on master server 192.168.0.6.
+            </p>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Critical Priority - Immediate Actions</div>
+                    <div class="badge critical">Execute Immediately</div>
+                </div>
+                <div class="card-content">
+                    <ul class="styled-list">
+                        <li><strong>iDRAC Credential Update:</strong> Change all default credentials on Dell iDRAC interfaces (192.168.0.120) to unique complex passwords immediately</li>
+                        <li><strong>Network Segmentation Phase 1:</strong> Implement emergency VLAN isolation separating Windows XP systems and iDRAC from production network</li>
+                        <li><strong>Master Server Access Control:</strong> Review and restrict access permissions to 192.168.0.6 file shares, enable comprehensive audit logging</li>
+                        <li><strong>MikroTik Firmware Update:</strong> Upgrade router firmware to version 7.9.1 or later addressing CVE-2023-32154</li>
+                        <li><strong>Password Policy Enforcement:</strong> Implement strong password requirements across all network devices, particularly SIM-enabled equipment</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-header">
+                    <div class="card-title">High Priority - Network Architecture</div>
+                    <div class="badge high">Critical for ISO Certification</div>
+                </div>
+                <div class="card-content">
+                    <ul class="styled-list">
+                        <li><strong>Comprehensive VLAN Design:</strong> Deploy full network segmentation strategy isolating management, production, legacy, and OT infrastructure</li>
+                        <li><strong>Firewall Rule Implementation:</strong> Establish strict access control lists preventing lateral movement between network segments</li>
+                        <li><strong>Management Network Isolation:</strong> Create dedicated management VLAN (e.g., 192.168.10.0/24) for iDRAC and router management interfaces</li>
+                        <li><strong>Jump Host Deployment:</strong> Implement secure administrative access through hardened jump host with MFA</li>
+                        <li><strong>Network Access Control:</strong> Deploy NAC solution authenticating devices before network access</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-header">
+                    <div class="card-title">High Priority - Legacy System Remediation</div>
+                    <div class="badge high">Security Risk Elimination</div>
+                </div>
+                <div class="card-content">
+                    <ul class="styled-list">
+                        <li><strong>Windows XP Decommissioning Plan:</strong> Document business justification for any XP systems requiring retention, establish migration timeline</li>
+                        <li><strong>Application Assessment:</strong> Identify legacy applications dependent on Windows XP, evaluate modern alternatives or virtualization options</li>
+                        <li><strong>Interim Isolation:</strong> If immediate decommissioning impossible, implement strict network quarantine with monitoring</li>
+                        <li><strong>Data Migration:</strong> Transfer any business-critical data from XP systems to supported platforms</li>
+                        <li><strong>Physical Disconnection:</strong> Remove network connectivity from XP systems until proper isolation implemented</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-header">
+                    <div class="card-title">Medium Priority - Monitoring & Detection</div>
+                    <div class="badge medium">Operational Security</div>
+                </div>
+                <div class="card-content">
+                    <ul class="styled-list">
+                        <li><strong>SIEM Deployment:</strong> Implement centralized logging and security event correlation</li>
+                        <li><strong>Network Traffic Analysis:</strong> Deploy IDS/IPS monitoring for lateral movement detection</li>
+                        <li><strong>Endpoint Detection:</strong> Install EDR solutions on all supported systems</li>
+                        <li><strong>File Integrity Monitoring:</strong> Monitor 192.168.0.6 master server for unauthorized access or modifications</li>
+                        <li><strong>Anomaly Detection:</strong> Establish baseline behaviors and alert on deviations</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-header">
+                    <div class="card-title">Medium Priority - ISO 27001 Documentation</div>
+                    <div class="badge medium">Certification Support</div>
+                </div>
+                <div class="card-content">
+                    <ul class="styled-list">
+                        <li><strong>Scope Boundary Documentation:</strong> Clearly define which systems are included/excluded from ISO scope with business justification</li>
+                        <li><strong>Risk Assessment Update:</strong> Document risks posed by out-of-scope systems and compensating controls</li>
+                        <li><strong>Network Architecture Diagrams:</strong> Create comprehensive network topology documentation showing segmentation</li>
+                        <li><strong>Security Policy Updates:</strong> Include management interface security, legacy system handling, network segmentation policies</li>
+                        <li><strong>Incident Response Procedures:</strong> Document procedures for handling compromise of out-of-scope systems</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 60px;">
+                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 24px; color: var(--text-primary);">Proposed Network Architecture</h3>
+                
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Security Zone</th>
+                                <th>VLAN</th>
+                                <th>Network Range</th>
+                                <th>Systems</th>
+                                <th>Access Policy</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Management Zone</strong></td>
+                                <td>VLAN 10</td>
+                                <td>192.168.10.0/24</td>
+                                <td>iDRAC (0.120), Router Management</td>
+                                <td>Jump Host Only + MFA</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Production Zone</strong></td>
+                                <td>VLAN 20</td>
+                                <td>192.168.20.0/24</td>
+                                <td>Master Server (0.6), Business Systems</td>
+                                <td>Authenticated Users Only</td>
+                            </tr>
+                            <tr>
+                                <td><strong>OT/PLC Zone</strong></td>
+                                <td>VLAN 30</td>
+                                <td>192.168.30.0/24</td>
+                                <td>Industrial Control Systems</td>
+                                <td>Air-Gapped / Highly Restricted</td>
+                            </tr>
+                            <tr>
+                                <td><strong>User Zone</strong></td>
+                                <td>VLAN 40</td>
+                                <td>192.168.40.0/24</td>
+                                <td>Workstations, Standard Endpoints</td>
+                                <td>Standard Access Controls</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Quarantine Zone</strong></td>
+                                <td>VLAN 99</td>
+                                <td>192.168.99.0/24</td>
+                                <td>Windows XP Systems (Temporary)</td>
+                                <td>Isolated / No Production Access</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="info-box" style="margin-top: 24px;">
+                    <div class="info-box-title">
+                        <span style="font-size: 24px;">🔒</span>
+                        Inter-Zone Access Control Rules
+                    </div>
+                    <div class="info-box-content">
+                        <strong>User Zone → Production Zone:</strong> ALLOW authenticated users via HTTPS/SMB with authentication<br>
+                        <strong>User Zone → Management Zone:</strong> DENY all direct access<br>
+                        <strong>Management Zone → Production Zone:</strong> ALLOW administrative access only<br>
+                        <strong>Quarantine Zone → All Zones:</strong> DENY all traffic<br>
+                        <strong>Production Zone → Internet:</strong> ALLOW via proxy with content filtering<br>
+                        <strong>OT/PLC Zone → All Zones:</strong> DENY (air-gapped)<br>
+                        <br>
+                        All inter-zone traffic logged and monitored. Default deny policy with explicit allow rules only.
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box success" style="margin-top: 40px;">
+                <div class="info-box-title">
+                    <span style="font-size: 24px;">🎯</span>
+                    Implementation Success Criteria
+                </div>
+                <div class="info-box-content">
+                    <strong>Verification Metrics:</strong>
+                    <br><br>
+                    <ul class="styled-list">
+                        <li><strong>Network Segmentation:</strong> Verify lateral movement from quarantine zone to production zone fails at firewall</li>
+                        <li><strong>iDRAC Security:</strong> Confirm default credentials no longer valid, strong passwords enforced</li>
+                        <li><strong>XP Isolation:</strong> Validate Windows XP systems cannot access master server 192.168.0.6</li>
+                        <li><strong>Audit Readiness:</strong> Network scans from simulated auditor position fail to compromise production infrastructure</li>
+                        <li><strong>Master Server Protection:</strong> Comprehensive audit logging enabled on 192.168.0.6 with monitoring</li>
+                        <li><strong>ISO Documentation:</strong> Network architecture documented with security controls mapped to Annex A requirements</li>
+                    </ul>
+                    <br>
+                    <strong>Timeline:</strong> Critical actions completed within immediate timeframe. High priority network segmentation deployed as phase 1 initiative. Medium priority monitoring and documentation support ongoing ISO certification process.
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- End of Main Content -->
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-title">Vulnerability Assessment & Penetration Testing Report</div>
+            <div class="footer-text">
+                This comprehensive assessment evaluated enterprise security infrastructure identifying critical distinctions between ISO 27001 documented systems (demonstrating strong security) and undocumented legacy infrastructure creating exploitable attack vectors. Immediate remediation of network architecture gaps essential for protecting confidential data and achieving certification objectives.
+            </div>
+            
+            <div style="margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-muted);">
+                <p style="margin-bottom: 12px;">
+                    <strong>Confidentiality Notice:</strong> This document contains confidential security assessment findings and strategic remediation guidance. Distribution restricted to authorized personnel only.
+                </p>
+                <p>
+                    <strong>ISO 27001 Context:</strong> Assessment conducted to support certification objectives while identifying security gaps requiring remediation for successful audit completion.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // PASSWORD PROTECTION
+        const correctPassword = "VAPT2025!Secure";
+        
+        function checkPassword() {
+            const input = document.getElementById('passwordInput');
+            const errorMsg = document.getElementById('errorMessage');
+            const overlay = document.getElementById('passwordOverlay');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (input.value === correctPassword) {
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    setTimeout(() => {
+                        mainContent.style.opacity = '1';
+                    }, 50);
+                }, 300);
+                sessionStorage.setItem('reportAccess', 'granted');
+            } else {
+                errorMsg.style.display = 'block';
+                input.value = '';
+                input.style.borderColor = 'var(--critical)';
+                input.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    input.style.animation = '';
+                    input.style.borderColor = 'var(--border)';
+                }, 500);
+            }
+        }
+        
+        if (sessionStorage.getItem('reportAccess') === 'granted') {
+            document.getElementById('passwordOverlay').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            document.getElementById('mainContent').style.opacity = '1';
+        }
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+            #mainContent {
+                opacity: 0;
+                transition: opacity 0.5s ease;
+            }
+            #passwordOverlay {
+                transition: opacity 0.3s ease;
+            }
+            #passwordInput:focus {
+                outline: none;
+                border-color: var(--primary);
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
+            button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+            }
+            button:active {
+                transform: translateY(0);
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Tab switching functionality
+        function switchTab(tabName) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.vulnerability-card, .card, .section, .attack-chain, .chain-step').forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(element);
+        });
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vulnerability Assessment & Penetration Testing Report</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5568d3;
+            --secondary: #764ba2;
+            --bg-dark: #0f1419;
+            --bg-darker: #080a0d;
+            --surface: #1a1f2e;
+            --surface-light: #252b3b;
+            --text-primary: #e4e7eb;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --border: #2d3748;
+            --critical: #f56565;
+            --high: #ed8936;
+            --medium: #ecc94b;
+            --low: #48bb78;
+            --success: #10b981;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-danger: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        .nav-container {
+            background: var(--bg-darker);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .nav-brand {
+            font-size: 24px;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .nav-tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-tab:hover {
+            color: var(--text-primary);
+            background: var(--surface);
+        }
+        
+        .nav-tab.active {
+            color: var(--primary);
+            background: var(--surface);
+        }
+        
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40%;
+            height: 2px;
+            background: var(--gradient-primary);
+        }
+        
+        /* Header */
+        .header {
+            background: var(--gradient-primary);
+            padding: 80px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-50px, 50px) rotate(180deg); }
+        }
+        
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+        
+        .header .subtitle {
+            font-size: 24px;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+        
+        /* Meta Grid */
+        .meta-grid {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .meta-card {
+            background: var(--surface-light);
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .meta-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+        }
+        
+        .meta-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .meta-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Section Headers */
+        .section {
+            margin-bottom: 60px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.2);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .badge.critical {
+            background: var(--gradient-danger);
+            color: white;
+        }
+        
+        .badge.high {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #7c2d12;
+        }
+        
+        .badge.medium {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #7c2d12;
+        }
+        
+        .badge.low {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #065f46;
+        }
+        
+        .badge.success {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            color: #065f46;
+        }
+        
+        .card-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        
+        /* Vulnerability Details */
+        .vulnerability-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 32px;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--critical);
+        }
+        
+        .vuln-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+        
+        .vuln-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            flex: 1;
+        }
+        
+        .cvss-badge {
+            background: var(--gradient-danger);
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 140px;
+        }
+        
+        .cvss-label {
+            font-size: 12px;
+            opacity: 0.9;
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        .cvss-score {
+            font-size: 32px;
+            font-weight: 800;
+        }
+        
+        .vuln-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+            padding: 24px;
+            background: var(--surface-light);
+            border-radius: 12px;
+        }
+        
+        .vuln-meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .vuln-meta-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        
+        .vuln-meta-value {
+            font-size: 15px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .vuln-section {
+            margin: 32px 0;
+        }
+        
+        .vuln-section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .vuln-section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+        
+        .vuln-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            padding-left: 16px;
+        }
+        
+        /* Info Box */
+        .info-box {
+            background: var(--surface-light);
+            border-left: 4px solid var(--primary);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 32px 0;
+        }
+        
+        .info-box.warning {
+            border-left-color: var(--high);
+            background: rgba(237, 137, 54, 0.05);
+        }
+        
+        .info-box.success {
+            border-left-color: var(--success);
+            background: rgba(16, 185, 129, 0.05);
+        }
+        
+        .info-box.critical {
+            border-left-color: var(--critical);
+            background: rgba(245, 101, 101, 0.05);
+        }
+        
+        .info-box-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .info-box-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        
+        /* Links */
+        .external-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid transparent;
+        }
+        
+        .external-link:hover {
+            border-bottom-color: var(--primary);
+        }
+        
+        /* Lists */
+        .styled-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .styled-list li {
+            padding: 16px 0 16px 32px;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        
+        .styled-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .styled-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 20px;
+        }
+        
+        /* Attack Chain */
+        .attack-chain {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 32px;
+            margin: 32px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .chain-step {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+            padding: 20px;
+            background: var(--surface-light);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .chain-step:hover {
+            transform: translateX(8px);
+            border-left-color: var(--critical);
+        }
+        
+        .chain-number {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+        
+        .chain-content {
+            flex: 1;
+        }
+        
+        .chain-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .chain-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        
+        /* Data Table */
+        .data-table-container {
+            background: var(--surface);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin: 32px 0;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table thead {
+            background: var(--gradient-primary);
+        }
+        
+        .data-table th {
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .data-table td {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .data-table tbody tr:hover {
+            background: var(--surface-light);
+        }
+        
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Status */
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .status.vulnerable {
+            background: rgba(245, 101, 101, 0.1);
+            color: var(--critical);
+            border: 1px solid rgba(245, 101, 101, 0.3);
+        }
+        
+        .status.attention {
+            background: rgba(237, 137, 54, 0.1);
+            color: var(--high);
+            border: 1px solid rgba(237, 137, 54, 0.3);
+        }
+        
+        .status.secure {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--bg-darker);
+            padding: 60px 40px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        .footer-text {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-darker);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 6px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-tabs {
+                display: none;
+            }
+            
+            .header h1 {
+                font-size: 36px;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Password Protection Overlay -->
+    <div id="passwordOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-darker); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+        <div style="background: var(--surface); padding: 60px; border-radius: 24px; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); max-width: 500px; width: 90%; border: 1px solid var(--border);">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <div style="width: 80px; height: 80px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 40px;">🔒</div>
+                <h2 style="font-size: 32px; font-weight: 800; margin-bottom: 12px; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Protected Document</h2>
+                <p style="color: var(--text-secondary); font-size: 16px; line-height: 1.6;">This Vulnerability Assessment & Penetration Testing Report is confidential. Please enter the access code to continue.</p>
+            </div>
+            
+            <div style="margin-bottom: 24px;">
+                <label style="display: block; font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em;">Access Code</label>
+                <input type="password" id="passwordInput" placeholder="Enter password" style="width: 100%; padding: 16px 20px; background: var(--surface-light); border: 2px solid var(--border); border-radius: 12px; color: var(--text-primary); font-size: 16px; font-family: 'Inter', sans-serif; transition: all 0.3s ease;" onkeypress="if(event.key === 'Enter') checkPassword()">
+            </div>
+            
+            <button onclick="checkPassword()" style="width: 100%; padding: 16px; background: var(--gradient-primary); border: none; border-radius: 12px; color: white; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.05em;">
+                Unlock Report
+            </button>
+            
+            <div id="errorMessage" style="margin-top: 16px; padding: 12px 16px; background: rgba(245, 101, 101, 0.1); border: 1px solid rgba(245, 101, 101, 0.3); border-radius: 8px; color: var(--critical); font-size: 14px; display: none;">
+                <strong>⚠️ Access Denied:</strong> Invalid password. Please try again.
+            </div>
+            
+            <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); text-align: center;">
+                <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+                    <strong>Security Notice:</strong> Unauthorized access attempts are logged and monitored. This document contains confidential security information.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" style="display: none;">
+    <!-- Navigation -->
+    <div class="nav-container">
+        <div class="nav">
+            <div class="nav-brand">VAPT Report</div>
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="switchTab('overview')">Overview</button>
+                <button class="nav-tab" onclick="switchTab('vulnerabilities')">Vulnerabilities</button>
+                <button class="nav-tab" onclick="switchTab('attackchain')">Attack Chain</button>
+                <button class="nav-tab" onclick="switchTab('iso27001')">ISO 27001 Assessment</button>
+                <button class="nav-tab" onclick="switchTab('recommendations')">Recommendations</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <h1>Vulnerability Assessment & Penetration Testing</h1>
+            <div class="subtitle">Enterprise Security Infrastructure Evaluation & ISO 27001 Readiness</div>
+        </div>
+    </div>
+
+    <!-- Meta Information -->
+    <div class="meta-grid">
+        <div class="meta-card">
+            <div class="meta-label">Assessment Date</div>
+            <div class="meta-value">October 2025</div>
+        </div>
+        <div class="meta-card">
+            <div class="meta-label">Network Scope</div>
+            <div class="meta-value">192.168.0.0/24</div>
+        </div>
+        <div class="meta-card">
+            <div class="meta-label">ISO 27001 Status</div>
+            <div class="meta-value">In Progress</div>
+        </div>
+        <div class="meta-card">
+            <div class="meta-label">Documented Systems</div>
+            <div class="meta-value">Compliant</div>
+        </div>
+        <div class="meta-card">
+            <div class="meta-label">Report Classification</div>
+            <div class="meta-value">Confidential</div>
+        </div>
+        <div class="meta-card">
+            <div class="meta-label">Assessment Type</div>
+            <div class="meta-value">Comprehensive VAPT</div>
+        </div>
+    </div>
+
+    <!-- Overview Tab -->
+    <div class="tab-content active" id="overview">
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📊</div>
+                <h2 class="section-title">Executive Summary</h2>
+            </div>
+            
+            <p style="font-size: 18px; line-height: 1.9; margin-bottom: 32px; color: var(--text-secondary);">
+                This comprehensive security assessment evaluated your enterprise infrastructure from both a vulnerability perspective and ISO 27001 compliance readiness. The evaluation reveals a distinct security posture between ISO-documented systems and undocumented legacy infrastructure, creating critical risk exposure through network-level attack vectors.
+            </p>
+
+            <div class="info-box success">
+                <div class="info-box-title">
+                    <span style="font-size: 24px;">✅</span>
+                    ISO 27001 Documented Systems - Strong Security Posture
+                </div>
+                <div class="info-box-content">
+                    <strong>Excellent News:</strong> Systems officially documented within your ISO 27001 scope demonstrate robust security configurations with no direct vulnerability vectors identified. These production systems maintain current patch levels, proper access controls, and security hardening consistent with certification requirements.
+                    <br><br>
+                    The documented infrastructure shows evidence of:
+                    <ul class="styled-list" style="margin-top: 12px;">
+                        <li>Up-to-date operating systems and patch management</li>
+                        <li>Properly configured encryption protocols</li>
+                        <li>No identified critical or high-severity vulnerabilities</li>
+                        <li>Adequate access control mechanisms</li>
+                        <li>Strong network segmentation on PLC infrastructure (single MAC address across multiple IPs indicates proper VLAN isolation)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="info-box critical">
+                <div class="info-box-title">
+                    <span style="font-size: 24px;">⚠️</span>
+                    Critical Finding: Undocumented Systems Present Severe Risk
+                </div>
+                <div class="info-box-content">
+                    <strong>Critical Security Gap:</strong> Legacy systems and infrastructure management interfaces not included in ISO 27001 documentation create exploitable attack paths into documented production environment. While these systems fall outside certification scope, their network-level accessibility presents immediate compromise risk.
+                    <br><br>
+                    <strong>Key Vulnerability:</strong> An external auditor or malicious actor gaining network-level access can leverage these undocumented systems (Windows XP workstations, iDRAC management interfaces) to establish footholds and pivot into protected infrastructure containing confidential data.
+                </div>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Legacy System Exposure</div>
+                        <div class="badge critical">Critical Risk</div>
+                    </div>
+                    <div class="card-content">
+                        Windows XP systems not included in ISO documentation remain vulnerable to EternalBlue (CVE-2017-0144). Network-level attackers can exploit these systems as pivot points, potentially accessing systems containing confidential documents and file shares on 192.168.0.6 master server.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Infrastructure Management Weakness</div>
+                        <div class="badge critical">Critical Risk</div>
+                    </div>
+                    <div class="card-content">
+                        Dell iDRAC interfaces utilizing default credentials provide below-OS control of server infrastructure. These management systems, while undocumented in ISO scope, enable complete infrastructure compromise if discovered during auditor network scanning.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Network Routing Vulnerability</div>
+                        <div class="badge high">High Priority</div>
+                    </div>
+                    <div class="card-content">
+                        MikroTik router firmware vulnerability (CVE-2023-32154) combined with weak password policies on SIM-enabled devices creates additional network-level exploitation vectors requiring immediate attention.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">PLC Network Security</div>
+                        <div class="badge success">Strong Implementation</div>
+                    </div>
+                    <div class="card-content">
+                        Industrial control
