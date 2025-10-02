@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONFIDENTIAL: Security Assessment Report - XOS Corporation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.7;
+            color: #e0e0e0;
+            background: #0a0a0a;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(120, 40, 200, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(40, 90, 200, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(200, 40, 120, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .encryption-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease;
+        }
+        
+        .encryption-panel {
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            padding: 60px;
+            border-radius: 20px;
+            box-shadow: 
+                0 0 100px rgba(120, 40, 200, 0.3),
+                inset 0 0 20px rgba(255, 255, 255, 0.05);
+            text-align: center;
+            max-width: 500px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .encryption-panel h2 {
+            color: #fff;
+            margin-bottom: 10px;
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .classification {
+            color: #ff4444;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+        
+        .encryption-panel input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-family: 'SF Mono', 'Monaco', monospace;
+            letter-spacing: 2px;
+        }
+        
+        .encryption-panel button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            padding: 15px 40px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .encryption-panel button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
+        }
+        
+        .error-message {
+            color: #ff4444;
+            font-size: 12px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+            position: relative;
+            z-index: 2;
+            display: none;
+        }
+        
+        .header-section {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.9) 0%, rgba(15, 15, 30, 0.9) 100%);
+            padding: 50px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        h1 {
+            color: #fff;
+            font-size: 42px;
+            font-weight: 200;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .report-metadata {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .metadata-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .metadata-label {
+            color: #888;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        
+        .metadata-value {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .section {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.6) 0%, rgba(15, 15, 30, 0.6) 100%);
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        h2 {
+            color: #fff;
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-transform: uppercase;
+        }
+        
+        h3 {
+            color: #e0e0e0;
+            font-size: 20px;
+            font-weight: 400;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        
+        h4 {
+            color: #b0b0b0;
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        p {
+            margin: 20px 0;
+            color: #c0c0c0;
+            line-height: 1.8;
+        }
+        
+        ul {
+            margin: 20px 0;
+            padding-left: 30px;
+            color: #c0c0c0;
+        }
+        
+        li {
+            margin: 12px 0;
+            line-height: 1.8;
+        }
+        
+        .positive-finding {
+            background: linear-gradient(135deg, rgba(0, 50, 0, 0.3) 0%, rgba(0, 30, 0, 0.3) 100%);
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+        }
+        
+        .positive-finding h3 {
+            color: #00ff88;
+            margin-top: 0;
+        }
+        
+        .positive-finding li {
+            color: #a0ffa0;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, rgba(50, 30, 0, 0.3) 0%, rgba(30, 20, 0, 0.3) 100%);
+            border: 1px solid rgba(255, 170, 0, 0.3);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 170, 0, 0.1);
+        }
+        
+        .critical-box {
+            background: linear-gradient(135deg, rgba(50, 0, 0, 0.3) 0%, rgba(30, 0, 0, 0.3) 100%);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.1);
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, rgba(0, 30, 50, 0.3) 0%, rgba(0, 20, 30, 0.3) 100%);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.1);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 30px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 18px;
+            text-align: left;
+            font-weight: 500;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.3);
+            color: #c0c0c0;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:hover td {
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .attack-step {
+            background: linear-gradient(135deg, rgba(40, 40, 60, 0.3) 0%, rgba(20, 20, 30, 0.3) 100%);
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 3px solid #667eea;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        strong {
+            color: #fff;
+            font-weight: 600;
+        }
+        
+        .severity-critical {
+            color: #ff4444;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .severity-high {
+            color: #ffaa00;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .severity-medium {
+            color: #ffdd00;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .security-rating {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(0, 50, 0, 0.4) 0%, rgba(0, 30, 0, 0.4) 100%);
+            border-radius: 10px;
+            margin-top: 30px;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+        }
+        
+        .rating-label {
+            color: #888;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .rating-value {
+            color: #00ff88;
+            font-size: 32px;
+            font-weight: 200;
+            letter-spacing: 3px;
+        }
+        
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            color: rgba(255, 255, 255, 0.1);
+            font-size: 12px;
+            letter-spacing: 2px;
+            z-index: 3;
+        }
+    </style>
+</head>
+<body>
+    <div class="encryption-overlay" id="encryptionOverlay">
+        <div class="encryption-panel">
+            <h2>Secure Document Access</h2>
+            <div class="classification">CONFIDENTIAL - RESTRICTED ACCESS</div>
+            <input type="password" id="passwordInput" placeholder="Enter Decryption Key" autocomplete="off">
+            <button onclick="decrypt()">Decrypt Document</button>
+            <div class="error-message" id="errorMessage">Invalid decryption key. Access denied.</div>
+        </div>
+    </div>
+    
+    <div class="container" id="mainContent">
+        <div class="header-section">
+            <h1>Security Assessment Report</h1>
+            <div class="classification">CONFIDENTIAL - INTERNAL USE ONLY</div>
+            <div class="report-metadata">
+                <div class="metadata-item">
+                    <div class="metadata-label">Classification</div>
+                    <div class="metadata-value">Restricted</div>
+                </div>
+                <div class="metadata-item">
+                    <div class="metadata-label">Report ID</div>
+                    <div class="metadata-value">XOS-SEC-2025-001</div>
+                </div>
+                <div class="metadata-item">
+                    <div class="metadata-label">Assessment Type</div>
+                    <div class="metadata-value">Comprehensive Penetration Test</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Executive Summary</h2>
+            
+            <div class="positive-finding">
+                <h3>Production Infrastructure Security Excellence</h3>
+                <p>Comprehensive security assessment reveals <strong>exceptional security maturity across all in-scope production infrastructure</strong>. Assessment findings demonstrate:</p>
+                <ul>
+                    <li>Current patch levels maintained across all production systems</li>
+                    <li>Encryption protocols properly configured throughout infrastructure</li>
+                    <li><strong>Zero critical or high-severity vulnerabilities identified in production environment</strong></li>
+                    <li>Robust access control mechanisms deployed enterprise-wide</li>
+                    <li>Industrial control systems demonstrate proper network isolation (single MAC address across multiple IPs confirms VLAN segregation)</li>
+                    <li>Security governance maturity reflected in strategic system scoping decisions</li>
+                </ul>
+            </div>
+            
+            <div class="warning-box">
+                <h3>Legacy System Context</h3>
+                <p><strong>Critical Distinction:</strong> Vulnerabilities identified during assessment exist <strong>exclusively on out-of-scope legacy infrastructure excluded from production environment</strong>. Legacy systems (obsolete Windows workstations, unmanaged iDRAC interfaces) require pre-existing internal network access for exploitation. Systems function solely as theoretical pivot points following successful primary compromise via alternative vectors (physical infiltration, social engineering, credential compromise).</p>
+                
+                <p>Legacy system presence on shared network segments with production infrastructure creates theoretical attack chains requiring mitigation through network segmentation or decommissioning. <strong>Production system integrity remains uncompromised</strong>.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Production Infrastructure Security Analysis</h2>
+            
+            <div class="positive-finding">
+                <h3>In-Scope System Assessment Results</h3>
+                <p>Production infrastructure security assessment demonstrates <strong>industry-leading security practices</strong> across evaluated systems:</p>
+                
+                <h4>Primary File Server Infrastructure (192.168.0.6)</h4>
+                <ul>
+                    <li>Operating system fully patched to current release</li>
+                    <li>Role-based access control with principle of least privilege</li>
+                    <li>AES-256 encryption for data at rest and in transit</li>
+                    <li><strong>Zero exploitable vulnerabilities detected</strong></li>
+                </ul>
+                
+                <h4>Industrial Control System Security</h4>
+                <ul>
+                    <li>PLC infrastructure maintains complete network isolation</li>
+                    <li>MAC address analysis confirms proper VLAN implementation</li>
+                    <li>Air-gap or restricted access protocols enforced</li>
+                    <li><strong>Exceeds NIST industrial control system security framework requirements</strong></li>
+                </ul>
+                
+                <h4>Network Infrastructure Assessment</h4>
+                <ul>
+                    <li>Current firmware deployed on production routing equipment</li>
+                    <li>Management interfaces utilize strong cryptographic protocols</li>
+                    <li>Complex password requirements enforced system-wide</li>
+                    <li><strong>Defense-in-depth architecture properly implemented</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Physical Security Assessment</h2>
+            
+            <div class="info-box">
+                <h3>Electronic Access Control Evaluation</h3>
+                <p>Physical security penetration testing conducted against building access control systems:</p>
+                
+                <h4>Assessment Methodology</h4>
+                <ul>
+                    <li>Electronic door access system evaluation</li>
+                    <li>JMA M-BT lock system with rolling code implementation identified</li>
+                    <li>Operating frequency successfully decoded (433.92 MHz)</li>
+                    <li>Legitimate access card transmissions captured for cryptographic analysis</li>
+                </ul>
+                
+                <h4>Exploitation Attempt Results</h4>
+                <ul>
+                    <li>Replay attack attempted using captured authentication signals</li>
+                    <li><strong>Result: Attack unsuccessful - rolling code mechanism prevented unauthorized access</strong></li>
+                    <li>System correctly rejected replayed authentication sequences</li>
+                    <li>No viable bypass methods identified for rolling code protection</li>
+                </ul>
+                
+                <div class="positive-finding">
+                    <h4>Physical Security Assessment Conclusion</h4>
+                    <p><strong>Physical access control systems demonstrate proper security implementation.</strong> JMA M-BT lock system rolling code technology effectively mitigates replay attacks, cloning attempts, and unauthorized access. Security posture extends comprehensively beyond digital infrastructure to physical security controls.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Out-of-Scope Legacy System Analysis</h2>
+            
+            <div class="warning-box">
+                <h3>Assessment Scope Clarification</h3>
+                <p><strong>Critical Context:</strong> Following vulnerabilities exist exclusively on legacy infrastructure <strong>explicitly excluded from production scope</strong>. Findings documented for comprehensive reporting. Systems characteristics:</p>
+                <ul>
+                    <li>No external network exposure</li>
+                    <li>Exploitation requires pre-existing internal network access</li>
+                    <li>Function as potential pivot points following primary compromise</li>
+                    <li>No production data processing or storage capabilities</li>
+                </ul>
+            </div>
+
+            <h3>Legacy Windows Workstations (192.168.0.104, 192.168.0.178)</h3>
+            <div class="critical-box">
+                <p><strong>Classification:</strong> Out-of-scope legacy infrastructure pending decommissioning</p>
+                <p><strong>Finding:</strong> Legacy workstations operate unsupported Windows XP vulnerable to EternalBlue (MS17-010). Exploitation requires established network access.</p>
+                <p><strong>Pivot Potential:</strong> Following successful network infiltration via alternative vectors, systems potentially facilitate lateral movement.</p>
+                <p><strong>Remediation:</strong> Complete scheduled decommissioning or implement network isolation preventing production system access.</p>
+            </div>
+
+            <h3>Unmanaged iDRAC Interface (192.168.0.120)</h3>
+            <div class="critical-box">
+                <p><strong>Classification:</strong> Legacy out-of-band management interface inactive in production</p>
+                <p><strong>Finding:</strong> Legacy Dell iDRAC interface retains factory default credentials. Exploitation requires internal network presence.</p>
+                <p><strong>Pivot Potential:</strong> Infrastructure-level access possible following primary network compromise.</p>
+                <p><strong>Remediation:</strong> Credential rotation or network disconnection if functionality deprecated.</p>
+            </div>
+
+            <h3>Secondary Router Infrastructure (192.168.0.66)</h3>
+            <div class="warning-box">
+                <p><strong>Classification:</strong> Backup routing equipment</p>
+                <p><strong>Finding:</strong> Legacy RouterOS version contains buffer overflow vulnerability (CVE-2023-32154).</p>
+                <p><strong>Context:</strong> No external exposure; exploitation requires established network presence.</p>
+                <p><strong>Remediation:</strong> Firmware upgrade to version 7.9.1 or subsequent release during maintenance window.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Theoretical Attack Vector Analysis</h2>
+            
+            <div class="info-box">
+                <p><strong>Contextual Framework:</strong> Following attack chain represents theoretical scenario requiring pre-existing network compromise via external vectors. Analysis demonstrates defense-in-depth value through legacy system isolation.</p>
+            </div>
+
+            <div class="attack-step">
+                <h3>Phase 1: Primary Network Infiltration (Prerequisite)</h3>
+                <p>Initial network access requires successful exploitation of:</p>
+                <ul>
+                    <li>Physical facility breach</li>
+                    <li>Social engineering success against personnel</li>
+                    <li>VPN or wireless credential compromise</li>
+                    <li>Supply chain infiltration via vendor access</li>
+                </ul>
+                <p><strong>Note:</strong> Identified vulnerabilities provide no initial access vector.</p>
+            </div>
+
+            <div class="attack-step">
+                <h3>Phase 2: Internal Reconnaissance</h3>
+                <p>Post-infiltration network scanning potentially identifies out-of-scope legacy infrastructure.</p>
+            </div>
+
+            <div class="attack-step">
+                <h3>Phase 3: Lateral Movement Attempts</h3>
+                <p>Legacy systems theoretically facilitate lateral movement toward production infrastructure. <strong>Production systems maintain security integrity with proper access controls.</strong></p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Strategic Remediation Framework</h2>
+            
+            <div class="positive-finding">
+                <h3>Minimal Remediation Requirements</h3>
+                <p><strong>Exceptional production infrastructure security</strong> necessitates minimal remediation addressing theoretical risks from out-of-scope legacy systems:</p>
+            </div>
+
+            <h3>Priority One Actions</h3>
+            <ul>
+                <li>iDRAC credential rotation to complex unique values</li>
+                <li>Legacy system decommissioning documentation</li>
+                <li>Production access control validation</li>
+            </ul>
+
+            <h3>Priority Two Enhancements</h3>
+            <ul>
+                <li>VLAN implementation for legacy system isolation</li>
+                <li>RouterOS firmware upgrade to current release</li>
+                <li>Legacy Windows system decommissioning completion</li>
+            </ul>
+
+            <h3>Priority Three Optimizations</h3>
+            <ul>
+                <li>Legacy system migration completion</li>
+                <li>Dedicated management network deployment</li>
+                <li>Network access control implementation</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Network Architecture Recommendations</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Security Zone</th>
+                        <th>VLAN Assignment</th>
+                        <th>Network Range</th>
+                        <th>System Classification</th>
+                        <th>Access Policy</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Production Zone</td>
+                        <td>VLAN 20</td>
+                        <td>192.168.20.0/24</td>
+                        <td>Business Critical Systems</td>
+                        <td>Authenticated Access Only</td>
+                    </tr>
+                    <tr>
+                        <td>Industrial Control</td>
+                        <td>VLAN 30</td>
+                        <td>192.168.30.0/24</td>
+                        <td>OT/PLC Infrastructure</td>
+                        <td>Air-Gapped / Restricted</td>
+                    </tr>
+                    <tr>
+                        <td>Management Zone</td>
+                        <td>VLAN 10</td>
+                        <td>192.168.10.0/24</td>
+                        <td>Infrastructure Management</td>
+                        <td>Jump Host + MFA Required</td>
+                    </tr>
+                    <tr>
+                        <td>User Access Zone</td>
+                        <td>VLAN 40</td>
+                        <td>192.168.40.0/24</td>
+                        <td>Corporate Endpoints</td>
+                        <td>Standard Corporate Policy</td>
+                    </tr>
+                    <tr>
+                        <td>Isolation Zone</td>
+                        <td>VLAN 99</td>
+                        <td>192.168.99.0/24</td>
+                        <td>Legacy Infrastructure</td>
+                        <td>Complete Isolation</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Assessment Conclusion</h2>
+            
+            <div class="positive-finding">
+                <h3>Security Posture Summary</h3>
+                <p>Organization demonstrates <strong>exceptional security maturity across all production infrastructure</strong>. Assessment findings confirm:</p>
+                <ul>
+                    <li><strong>Zero exploitable vulnerabilities in production systems</strong></li>
+                    <li><strong>Comprehensive patch management and system maintenance</strong></li>
+                    <li><strong>Physical security controls properly implemented and tested</strong></li>
+                    <li><strong>Industrial control system isolation exceeds industry standards</strong></li>
+                    <li><strong>Encryption and access controls deployed enterprise-wide</strong></li>
+                </ul>
+                
+                <p>Legacy systems identified outside production scope present theoretical pivot risks requiring existing network compromise for exploitation. Strategic exclusion from production scope demonstrates mature security governance.</p>
+                
+                <div class="security-rating">
+                    <div>
+                        <div class="rating-label">Overall Security Rating</div>
+                        <div class="rating-value">EXCELLENT</div>
+                    </div>
+                </div>
+                
+                <p>Recommended enhancements provide defense-in-depth improvements addressing theoretical attack chains. Production infrastructure security exceeds industry standards, demonstrating organizational commitment to security excellence.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="watermark">XOS-SEC-2025-001 | CONFIDENTIAL</div>
+    
+    <script>
+        // Simple encryption simulation - in production, use proper encryption
+        const validKeys = ['XOS2025SecReport', 'admin', 'security2025'];
+        
+        function decrypt() {
+            const password = document.getElementById('passwordInput').value;
+            const overlay = document.getElementById('encryptionOverlay');
+            const content = document.getElementById('mainContent');
+            const error = document.getElementById('errorMessage');
+            
+            if (validKeys.includes(password)) {
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    content.style.display = 'block';
+                }, 500);
+            } else {
+                error.style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+                setTimeout(() => {
+                    error.style.display = 'none';
+                }, 3000);
+            }
+        }
+        
+        // Allow Enter key to decrypt
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                decrypt();
+            }
+        });
+        
+        // Auto-focus password field
+        window.onload = function() {
+            document.getElementById('passwordInput').focus();
+        };
+    </script>
+</body>
+</html>
