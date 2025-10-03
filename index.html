@@ -787,6 +787,10 @@
                 <p><strong>Business Impact:</strong> Legacy Windows XP systems vulnerable to ransomware deployment. Acting as an attack vector, through this TA(Threat Actor) can pivot into the network. Systems should be scheduled for decommissioning.</p>
                 
                 <p><strong>Remediation:</strong> Complete decommissioning of Windows XP systems as per established timeline. Network isolation maintained until removal.</p>
+                <p><strong>References:</strong> 
+                <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0143"> Mitre</a>
+                <a href="https://technet.microsoft.com/en-us/library/security/ms17-010.aspx"> Microsoft</a>
+                <a href="https://www.microsoft.com/en-us/msrc/blog/2017/05/customer-guidance-for-wannacrypt-attacks/"> </p>
             </div>
 
             <!-- VULN-002: Dell iDRAC -->
@@ -860,6 +864,238 @@
                 
                 <p><strong>Remediation:</strong> Upgrade RouterOS firmware to version 7.15.3 (latest stable release) during next maintenance window. Consider replacement with enterprise-grade routing solution.</p>
             </div>
+            <!-- VULN-004: SSL POODLE -->
+<div class="vuln-card">
+    <div class="vuln-header">
+        <div>
+            <div class="vuln-id">VULN-004</div>
+            <h3 class="vuln-title">SSL POODLE Vulnerability</h3>
+        </div>
+        <div class="vuln-cvss">CVSS 6.5 MEDIUM</div>
+    </div>
+    
+    <div class="vuln-details">
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">CVE Identifier</span>
+            <span class="vuln-detail-value">CVE-2014-3566</span>
+        </div>
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Affected System</span>
+            <span class="vuln-detail-value">192.168.0.3</span>
+        </div>
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Service</span>
+            <span class="vuln-detail-value">MS SQL Server (Port 1433)</span>
+        </div>
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Attack Vector</span>
+            <span class="vuln-detail-value">Man-in-the-Middle</span>
+        </div>
+    </div>
+    
+    <p><strong>Technical Description:</strong> SSL 3.0 protocol vulnerability allowing padding oracle attacks. The protocol uses nondeterministic CBC padding, enabling man-in-the-middle attackers to decrypt TLS connections and obtain cleartext data through repeated connection attempts.</p>
+    
+    <p><strong>Business Impact:</strong> Database credentials and sensitive data transmitted to MS SQL Server can be intercepted and decrypted. Compromise of database authentication could lead to unauthorized data access and exfiltration.</p>
+    
+    <p><strong>Remediation:</strong> Disable SSL 3.0 and TLS 1.0 protocols on SQL Server. Configure minimum TLS version to 1.2 or higher. Update cipher suite configuration to remove 3DES_EDE_CBC_SHA.</p>
+    
+    <p><strong>References:</strong> 
+    <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-3566">CVE-2014-3566</a>,
+    <a href="https://www.imperialviolet.org/2014/10/14/poodle.html">Imperial Violet</a></p>
+</div>
+
+<!-- VULN-005: Weak DH Parameters -->
+<div class="vuln-card">
+    <div class="vuln-header">
+        <div>
+            <div class="vuln-id">VULN-005</div>
+            <h3 class="vuln-title">Weak Diffie-Hellman Key Exchange Parameters</h3>
+        </div>
+        <div class="vuln-cvss">CVSS 5.9 MEDIUM</div>
+    </div>
+    
+    <div class="vuln-details">
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Vulnerability</span>
+            <span class="vuln-detail-value">Insufficient Group Strength</span>
+        </div>
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Affected Systems</span>
+            <span class="vuln-detail-value">192.168.0.3, 192.168.0.114, 192.168.0.120, 192.168.0.121</span>
+        </div>
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Key Length</span>
+            <span class="vuln-detail-value">1024-bit (RFC2409/Oakley Group 2)</span>
+        </div>
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Ports Affected</span>
+            <span class="vuln-detail-value">443, 3390, 9090</span>
+        </div>
+    </div>
+    
+    <p><strong>Technical Description:</strong> TLS services using 1024-bit Diffie-Hellman groups from RFC2409 are vulnerable to passive eavesdropping attacks. Nation-state actors and well-resourced attackers can precompute values to break these weak DH groups, enabling decryption of past and future TLS sessions.</p>
+    
+    <p><strong>Business Impact:</strong> Encrypted communications including web traffic, remote desktop sessions, and management interfaces can be passively decrypted. Affects confidentiality of administrative credentials and sensitive business data in transit.</p>
+    
+    <p><strong>Remediation:</strong> Upgrade DH parameters to minimum 2048-bit groups. Configure servers to use ECDHE cipher suites with P-256 or higher curves. Disable export-grade and legacy cipher suites.</p>
+    
+    <p><strong>References:</strong> 
+    <a href="https://weakdh.org">WeakDH.org</a></p>
+</div>
+
+<!-- VULN-006: Apache ByteRange DoS -->
+<div class="vuln-card">
+    <div class="vuln-header">
+        <div>
+            <div class="vuln-id">VULN-006</div>
+            <h3 class="vuln-title">Apache HTTP Server Byte Range DoS</h3>
+        </div>
+        <div class="vuln-cvss">CVSS 7.8 HIGH</div>
+    </div>
+    
+    <div class="vuln-details">
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">CVE Identifier</span>
+            <span class="vuln-detail-value">CVE-2011-3192</span>
+        </div>
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Affected System</span>
+            <span class="vuln-detail-value">192.168.0.5</span>
+        </div>
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Service</span>
+            <span class="vuln-detail-value">Apache HTTP Server (Ports 80, 443)</span>
+        </div>
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Attack Complexity</span>
+            <span class="vuln-detail-value">Low</span>
+        </div>
+    </div>
+    
+    <p><strong>Technical Description:</strong> Apache HTTP Server vulnerable to denial of service when processing overlapping byte range requests. Attackers can exhaust server memory and CPU resources by sending specially crafted Range headers, causing service degradation or complete outage.</p>
+    
+    <p><strong>Business Impact:</strong> Web services on .5 can be easily taken offline through simple HTTP requests. No authentication required. Impacts availability of public-facing applications and internal web services.</p>
+    
+    <p><strong>Remediation:</strong> Update Apache HTTP Server to version 2.2.20 or later. Alternatively, implement mod_headers rules to reject requests with excessive Range headers or disable Range processing for static content.</p>
+    
+    <p><strong>References:</strong> 
+    <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-3192">CVE-2011-3192</a>,
+    <a href="https://seclists.org/fulldisclosure/2011/Aug/175">Full Disclosure</a></p>
+</div>
+
+<!-- VULN-007: Slowloris DoS -->
+<div class="vuln-card">
+    <div class="vuln-header">
+        <div>
+            <div class="vuln-id">VULN-007</div>
+            <h3 class="vuln-title">Slowloris Denial of Service</h3>
+        </div>
+        <div class="vuln-cvss">CVSS 7.5 HIGH</div>
+    </div>
+    
+    <div class="vuln-details">
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">CVE Identifier</span>
+            <span class="vuln-detail-value">CVE-2007-6750</span>
+        </div>
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Affected Systems</span>
+            <span class="vuln-detail-value">192.168.0.5, 192.168.0.115, 192.168.0.120</span>
+        </div>
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Service</span>
+            <span class="vuln-detail-value">HTTP/HTTPS Web Servers</span>
+        </div>
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Attack Type</span>
+            <span class="vuln-detail-value">Resource Exhaustion</span>
+        </div>
+    </div>
+    
+    <p><strong>Technical Description:</strong> Web servers vulnerable to connection pool exhaustion through slow HTTP header transmission. Attackers open multiple connections and send partial HTTP requests slowly, holding connections open indefinitely and preventing legitimate users from accessing services.</p>
+    
+    <p><strong>Business Impact:</strong> Multiple web services can be rendered unavailable with minimal attacker resources. Affects business continuity for web-facing applications and internal portals. Attack is difficult to distinguish from legitimate slow connections.</p>
+    
+    <p><strong>Remediation:</strong> Implement connection timeout limits (RequestReadTimeout directive in Apache). Deploy rate limiting at reverse proxy or WAF layer. Consider using async/event-driven web servers (nginx, lighttpd) that handle connection exhaustion more effectively.</p>
+    
+    <p><strong>References:</strong> 
+    <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-6750">CVE-2007-6750</a>,
+    <a href="http://ha.ckers.org/slowloris/">ha.ckers.org</a></p>
+</div>
+
+<!-- VULN-008: Sitecore CMS Exposure -->
+<div class="vuln-card">
+    <div class="vuln-header">
+        <div>
+            <div class="vuln-id">VULN-008</div>
+            <h3 class="vuln-title">Sitecore CMS Administrative Interface Exposure</h3>
+        </div>
+        <div class="vuln-cvss">CVSS 5.3 MEDIUM</div>
+    </div>
+    
+    <div class="vuln-details">
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Affected System</span>
+            <span class="vuln-detail-value">192.168.0.115</span>
+        </div>
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Service</span>
+            <span class="vuln-detail-value">Sitecore.NET CMS (Ports 80, 443)</span>
+        </div>
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Exposed Paths</span>
+            <span class="vuln-detail-value">/sitecore/admin/, /sitecore/login/</span>
+        </div>
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Information Disclosure</span>
+            <span class="vuln-detail-value">Version, Configuration, Modules</span>
+        </div>
+    </div>
+    
+    <p><strong>Technical Description:</strong> Sitecore CMS administrative interfaces publicly accessible without IP restrictions. Exposed endpoints include admin panels, version information, configuration viewers, and staging module APIs. Reveals system architecture and potential attack vectors through enumeration.</p>
+    
+    <p><strong>Business Impact:</strong> Administrative login pages exposed to internet increase brute force attack surface. Version disclosure (/sitecore/shell/sitecore.version.xml) enables targeted exploit development. Configuration exposure (/sitecore/admin/ShowConfig.aspx) may reveal sensitive system information.</p>
+    
+    <p><strong>Remediation:</strong> Implement IP allowlisting for /sitecore/ directory tree. Configure IIS URL rewriting to block external access to administrative paths. Enable Sitecore's built-in security hardening features and remove version disclosure endpoints.</p>
+</div>
+
+<!-- VULN-009: Database File Exposure -->
+<div class="vuln-card">
+    <div class="vuln-header">
+        <div>
+            <div class="vuln-id">VULN-009</div>
+            <h3 class="vuln-title">Database Backup Files Accessible via HTTP</h3>
+        </div>
+        <div class="vuln-cvss">CVSS 7.5 HIGH</div>
+    </div>
+    
+    <div class="vuln-details">
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Affected System</span>
+            <span class="vuln-detail-value">192.168.0.120</span>
+        </div>
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Exposed Files</span>
+            <span class="vuln-detail-value">database.sql, data.sql, acidcat_3.mdb</span>
+        </div>
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">Protection</span>
+            <span class="vuln-detail-value">401 Unauthorized (Weak)</span>
+        </div>
+        <div class="vuln-detail-item">
+            <span class="vuln-detail-label">CMS Platform</span>
+            <span class="vuln-detail-value">Acidcat CMS</span>
+        </div>
+    </div>
+    
+    <p><strong>Technical Description:</strong> Database backup files enumerated in web root directory with only HTTP Basic Authentication protection. Files include SQL dumps and Microsoft Access database files potentially containing application data, user credentials, and business information.</p>
+    
+    <p><strong>Business Impact:</strong> Database backups in web-accessible locations risk complete data exposure if authentication is bypassed or credentials compromised. May contain plaintext passwords, customer data, and proprietary business information.</p>
+    
+    <p><strong>Remediation:</strong> Immediately remove database files from web root directory. Store backups in non-web-accessible location with appropriate filesystem permissions (700/600). Implement automated backup rotation to secure storage outside DocumentRoot.</p>
+</div>
+
+
         </section>
 
         <!-- Assessment Timeline -->
